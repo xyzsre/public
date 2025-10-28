@@ -114,6 +114,18 @@ Try writing the following at your server’s command prompt:
 hostname -I
 ```
 
+```bash
+sudo apt install net-tools -y
+ifconfig
+ip addr
+wget --spider http://localhost
+wget --spider http://127.0.0.1
+wget --spider http://192.168.50.10
+sudo apt install curl -y
+curl -I http://192.168.50.10
+```
+
+
 Another option is to use the free icanhazip.com tool. This is a website that, when accessed, returns your machine’s public IP address as read from another location on the internet:
 ```bash
 curl -4 icanhazip.com
@@ -431,6 +443,11 @@ sudo apt install net-tools -y
 
 ```bash
 netstat -tupln
+ss -tupln
+top
+nproc
+free -ht
+ps aux | grep apache
 ```
 
 
@@ -573,6 +590,11 @@ You can also run the command below to check if the SSL version of your website i
 sudo apachectl -S
 ```
 
+```bash
+wget --spider https://domain1.local --no-check-certificate
+```
+
+
 After the Apache server restarts with customized configuration, test the SSL connection. To do this, open the site in at least two different browsers.
 
 
@@ -613,6 +635,7 @@ The default repositories may not contain the latest PHP version packages. So we 
 To configure PPA, run the following commands:
 ```bash
 sudo add-apt-repository ppa:ondrej/php
+sudo apt update -y
 ```
 Then install the PHP along with PHP-FPM, by running the following command in the terminal:
 ```bash
@@ -945,6 +968,11 @@ server {
 ```
 
 ```bash
+sudo find /var/www/cache/ -type f -ls
+```
+
+
+```bash
 sudo service nginx restart
 ```
 
@@ -1075,5 +1103,24 @@ Verify >> https://domain1.local >> just as an example
 ```bash
 sudo find /var/www/cache/ -type f -ls
 ```
+
+####
+URLS >> 
+####
+
+https://github.com/xyzsre
+
+https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion
+
+https://ubuntu.com/download/desktop
+
+https://www.virtualbox.org/
+
+https://developer.hashicorp.com/vagrant
+
+https://developer.hashicorp.com/vagrant/install
+
+https://github.com/xyzsre/public/tree/main/http_apache_nginx_webserver_infra_deploy
+
 
 
