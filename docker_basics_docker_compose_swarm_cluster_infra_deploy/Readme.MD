@@ -182,7 +182,9 @@ apt-cache policy docker-ce
 sudo apt install docker-ce -y
 
 sudo systemctl status docker
+
 sudo systemctl restart docker
+
 sudo systemctl enable docker
 
 newgrp docker
