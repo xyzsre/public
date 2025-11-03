@@ -181,11 +181,13 @@ apt-cache policy docker-ce
 
 sudo apt install docker-ce -y
 
-systemctl status docker
-
-sudo usermod -aG docker ${USER}
+sudo systemctl status docker
+sudo systemctl restart docker
+sudo systemctl enable docker
 
 newgrp docker
+
+sudo usermod -aG docker ${USER}
 
 
 ****************************************
@@ -323,13 +325,13 @@ Commands for listing containers, starting/stopping/removing containers, and remo
 To list all running containers:
 
 ```bash
-docker ps
+sudo docker ps
 ```
 
 To list all containers (including stopped ones):
 
 ```bash
-docker ps -a
+sudo docker ps -a
 ```
 
 ### Start, Stop, Remove Containers:
@@ -337,13 +339,13 @@ docker ps -a
 #### Start a Container:
 
 ```bash
-docker start <container_id_or_name>
+sudo docker start <container_id_or_name>
 ```
 
 #### Stop a Container:
 
 ```bash
-docker stop <container_id_or_name>
+sudo docker stop <container_id_or_name>
 ```
 
 #### Remove a Container:
@@ -351,13 +353,13 @@ docker stop <container_id_or_name>
 To remove a stopped container:
 
 ```bash
-docker rm <container_id_or_name>
+sudo docker rm <container_id_or_name>
 ```
 
 To forcefully remove a running container, you can use the `-f` flag:
 
 ```bash
-docker rm -f <container_id_or_name>
+sudo docker rm -f <container_id_or_name>
 ```
 
 ### Remove All Containers not Running:
@@ -365,7 +367,7 @@ docker rm -f <container_id_or_name>
 To remove all stopped containers:
 
 ```bash
-docker container prune
+sudo docker container prune
 ```
 
 This command will prompt you to confirm the removal of all stopped containers.
@@ -373,7 +375,7 @@ This command will prompt you to confirm the removal of all stopped containers.
 If you want to remove all containers (both running and stopped) without confirmation, you can use the `-f` flag:
 
 ```bash
-docker container prune -f
+sudo docker container prune -f
 ```
 
 Be cautious when using the `-f` flag, as it removes all containers without confirmation.
@@ -395,13 +397,13 @@ Commands to search for, download, run, detach from, and stop an Alpine container
 To search for Alpine images on Docker Hub:
 
 ```bash
-docker search alpine
+sudo docker search alpine
 ```
 
 To download the latest Alpine image:
 
 ```bash
-docker pull alpine
+sudo docker pull alpine
 ```
 
 ### Run Alpine Container in Interactive Mode:
@@ -409,7 +411,7 @@ docker pull alpine
 To run an Alpine container in interactive mode:
 
 ```bash
-docker run -it alpine /bin/sh
+sudo docker run -it alpine /bin/sh
 ```
 
 This command starts an Alpine container and opens an interactive shell (`/bin/sh`). The `-it` flags allow you to interact with the container.
@@ -423,7 +425,7 @@ To detach from the running Alpine container without stopping it, you can press `
 To stop a running Alpine container:
 
 ```bash
-docker stop <container_id_or_name>
+sudo docker stop <container_id_or_name>
 ```
 
 Replace `<container_id_or_name>` with the actual ID or name of your Alpine container.
@@ -435,7 +437,7 @@ Replace `<container_id_or_name>` with the actual ID or name of your Alpine conta
 - If you want to run a specific command and then exit, you can provide that command as an argument. For example, to run a simple `echo` command:
 
   ```bash
-  docker run alpine echo "Hello, Alpine!"
+  sudo docker run alpine echo "Hello, Alpine!"
   ```
 
 To attach to a running container in Docker, you can use the `docker attach` command. Here's how you can do it:
@@ -444,7 +446,7 @@ To attach to a running container in Docker, you can use the `docker attach` comm
    First, you need to know the ID or name of the running container. You can find this information using the `docker ps` command:
 
    ```bash
-   docker ps
+   sudo docker ps
    ```
 
    This command will display a list of running containers along with their IDs, names, and other details.
@@ -453,13 +455,13 @@ To attach to a running container in Docker, you can use the `docker attach` comm
    Use the `docker attach` command to attach to the running container. Replace `<container_id_or_name>` with the actual ID or name of your container:
 
    ```bash
-   docker attach <container_id_or_name>
+   sudo docker attach <container_id_or_name>
    ```
 
    For example:
 
    ```bash
-   docker attach my_running_container
+   sudo docker attach my_running_container
    ```
 
 3. **Detach from the Container:**
@@ -470,7 +472,7 @@ Keep in mind that when you attach to a running container, you are connected to t
 If you want to run additional commands in the container or interact with a different shell, consider using the `docker exec` command. For example:
 
 ```bash
-docker exec -it <container_id_or_name> /bin/sh
+sudo docker exec -it <container_id_or_name> /bin/sh
 ```
 
 This command opens an interactive shell (`/bin/sh`) in the specified container. Replace `<container_id_or_name>` with the actual ID or name of your container.
@@ -487,14 +489,14 @@ To run an Nginx container in Docker and expose the HTTP port, you can use the fo
    If you haven't already, pull the official Nginx image from Docker Hub:
 
    ```bash
-   docker pull nginx
+   sudo docker pull nginx
    ```
 
 2. **Run Nginx Container:**
    Run a new Nginx container and expose the default HTTP port (port 80) on the host:
 
    ```bash
-   docker run -d -p 80:80 --name my_nginx nginx
+   sudo docker run -d -p 80:80 --name my_nginx nginx
    ```
 
    - `-d`: Run the container in the background (detached mode).
@@ -515,8 +517,8 @@ To run an Nginx container in Docker and expose the HTTP port, you can use the fo
    If you want to stop and remove the Nginx container when you're done:
 
    ```bash
-   docker stop my_nginx
-   docker rm my_nginx
+   sudo docker stop my_nginx
+   sudo docker rm my_nginx
    ```
 
    Replace "my_nginx" with the actual name you used when running the container.
