@@ -243,7 +243,7 @@ Why? Because Easy to Install Multiple Servers and Docker + Docker Swarm and Clus
 
 
 ****************************************
-Solution 4 Commands >>>>
+Solution 4 Commands (Ubuntu22) >>>>
 
 sudo apt update -y
 
@@ -260,6 +260,39 @@ wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/sha
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 
 sudo apt update && sudo apt install vagrant -y
+
+
+****************************************
+Solution 4 Commands (Ubuntu24) >>>>
+
+# Update package list
+sudo apt update -y
+
+# Install software-properties-common for adding repos
+sudo apt install -y software-properties-common
+
+# Add VirtualBox repository
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+
+# Add Vagrant repository
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+# Update package list again
+sudo apt update -y
+
+# Install VirtualBox
+sudo apt install -y virtualbox-7.2
+
+# Check VirtualBox version
+VBoxManage --version
+
+# Install Vagrant
+sudo apt install -y vagrant
+
+# Check Vagrant version
+vagrant --version
 
 
 ****************************************
