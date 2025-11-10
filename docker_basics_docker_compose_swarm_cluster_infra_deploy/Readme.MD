@@ -187,9 +187,10 @@ sudo systemctl restart docker
 
 sudo systemctl enable docker
 
+sudo usermod -aG docker ${USER}
+
 newgrp docker
 
-sudo usermod -aG docker ${USER}
 
 
 ****************************************
@@ -247,17 +248,7 @@ Solution 4 Commands (Ubuntu22) >>>>
 
 sudo apt update -y
 
-wget https://www.virtualbox.org/download/oracle_vbox_2016.asc 
-
-cat oracle_vbox_2016.asc | gpg --dearmor | sudo tee /usr/share/keyrings/virtualbox.gpg > /dev/null 2>&1
-
-echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/virtualbox.gpg] https://download.virtualbox.org/virtualbox/debian jammy contrib' | sudo tee -a /etc/apt/sources.list.d/virtualbox.list
-
 sudo apt update && sudo apt install virtualbox-7.0 -y
-
-wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 
 sudo apt update && sudo apt install vagrant -y
 
@@ -272,12 +263,8 @@ sudo apt update -y
 sudo apt install -y software-properties-common
 
 # Add VirtualBox repository
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
 
 # Add Vagrant repository
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 
 # Update package list again
 sudo apt update -y
@@ -344,7 +331,11 @@ docker ps -a
 
 docker run hello-world
 
+docker --version
 
+which docker
+
+ps aux | grep docker
 
 
 
@@ -360,13 +351,14 @@ Commands for listing containers, starting/stopping/removing containers, and remo
 To list all running containers:
 
 ```bash
+docker ps
 sudo docker ps
 ```
 
 To list all containers (including stopped ones):
 
 ```bash
-sudo docker ps -a
+docker ps -a
 ```
 
 ### Start, Stop, Remove Containers:
@@ -374,13 +366,13 @@ sudo docker ps -a
 #### Start a Container:
 
 ```bash
-sudo docker start <container_id_or_name>
+docker start <container_id_or_name>
 ```
 
 #### Stop a Container:
 
 ```bash
-sudo docker stop <container_id_or_name>
+docker stop <container_id_or_name>
 ```
 
 #### Remove a Container:
@@ -388,13 +380,13 @@ sudo docker stop <container_id_or_name>
 To remove a stopped container:
 
 ```bash
-sudo docker rm <container_id_or_name>
+docker rm <container_id_or_name>
 ```
 
 To forcefully remove a running container, you can use the `-f` flag:
 
 ```bash
-sudo docker rm -f <container_id_or_name>
+docker rm -f <container_id_or_name>
 ```
 
 ### Remove All Containers not Running:
@@ -402,7 +394,7 @@ sudo docker rm -f <container_id_or_name>
 To remove all stopped containers:
 
 ```bash
-sudo docker container prune
+docker container prune
 ```
 
 This command will prompt you to confirm the removal of all stopped containers.
@@ -410,7 +402,7 @@ This command will prompt you to confirm the removal of all stopped containers.
 If you want to remove all containers (both running and stopped) without confirmation, you can use the `-f` flag:
 
 ```bash
-sudo docker container prune -f
+docker container prune -f
 ```
 
 Be cautious when using the `-f` flag, as it removes all containers without confirmation.
@@ -432,13 +424,13 @@ Commands to search for, download, run, detach from, and stop an Alpine container
 To search for Alpine images on Docker Hub:
 
 ```bash
-sudo docker search alpine
+docker search alpine
 ```
 
 To download the latest Alpine image:
 
 ```bash
-sudo docker pull alpine
+docker pull alpine
 ```
 
 ### Run Alpine Container in Interactive Mode:
@@ -446,7 +438,7 @@ sudo docker pull alpine
 To run an Alpine container in interactive mode:
 
 ```bash
-sudo docker run -it alpine /bin/sh
+docker run -it alpine /bin/sh
 ```
 
 This command starts an Alpine container and opens an interactive shell (`/bin/sh`). The `-it` flags allow you to interact with the container.
@@ -460,7 +452,7 @@ To detach from the running Alpine container without stopping it, you can press `
 To stop a running Alpine container:
 
 ```bash
-sudo docker stop <container_id_or_name>
+docker stop <container_id_or_name>
 ```
 
 Replace `<container_id_or_name>` with the actual ID or name of your Alpine container.
@@ -472,7 +464,7 @@ Replace `<container_id_or_name>` with the actual ID or name of your Alpine conta
 - If you want to run a specific command and then exit, you can provide that command as an argument. For example, to run a simple `echo` command:
 
   ```bash
-  sudo docker run alpine echo "Hello, Alpine!"
+  docker run alpine echo "Hello, Alpine!"
   ```
 
 To attach to a running container in Docker, you can use the `docker attach` command. Here's how you can do it:
@@ -481,7 +473,7 @@ To attach to a running container in Docker, you can use the `docker attach` comm
    First, you need to know the ID or name of the running container. You can find this information using the `docker ps` command:
 
    ```bash
-   sudo docker ps
+   docker ps
    ```
 
    This command will display a list of running containers along with their IDs, names, and other details.
@@ -490,13 +482,13 @@ To attach to a running container in Docker, you can use the `docker attach` comm
    Use the `docker attach` command to attach to the running container. Replace `<container_id_or_name>` with the actual ID or name of your container:
 
    ```bash
-   sudo docker attach <container_id_or_name>
+   docker attach <container_id_or_name>
    ```
 
    For example:
 
    ```bash
-   sudo docker attach my_running_container
+   docker attach my_running_container
    ```
 
 3. **Detach from the Container:**
@@ -507,7 +499,7 @@ Keep in mind that when you attach to a running container, you are connected to t
 If you want to run additional commands in the container or interact with a different shell, consider using the `docker exec` command. For example:
 
 ```bash
-sudo docker exec -it <container_id_or_name> /bin/sh
+docker exec -it <container_id_or_name> /bin/sh
 ```
 
 This command opens an interactive shell (`/bin/sh`) in the specified container. Replace `<container_id_or_name>` with the actual ID or name of your container.
@@ -524,14 +516,14 @@ To run an Nginx container in Docker and expose the HTTP port, you can use the fo
    If you haven't already, pull the official Nginx image from Docker Hub:
 
    ```bash
-   sudo docker pull nginx
+   docker pull nginx
    ```
 
 2. **Run Nginx Container:**
    Run a new Nginx container and expose the default HTTP port (port 80) on the host:
 
    ```bash
-   sudo docker run -d -p 80:80 --name my_nginx nginx
+   docker run -d -p 80:80 --name my_nginx nginx
    ```
 
    - `-d`: Run the container in the background (detached mode).
@@ -552,8 +544,8 @@ To run an Nginx container in Docker and expose the HTTP port, you can use the fo
    If you want to stop and remove the Nginx container when you're done:
 
    ```bash
-   sudo docker stop my_nginx
-   sudo docker rm my_nginx
+   docker stop my_nginx
+   docker rm my_nginx
    ```
 
    Replace "my_nginx" with the actual name you used when running the container.
@@ -659,7 +651,7 @@ To build a Dockerfile that runs a simple HTML "Hello, World!" application and ex
    EXPOSE 80
 
    # Define environment variable
-   ENV NAME World
+   ENV NAME=World
 
    # Run a simple HTTP server to serve the HTML file
    CMD ["npx", "http-server", "-p", "80"]
@@ -921,14 +913,94 @@ And Replicas and Scaling the Service!
 Docker swarm is a tool used to create a cluster of docker hosts. With docker swarm, we can create a high availability and high performance cluster where applications are distributed among the hosts. Docker swarm consists of a manager and worker nodes and operations are performed from the manager.
 
 
+****************************************
+(Ubuntu 22 & 24):: VirtualBox + Vagrant Installation >>>>
+
+
+ls -anp /etc/apt/sources.list.d/
+
+ls -anp /usr/share/keyrings/
+
+# Add Oracle VirtualBox GPG key
+sudo wget -q -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes -o /usr/share/keyrings/oracle-virtualbox-2016.gpg
+
+# Add VirtualBox repository
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+
+# Remove old repository file if exists
+sudo rm -f /etc/apt/sources.list.d/archive_uri-https_download_virtualbox_org_virtualbox_debian-jammy.list
+
+# Add HashiCorp GPG key for Vagrant
+sudo wget -q -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+# Add HashiCorp repository
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+ls -anp /etc/apt/sources.list.d/
+
+ls -anp /usr/share/keyrings/
+
+
+# Update package lists
+sudo apt update
+
+
+# Install VirtualBox 7.2
+sudo apt install -y virtualbox-7.2
+
+
+# Install Vagrant
+sudo apt install -y vagrant
+
+
+# Check VirtualBox version
+VBoxManage --version
+
+virtualbox --help
+
+
+# Check Vagrant version
+vagrant --version
+
+
+
+# Tshoot
+
+sudo apt update && sudo apt install gcc-12
+
+sudo /sbin/vboxconfig
+
+VBoxManage --version
+
+
+****************************************
+## Vagrant Commands >>>>
+
+vagrant help
+
+vagrant global-status
+
+vagrant init
+
+vagrant status
+
+vagrant up
+
+vagrant ssh vm1
+
+vagrant destroy vm1
+
+vagrant destroy --force
+
+
 ********************
 Step 1 >> Configure 3 Ubuntu VMs
 1. Configure Vagrantfile
 2. vagrant global-status
 3. vagrant up
-4. vagrant ssh ubuntu1
-5. vagrant ssh ubuntu2
-6. vagrant ssh ubuntu3
+4. vagrant ssh host1
+5. vagrant ssh host2
+6. vagrant ssh host3
 
 
 ********************
@@ -936,17 +1008,46 @@ Step 2 >> Prepare Your Nodes
 
 ** In my set up, I have one manager node and two worker nodes. On each host, configure hosts file to include all the other nodes.
 
-sudo vim /etc/hosts
+sudo vi /etc/hosts
 
 ** Add the following content to the file (example - replace with your ubuntu vm IP addresses)
 
-192.168.1.10	manager
+192.168.56.11	manager
 
-192.168.1.11	worker-01
+192.168.56.12	worker-01
 
-192.168.1.12	worker-02
+192.168.56.13	worker-02
 
 ** Save the file. Ensure that you can ping all the hosts from each host using hostname and not IP address.
+
+
+********************
+
+vagrant ssh host1 -c "sudo apt update -y"
+
+vagrant ssh host2 -c "sudo apt update -y"
+
+vagrant ssh host3 -c "sudo apt update -y"
+
+vagrant ssh host1 -c "sudo apt install docker-compose -y"
+
+vagrant ssh host2 -c "sudo apt install docker-compose -y"
+
+vagrant ssh host3 -c "sudo apt install docker-compose -y"
+
+
+vagrant ssh host1 -c "sudo systemctl status docker --no-pager"
+
+vagrant ssh host1 -c "sudo usermod -aG docker vagrant"
+
+vagrant ssh host1 -c "docker ps -a"
+
+
+vagrant ssh host1
+
+vagrant ssh host2
+
+vagrant ssh host3
 
 
 ********************
@@ -996,6 +1097,8 @@ echo $HOST_IP
 
 sudo docker swarm init --advertise-addr $HOST_IP
 
+sudo docker swarm init --advertise-addr 192.168.56.11
+
 
 ********************
 Step 5 >> Join Worker Nodes to the Cluster
@@ -1007,6 +1110,8 @@ Step 5 >> Join Worker Nodes to the Cluster
 ** Example Below (Replace token and IP with your own config)
 
 sudo docker swarm join --token SWMTKN-1-13xo81gxpb3ttjh5e335pfrmz9fbnliikgfys7u8l4r8k4m575-2gsjwjs3y1i4kgeua2yu840hw 192.168.1.10:2377
+
+docker swarm join --token SWMTKN-1-4zbmrl43mv6z2sjbx1k6xv40enuiti4atyis9bylwvljpk33z6-e00c3iiovrhncvj77p3lqmk4g 192.168.56.11:2377
 
 ** Check if the worker nodes are successfully added to the cluster by running the below command on the manager:
 
