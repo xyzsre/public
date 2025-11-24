@@ -834,3 +834,38 @@ Installation/Download URL Links (Windows/Linux/Mac):
 - VMware Player >> https://www.vmware.com/nl/products/workstation-player/workstation-player-evaluation.html
 - Ubuntu Download Link >> https://releases.ubuntu.com/jammy/
 
+
+
+URLs:
+
+https://github.com/xyzsre/
+
+https://www.virtualbox.org/wiki/Downloads
+
+https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion
+
+https://docs.docker.com/desktop/setup/install/windows-install/
+
+https://ubuntu.com/download/desktop
+
+https://developer.hashicorp.com/vagrant/install#linux
+
+https://developer.hashicorp.com/vagrant/install#windows
+
+https://developer.hashicorp.com/vagrant/install#darwin
+
+
+Cloud::
+
+https://aws.amazon.com/free/
+
+https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account
+
+https://cloud.google.com/free?hl=en
+
+https://www.linode.com/lp/free-credit-100-5000/
+
+https://www.vultr.com/promo/try250/
+
+https://upcloud.com/
+
