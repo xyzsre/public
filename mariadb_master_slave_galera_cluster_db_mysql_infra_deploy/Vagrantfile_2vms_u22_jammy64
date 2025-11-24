@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Configuration for host1
+  config.vm.define "host1" do |host1|
+    host1.vm.box = "ubuntu/jammy64"  # Official Ubuntu 22.04 LTS (Jammy Jellyfish)
+    host1.vm.hostname = "host1"
+    
+    # Configure private network
+    host1.vm.network "private_network", ip: "192.168.56.10"
+    
+    # Shared folders
+    host1.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    
+    # Set timezone to Paris
+    host1.vm.provision "shell", inline: <<-SHELL
+      timedatectl set-timezone Europe/Paris
+    SHELL
+    
+    # VirtualBox provider specific configuration
+    host1.vm.provider "virtualbox" do |vb|
+      vb.name = "host1"
+      vb.memory = "4096"
+      vb.cpus = 4
+    end
+  end
+
+  # Configuration for host2
+  config.vm.define "host2" do |host2|
+    host2.vm.box = "ubuntu/jammy64"  # Same Ubuntu 22.04 LTS box
+    host2.vm.hostname = "host2"
+    
+    # Configure private network with a different IP
+    host2.vm.network "private_network", ip: "192.168.56.11"
+    
+    # Shared folders
+    host2.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    
+    # Set timezone to Paris
+    host2.vm.provision "shell", inline: <<-SHELL
+      timedatectl set-timezone Europe/Paris
+    SHELL
+    
+    # VirtualBox provider specific configuration
+    host2.vm.provider "virtualbox" do |vb|
+      vb.name = "host2"
+      vb.memory = "4096"
+      vb.cpus = 4
+    end
+  end
+end
