@@ -196,10 +196,6 @@ stop slave;
 Next, run the following command to set up the slave to replicate the master:
 ```bash
 
-CHANGE MASTER TO MASTER_HOST = 'your-master-host-ip', MASTER_USER = 'replication', MASTER_PASSWORD = 'your-password', MASTER_LOG_FILE = 'mysql-bin.000001', MASTER_LOG_POS = 313;
-
-CHANGE MASTER TO MASTER_HOST = '52.151.249.160', MASTER_USER = 'replication', MASTER_PASSWORD = 'your-password', MASTER_LOG_FILE = 'mysql-bin.000001', MASTER_LOG_POS = 785;
-
 CHANGE MASTER TO MASTER_HOST = '192.168.56.10', MASTER_USER = 'replication', MASTER_PASSWORD = 'your-password', MASTER_LOG_FILE = 'mysql-bin.000001', MASTER_LOG_POS = 785;
 
 ```
@@ -265,8 +261,6 @@ sudo vi /etc/hosts
 
 Example IP and hostname >> /etc/hosts
 ```bash
-40.124.184.77	master1
-20.163.79.106	master2
 
 192.168.56.10	master1
 192.168.56.11	master2
@@ -328,11 +322,14 @@ exit
 
 Allow TCP/UDP Ports >> VPS or Cloud Server and UFW if enabled >> TCP(3306,4567,4568,4444) & UDP(4567) >> MariaDB_Master_Master_Replication
 ```bash
+sudo ufw allow ssh
 sudo ufw allow 3306/tcp
 sudo ufw allow 4567/tcp
 sudo ufw allow 4568/tcp
 sudo ufw allow 4444/tcp
 sudo ufw allow 4567/udp
+sudo ufw status
+sudo ufw enable
 sudo ufw status
 ```
 
@@ -343,7 +340,7 @@ sudo vi /etc/mysql/mariadb.conf.d/50-server.cnf
 
 At the end of the file, add the below information.
 ```bash
-bind-address         = 40.124.184.77
+bind-address         = 192.168.56.10
 server-id            = 1
 log_bin              = /var/log/mysql/mysql-bin.log
 expire_logs_days     = 10
@@ -376,12 +373,12 @@ SHOW MASTER STATUS;
 
 Remember, the position of the file is important as it will be required later in this configuration. On Master Node 2 - Now on the other node, Master Node 2, we will do a similar configuration as above. Edit the config file as below.
 ```bash
-sudo vi /etc/mysql/mariadb.conf.d/50-server.cnf
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
 ```
 
 In the file, add the below lines replacing them appropriately.
 ```bash
-bind-address		   = 20.163.79.106
+bind-address		   = 192.168.56.11
 server-id		      = 2
 log_bin			      = /var/log/mysql/mysql-bin.log
 expire_logs_days     = 10
@@ -414,9 +411,8 @@ STOP SLAVE;
 
 Now proceed and add the Master Node 1 information.
 ```bash
-CHANGE MASTER TO MASTER_HOST = "master1", MASTER_USER = "master_user1", MASTER_PASSWORD = "Passw0rd", MASTER_PORT=3306, MASTER_LOG_FILE = "mysql-bin.000001", MASTER_LOG_POS = 328, MASTER_CONNECT_RETRY=10;
 
-CHANGE MASTER TO MASTER_HOST = "master1", MASTER_USER = "master_user1", MASTER_PASSWORD = "Passw0rd", MASTER_PORT=3306, MASTER_LOG_FILE = "mysql-bin.000003", MASTER_LOG_POS = 796, MASTER_CONNECT_RETRY=10;
+CHANGE MASTER TO MASTER_HOST = "master1", MASTER_USER = "master_user1", MASTER_PASSWORD = "Passw0rd", MASTER_PORT=3306, MASTER_LOG_FILE = "mysql-bin.000001", MASTER_LOG_POS = 782, MASTER_CONNECT_RETRY=10;
 
 ```
 
@@ -437,9 +433,8 @@ STOP SLAVE;
 
 Now on Master node 1 add the information for Master Node 2.
 ```bash
-CHANGE MASTER TO MASTER_HOST = "master2", MASTER_USER = "master_user1", MASTER_PASSWORD = "Passw0rd", MASTER_PORT=3306, MASTER_LOG_FILE = "mysql-bin.000001", MASTER_LOG_POS = 328, MASTER_CONNECT_RETRY=10;
 
-CHANGE MASTER TO MASTER_HOST = "master2", MASTER_USER = "master_user1", MASTER_PASSWORD = "Passw0rd", MASTER_PORT=3306, MASTER_LOG_FILE = "mysql-bin.000002", MASTER_LOG_POS = 622, MASTER_CONNECT_RETRY=10;
+CHANGE MASTER TO MASTER_HOST = "master2", MASTER_USER = "master_user1", MASTER_PASSWORD = "Passw0rd", MASTER_PORT=3306, MASTER_LOG_FILE = "mysql-bin.000001", MASTER_LOG_POS = 782, MASTER_CONNECT_RETRY=10;
 
 ```
 
@@ -493,6 +488,19 @@ create table replica3.test (`name` varchar(18));
 show databases;
 show tables in replica3;
 ```
+
+
+Set the new root password For MariaDB 10.4+ (Ubuntu 20.04 and newer):
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'P@ssw0rd';
+FLUSH PRIVILEGES;
+```
+
+```bash
+sudo mariadb -u root -p
+```
+
 
 Create a Test Script >>
 ```bash
@@ -591,7 +599,7 @@ Update and Installation Linux Command on All 3 Servers/Nodes >>
 sudo apt-get update -y
 sudo apt-get install mariadb-server -y
 sudo systemctl start mariadb
-sudo systemctl status mariadb
+sudo systemctl status mariadb --no-pager
 sudo mysql_secure_installation
 ```
 
@@ -630,12 +638,10 @@ wsrep_on=ON
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # Galera Cluster Configuration
 wsrep_cluster_name="galera_cluster"
-# wsrep_cluster_address="gcomm://51.103.208.251,51.103.209.14,51.103.209.125"
 wsrep_cluster_address="gcomm://192.168.56.10,192.168.56.11,192.168.56.12"
 # Galera Synchronization Configuration
 wsrep_sst_method=rsync
 # Galera Node Configuration
-# wsrep_node_address="51.103.208.251"
 wsrep_node_address="192.168.56.10"
 wsrep_node_name="mygal1"
 ```
@@ -662,12 +668,10 @@ wsrep_on=ON
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # Galera Cluster Configuration
 wsrep_cluster_name="galera_cluster"
-# wsrep_cluster_address="gcomm://51.103.208.251,51.103.209.14,51.103.209.125"
 wsrep_cluster_address="gcomm://192.168.56.10,192.168.56.11,192.168.56.12"
 # Galera Synchronization Configuration
 wsrep_sst_method=rsync
 # Galera Node Configuration
-# wsrep_node_address="51.103.209.14"
 wsrep_node_address="192.168.56.11"
 wsrep_node_name="mygal2"
 ```
@@ -689,12 +693,10 @@ wsrep_on=ON
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # Galera Cluster Configuration
 wsrep_cluster_name="galera_cluster"
-# wsrep_cluster_address="gcomm://51.103.208.251,51.103.209.14,51.103.209.125"
 wsrep_cluster_address="gcomm://192.168.56.10,192.168.56.11,192.168.56.12"
 # Galera Synchronization Configuration
 wsrep_sst_method=rsync
 # Galera Node Configuration
-# wsrep_node_address="51.103.209.125"
 wsrep_node_address="192.168.56.12"
 wsrep_node_name="mygal3"
 ```
@@ -703,13 +705,13 @@ wsrep_node_name="mygal3"
 On First Node/Server:
 ```bash
 sudo galera_new_cluster
-sudo mysql -u root -p -e "SHOW STATUS LIKE 'wsrep_cluster_size'"
+sudo mysql -u root -p -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
 ```
 
 On Second/Third Node:
 ```bash
 sudo systemctl start mariadb
-sudo mysql -u root -p -e "SHOW STATUS LIKE 'wsrep_cluster_size'"
+sudo mysql -u root -p -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
 ```
 
 On First Node to Test:
