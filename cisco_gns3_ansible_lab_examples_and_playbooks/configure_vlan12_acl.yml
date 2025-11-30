@@ -1,0 +1,43 @@
+---
+- name: Configure ACL for VLAN 12 access control
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    acl_name: ACL_VLAN12_ACCESS
+    vlan12_subnet: 192.168.12.0 0.0.0.255
+    vlan34_subnet: 192.168.34.0 0.0.0.255
+
+  tasks:
+    - name: Define ACL permitting VLAN 12 to VLAN 12 and VLAN 34
+      cisco.ios.ios_config:
+        parents: "ip access-list extended {{ acl_name }}"
+        lines:
+          - "permit ip {{ vlan12_subnet }} {{ vlan12_subnet }}"
+          - "permit ip {{ vlan12_subnet }} {{ vlan34_subnet }}"
+          - "deny ip {{ vlan12_subnet }} any"
+          - remark === End ACL ===
+
+    - name: Apply ACL inbound on Vlan12 SVI
+      cisco.ios.ios_config:
+        parents: interface Vlan12
+        lines:
+          - "ip access-group {{ acl_name }} in"
+
+    - name: Verify ACL configuration and interface binding
+      cisco.ios.ios_command:
+        commands:
+          - "show access-lists {{ acl_name }}"
+          - "show running-config interface Vlan12 | include access-group"
+      register: acl_verify
+
+    - name: Display ACL verification
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          ACL:
+          {{ acl_verify.stdout[0] | default('No ACL output') }}
+          Interface Binding:
+          {{ acl_verify.stdout[1] | default('No interface binding output') }}

@@ -1,0 +1,25 @@
+---
+- name: Disable Port-Channel1 on both switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Shutdown Port-channel1
+      cisco.ios.ios_config:
+        parents: interface Port-channel1
+        lines:
+          - shutdown
+
+    - name: Verify Port-channel1 status
+      cisco.ios.ios_command:
+        commands:
+          - show interface Port-channel1 status
+      register: pc_status
+
+    - name: Display Port-channel1 status
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ pc_status.stdout[0] | default('No status output') }}

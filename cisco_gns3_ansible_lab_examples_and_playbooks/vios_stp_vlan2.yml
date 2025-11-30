@@ -1,0 +1,19 @@
+---
+- name: Check STP status for VLAN 2
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Show spanning-tree for VLAN 2
+      cisco.ios.ios_command:
+        commands:
+          - show spanning-tree vlan 2
+      register: stp_vlan2
+
+    - name: Display STP VLAN 2 status
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ stp_vlan2.stdout[0] | default('No STP data returned') }}

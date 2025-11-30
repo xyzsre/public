@@ -1,0 +1,39 @@
+---
+- name: Configure enable secret and admin user
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    enable_secret: cisco
+    users:
+      - name: admin
+        privilege: 15
+        secret: admin
+
+  tasks:
+    - name: Set enable secret
+      cisco.ios.ios_config:
+        lines:
+          - "enable secret {{ enable_secret }}"
+
+    - name: Ensure admin user exists with privilege
+      cisco.ios.ios_config:
+        lines:
+          - "username {{ item.name }} privilege {{ item.privilege }} secret {{ item.secret }}"
+      loop: "{{ users }}"
+
+    - name: Verify security configuration
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include ^enable secret
+          - show running-config | include ^username
+      register: security_verify
+
+    - name: Display verification output
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          {{ security_verify.stdout[0] | default('') }}
+          {{ security_verify.stdout[1] | default('') }}

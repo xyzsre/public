@@ -1,0 +1,177 @@
+
+## Install VSCODE - SOLUTION1
+sudo apt update && sudo apt upgrade -y
+sudo snap install code --classic
+code
+
+## Install VSCODE - SOLUTION2
+sudo apt update && sudo apt upgrade -y
+sudo apt install wget gpg apt-transport-https -y
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg
+echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] \
+https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+sudo apt update
+sudo apt install code -y
+code
+
+
+ansible --version
+sudo apt update && sudo apt install -y ansible-core
+ansible --version
+
+ansible-galaxy collection list
+ansible-galaxy collection list --format=json
+ansible-galaxy collection install cisco.ios cisco.iosxr cisco.nxos --upgrade
+ansible-galaxy collection list cisco.ios cisco.iosxr cisco.nxos --format=json
+ansible-galaxy collection list --format=json
+ansible-galaxy collection list | grep -E "cisco\.(ios|iosxr|nxos)"
+ansible --version
+
+ip addr
+ifconfig
+ifconfig virbr0
+
+
+pip install --user paramiko
+sudo apt install -y python3-pip
+pip3 install --user paramiko
+sudo apt install -y python3-paramiko
+ansible-playbook -i inventory.ini vios_check.yml
+ssh-keyscan -H 192.168.122.11
+ssh-keygen -R 192.168.122.11
+grep -n "192.168.122.11" ~/.ssh/known_hosts
+
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.ini vios_check.yml
+
+
+ansible -i inventory.ini -m ping vios
+ansible -m ping vios
+ansible -m ping sw1
+ansible -m ping sw2
+
+ansible -i inventory.ini vios -m cisco.ios.ios_command -a "commands='show ip interface brief'"
+ansible vios -m cisco.ios.ios_command -a "commands='show ip interface brief'"
+
+ansible-playbook -i inventory.ini vios_check.yml
+
+ansible-playbook vios_check.yml
+
+ansible-playbook vios_ip_check.yml
+
+ansible-playbook vios_cdp_check.yml
+
+ansible-playbook vios_arp_check.yml
+
+ansible-playbook vios_mac_check.yml
+
+ansible-playbook vios_version_check.yml
+
+ansible-playbook vios_interfaces_status.yml
+
+ansible-playbook vios_vlan_check.yml
+
+ansible-playbook vios_stp_check.yml
+
+ansible-playbook vios_interface_counters.yml
+
+ansible-playbook vios_route_check.yml
+
+ansible-playbook vios_inventory_check.yml
+
+ansible-playbook vios_logging_check.yml
+
+ansible-playbook vios_int_description.yml
+
+ansible-playbook vios_lldp_check.yml
+
+ansible-playbook vios_etherchannel_check.yml
+
+ansible-playbook vios_running_config.yml
+
+ansible-playbook vios_ip_interface_detail.yml
+
+ansible-playbook export_sw1_config.yml
+ansible-playbook export_sw1_ssh_config.yml
+
+ansible-playbook configure_sw_hostname_domain.yml
+
+ansible-playbook configure_sw_security.yml
+
+ansible-playbook vios_cdp_summary.yml
+
+ansible-playbook configure_sw_vlan2.yml
+
+ansible-playbook vios_vlan2_ping.yml
+
+ansible-playbook vios_vlan_summary.yml
+
+ansible-playbook vios_vlan_summary.yml -l sw1
+ansible-playbook vios_vlan_summary.yml -l sw2
+ansible-playbook vios_vlan_summary.yml | grep -E "sw1|sw2"
+ansible-playbook vios_vlan_summary.yml | grep -E "sw1|sw2|connected"
+
+ansible-playbook vios_interfaces_status.yml | grep -E "sw1|sw2|connected"
+
+ansible-playbook configure_sw_vlan3.yml
+
+ansible-playbook vios_trunk_summary.yml
+
+ansible-playbook vios_vlan3_ping.yml
+
+ansible-playbook configure_sw_portchannel.yml
+
+ansible-playbook vios_portchannel_summary.yml
+
+ansible-playbook vios_portchannel_interfaces.yml
+ansible-playbook vios_portchannel_loadbalance.yml
+
+ansible-playbook configure_sw_stp_root.yml
+
+ansible-playbook vios_stp_vlan1.yml
+ansible-playbook vios_stp_vlan2.yml
+ansible-playbook vios_stp_vlan3.yml
+
+
+ansible-playbook save_running_config.yml
+
+ansible-playbook export_switch_configs.yml
+
+ansible-playbook configure_sw_vlan12.yml
+ansible-playbook configure_sw_vlan34.yml
+
+ansible-playbook vios_custom_ping.yml
+
+ansible-playbook vios_mac_vlan12_34.yml
+
+ansible-playbook vios_arp_vlan12_34.yml
+
+ansible-playbook vios_ip_summary.yml
+
+ansible-playbook vios_ip_summary_assigned.yml
+
+ansible-playbook vios_routing_summary.yml
+
+ansible-playbook configure_ip_routing.yml
+
+ansible-playbook configure_vrrp.yml
+ansible-playbook vios_vrrp_status.yml
+
+ansible-playbook vios_pc1_ping.yml
+
+ansible-playbook vios_stp_vlan12.yml
+
+ansible-playbook disable_portchannel.yml
+
+ansible-playbook clear_mac_table.yml
+
+ansible-playbook clear_arp_cache.yml
+
+ansible-playbook configure_vlan12_acl.yml
+
+ansible-playbook show_acls.yml
+
+ansible-playbook -i inventory.ini save_running_config.yml
+
+chmod +x run_command.sh
+./run_command.sh
+

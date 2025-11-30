@@ -1,0 +1,49 @@
+---
+- name: Configure Port-Channel 1 trunk on both switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    portchannel_id: 1
+    member_interfaces:
+      - GigabitEthernet0/3
+      - GigabitEthernet1/0
+
+  tasks:
+    - name: Configure Port-Channel{{ portchannel_id }} as trunk
+      cisco.ios.ios_config:
+        parents: "interface Port-channel{{ portchannel_id }}"
+        lines:
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - switchport trunk allowed vlan all
+          - no shutdown
+
+    - name: Configure member interfaces for Port-Channel{{ portchannel_id }}
+      cisco.ios.ios_config:
+        parents: "interface {{ item }}"
+        lines:
+          - "channel-group {{ portchannel_id }} mode active"
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - switchport trunk allowed vlan all
+          - no shutdown
+      loop: "{{ member_interfaces }}"
+
+    - name: Verify EtherChannel and trunk status
+      cisco.ios.ios_command:
+        commands:
+          - show etherchannel summary
+          - show interfaces trunk
+          - show running-config interface Port-channel{{ portchannel_id }}
+      register: portchannel_verify
+
+    - name: Display verification output
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          EtherChannel summary:\n{{ portchannel_verify.stdout[0] | default('N/A') }}
+          Trunk summary:\n{{ portchannel_verify.stdout[1] | default('N/A') }}
+          Port-channel config:\n{{ portchannel_verify.stdout[2] | default('N/A') }}

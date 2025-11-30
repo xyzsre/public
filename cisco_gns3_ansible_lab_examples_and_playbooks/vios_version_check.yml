@@ -1,0 +1,17 @@
+---
+- name: Collect device version details from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve software version information
+      cisco.ios.ios_command:
+        commands:
+          - show version
+      register: version_output
+
+    - name: Display version information
+      ansible.builtin.debug:
+        msg: "show version:\n{{ version_output.stdout[0] }}"

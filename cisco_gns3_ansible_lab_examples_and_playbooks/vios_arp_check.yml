@@ -1,0 +1,17 @@
+---
+- name: Collect ARP table from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve ARP table
+      cisco.ios.ios_command:
+        commands:
+          - show ip arp
+      register: arp_table
+
+    - name: Display ARP table
+      ansible.builtin.debug:
+        msg: "show ip arp:\n{{ arp_table.stdout[0] }}"

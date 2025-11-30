@@ -1,0 +1,19 @@
+---
+- name: Collect CDP neighbor summary from Cisco vIOS devices
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve CDP neighbor summary
+      cisco.ios.ios_command:
+        commands:
+          - show cdp neighbors
+      register: cdp_summary
+
+    - name: Display CDP neighbor summary
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ cdp_summary.stdout[0] | default('No data returned') }}

@@ -1,0 +1,29 @@
+---
+- name: Validate connectivity to Cisco vIOS switch
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+    - ansible.netcommon
+
+  tasks:
+    - name: Ping vIOS device from control node
+      ansible.builtin.command: "ping -c 2 {{ ansible_host }}"
+      delegate_to: localhost
+      register: control_ping
+      changed_when: false
+
+    - name: Show control node ping summary
+      ansible.builtin.debug:
+        var: control_ping.stdout_lines
+
+    - name: Retrieve hostname from vIOS switch
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include ^hostname
+      register: hostname_output
+
+    - name: Display hostname line
+      ansible.builtin.debug:
+        msg: "Hostname reported by device: {{ hostname_output.stdout[0] | default('unknown') }}"
+

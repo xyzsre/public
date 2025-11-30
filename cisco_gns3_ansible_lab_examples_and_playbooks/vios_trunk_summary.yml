@@ -1,0 +1,19 @@
+---
+- name: Collect trunk interface summary from Cisco switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve trunk interface summary
+      cisco.ios.ios_command:
+        commands:
+          - show interfaces trunk
+      register: trunk_output
+
+    - name: Display trunk summary
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ trunk_output.stdout[0] | default('No trunk data returned') }}

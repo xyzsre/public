@@ -1,0 +1,42 @@
+---
+- name: Configure hostname and console settings on switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+  vars:
+    desired_hostnames:
+      sw1: SW1
+      sw2: SW2
+    target_domain: domain.local
+
+  tasks:
+    - name: Set hostname and domain settings
+      cisco.ios.ios_config:
+        lines:
+          - "hostname {{ desired_hostnames[inventory_hostname] | default(inventory_hostname | upper) }}"
+          - "no ip domain lookup"
+          - "ip domain-name {{ target_domain }}"
+
+    - name: Ensure console uses local authentication without domain lookup delay
+      cisco.ios.ios_config:
+        parents: line console 0
+        lines:
+          - login local
+          - logging synchronous
+
+    - name: Gather verification snippets
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include ^hostname
+          - show running-config | include ^ip domain
+          - show running-config | section line console 0
+      register: verify_output
+
+    - name: Display verification output
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          {{ verify_output.stdout[0] | default('') }}
+          {{ verify_output.stdout[1] | default('') }}
+          {{ verify_output.stdout[2] | default('') }}

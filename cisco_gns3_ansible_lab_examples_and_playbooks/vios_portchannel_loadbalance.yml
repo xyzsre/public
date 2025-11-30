@@ -1,0 +1,19 @@
+---
+- name: Collect port-channel load-balancing configuration
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve load-balance method
+      cisco.ios.ios_command:
+        commands:
+          - show etherchannel load-balance
+      register: load_balance
+
+    - name: Display load-balance method
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ load_balance.stdout[0] | default('No load-balance data returned') }}

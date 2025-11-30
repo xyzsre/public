@@ -1,0 +1,35 @@
+---
+- name: Configure STP root roles for VLANs 2 and 3
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Set STP root roles on sw1
+      when: inventory_hostname == 'sw1'
+      cisco.ios.ios_config:
+        lines:
+          - spanning-tree vlan 2 root primary
+          - spanning-tree vlan 3 root secondary
+
+    - name: Set STP root roles on sw2
+      when: inventory_hostname == 'sw2'
+      cisco.ios.ios_config:
+        lines:
+          - spanning-tree vlan 3 root primary
+          - spanning-tree vlan 2 root secondary
+
+    - name: Verify STP status for VLAN 2 and VLAN 3
+      cisco.ios.ios_command:
+        commands:
+          - show spanning-tree vlan 2
+          - show spanning-tree vlan 3
+      register: stp_verify
+
+    - name: Display STP verification output
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          VLAN 2 STP summary:\n{{ stp_verify.stdout[0] | default('No data') }}
+          VLAN 3 STP summary:\n{{ stp_verify.stdout[1] | default('No data') }}

@@ -1,0 +1,17 @@
+---
+- name: Collect EtherChannel summary from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve EtherChannel summary
+      cisco.ios.ios_command:
+        commands:
+          - show etherchannel summary
+      register: etherchannel_summary
+
+    - name: Display EtherChannel summary
+      ansible.builtin.debug:
+        msg: "show etherchannel summary:\n{{ etherchannel_summary.stdout[0] }}"

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cisco IOS Useful Command Compendium</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      color: #0f172a;
+      background: linear-gradient(180deg, #e0e7ff 0%, #ffffff 65%);
+      line-height: 1.65;
+    }
+    header {
+      padding: 68px 6vw 50px;
+      background: linear-gradient(140deg, #4338ca, #0f172a 72%);
+      color: #f8fafc;
+      text-align: center;
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.45);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    header p {
+      max-width: 900px;
+      margin: 20px auto 0;
+      font-size: 1.1rem;
+      opacity: 0.88;
+    }
+    main {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 60px 6vw 110px;
+    }
+    section {
+      margin-bottom: 48px;
+    }
+    section h2 {
+      font-size: 1.95rem;
+      color: #312e81;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .command-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .command-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 20px;
+      padding: 22px 24px;
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+    .command-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    .command-card p {
+      margin: 6px 0;
+      font-size: 0.95rem;
+    }
+    .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(79, 70, 229, 0.12);
+      color: #312e81;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+      margin-bottom: 10px;
+    }
+    code {
+      font-family: "Fira Code", Consolas, monospace;
+      background: rgba(79, 70, 229, 0.16);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 52px 0 60px;
+      color: rgba(15, 23, 42, 0.62);
+      font-size: 0.95rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { color: #e2e8f0; background: linear-gradient(180deg, #111827 0%, #020617 60%); }
+      .command-card { background: rgba(17, 24, 39, 0.88); border-color: rgba(129, 140, 248, 0.35); box-shadow: 0 20px 48px rgba(2, 6, 23, 0.7); }
+      .command-card h3 { color: #e0e7ff; }
+      .command-card p { color: #e2e8f0; }
+      footer { color: rgba(226, 232, 240, 0.55); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cisco IOS Useful Command Library</h1>
+    <p>Two hundred configuration, verification, and troubleshooting commands curated for Cisco routers and switches within GNS3. Organized by core disciplines so you can deploy, validate, and resolve lab scenarios quickly.</p>
+  </header>
+  <main>
+    <section>
+      <h2>1. Device Access &amp; System Management</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Access</span><h3>1. <code>enable</code></h3><p>Elevate to privileged EXEC mode. Example: type <code>enable</code> and enter your secret to manage configs.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>2. <code>disable</code></h3><p>Return to user EXEC mode. Useful after testing with limited permissions.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>3. <code>configure terminal</code></h3><p>Enter global configuration mode to make device-wide changes.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>4. <code>exit</code></h3><p>Leave the current configuration context. Example: exit interface mode back to global config.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>5. <code>write memory</code></h3><p>Save the running configuration to startup-config. Essential before stopping labs.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>6. <code>copy running-config startup-config</code></h3><p>Alternate syntax to persist configuration changes.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>7. <code>show running-config</code></h3><p>Display the current running configuration for review or documentation.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>8. <code>show startup-config</code></h3><p>View the configuration stored in NVRAM. Compare with current running-config.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>9. <code>erase startup-config</code></h3><p>Clear saved configuration, often followed by <code>reload</code> for fresh lab state.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>10. <code>reload</code></h3><p>Reboot the device. Use <code>reload in 5</code> to schedule if you need rollback safety.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>11. <code>show version</code></h3><p>Display IOS version, platform, uptime, and licensing details.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>12. <code>show inventory</code></h3><p>List hardware modules and serial numbers (supported on certain platforms).</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>13. <code>show environment all</code></h3><p>Verify system temperatures, power supplies, and fans—helpful in hardware labs.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>14. <code>terminal length 0</code></h3><p>Disable pagination for current session—ideal when copying configs.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>15. <code>terminal monitor</code></h3><p>Enable logging messages to current terminal session, essential for remote console.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>16. <code>logging synchronous</code></h3><p>Prevents syslog messages from interrupting CLI input on console lines.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>17. <code>service timestamps debug datetime msec</code></h3><p>Add precise timestamps to debug output for correlation.</p></div>
+        <div class="command-card"><span class="tag">System</span><h3>18. <code>service timestamps log datetime msec</code></h3><p>Apply timestamps to syslog messages for accurate event tracking.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>19. <code>show users</code></h3><p>Display users currently logged in. Useful for multi-user labs.</p></div>
+        <div class="command-card"><span class="tag">Access</span><h3>20. <code>clear line vty</code></h3><p>Disconnect stuck or unauthorized VTY sessions.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Interface &amp; VLAN Configuration</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Interface</span><h3>21. <code>interface GigabitEthernet0/0</code></h3><p>Enter interface configuration mode to set IPs or descriptions.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>22. <code>description</code></h3><p>Annotate interface purpose. Example: <code>description Uplink to vIOS-L2</code>.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>23. <code>ip address A.B.C.D MASK</code></h3><p>Assign IPv4 address to routed interface.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>24. <code>ipv6 address</code></h3><p>Assign IPv6 address (e.g., <code>ipv6 address 2001:db8:1::1/64</code>).</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>25. <code>no shutdown</code></h3><p>Enable interface administratively.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>26. <code>shutdown</code></h3><p>Disable interface. Use during maintenance.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>27. <code>speed</code></h3><p>Set link speed if required (e.g., <code>speed 100</code>).</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>28. <code>duplex</code></h3><p>Define full/half duplex. Example: <code>duplex full</code>.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>29. <code>mtu</code></h3><p>Adjust maximum transmission unit for jumbo frames.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>30. <code>bandwidth</code></h3><p>Set bandwidth metric for routing protocols (kbps). Example: <code>bandwidth 50000</code>.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>31. <code>switchport mode access</code></h3><p>Force port to access VLAN on switches.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>32. <code>switchport access vlan</code></h3><p>Assign VLAN to access port. Example: <code>switchport access vlan 10</code>.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>33. <code>switchport mode trunk</code></h3><p>Enable 802.1Q trunking for uplink ports.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>34. <code>switchport trunk encapsulation dot1q</code></h3><p>Define trunk encapsulation (older hardware).</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>35. <code>switchport trunk allowed vlan</code></h3><p>Restrict VLANs on trunk. Example: <code>switchport trunk allowed vlan 10,20</code>.</p></div>
+        <div class="command-card"><span class="tag">VLAN</span><h3>36. <code>vlan 10</code></h3><p>Create VLAN. Add <code>name USERS</code> for clarity.</p></div>
+        <div class="command-card"><span class="tag">VLAN</span><h3>37. <code>interface Vlan10</code></h3><p>Configure SVI for inter-VLAN routing.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>38. <code>ip helper-address</code></h3><p>Forward DHCP requests from VLAN to remote server.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>39. <code>spanning-tree portfast</code></h3><p>Enable fast STP convergence on access ports.</p></div>
+        <div class="command-card"><span class="tag">Interface</span><h3>40. <code>spanning-tree bpduguard enable</code></h3><p>Protect against rogue STP devices on edge ports.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Layer 2 Verification &amp; Troubleshooting</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">L2</span><h3>41. <code>show interfaces status</code></h3><p>Check switchport status and VLAN assignment.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>42. <code>show interfaces description</code></h3><p>Review interface annotations across device.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>43. <code>show interfaces switchport</code></h3><p>Inspect switchport operational mode and VLAN membership.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>44. <code>show vlan brief</code></h3><p>List VLANs and assigned ports.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>45. <code>show vlan id</code></h3><p>Detail information for a specific VLAN.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>46. <code>show mac address-table</code></h3><p>Display MAC table. Use <code>dynamic</code>/<code>static</code> keywords for filtering.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>47. <code>show mac address-table address</code></h3><p>Find which port learned a specific MAC.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>48. <code>clear mac address-table dynamic</code></h3><p>Flush dynamic MAC entries to troubleshoot stale mappings.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>49. <code>show spanning-tree</code></h3><p>Check STP topology states and root bridge info.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>50. <code>show spanning-tree vlan</code></h3><p>Detailed STP status for specific VLAN.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>51. <code>show spanning-tree interface</code></h3><p>Validate STP state and role of an interface.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>52. <code>debug spanning-tree events</code></h3><p>Monitor STP changes in real time. Use cautiously in labs.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>53. <code>show etherchannel summary</code></h3><p>View port-channel status and participating members.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>54. <code>show etherchannel port-channel</code></h3><p>Detailed view of load-balancing and protocol.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>55. <code>show lacp counters</code></h3><p>Monitor LACP partner and packet statistics.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>56. <code>show interface trunk</code></h3><p>Verify trunk allowed VLANs and status.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>57. <code>show cdp neighbors</code></h3><p>Discover directly connected Cisco devices and port mapping.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>58. <code>show lldp neighbors</code></h3><p>Use LLDP for multi-vendor neighbor discovery.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>59. <code>debug lldp events</code></h3><p>View LLDP advertisement activity during troubleshooting.</p></div>
+        <div class="command-card"><span class="tag">L2</span><h3>60. <code>show storm-control</code></h3><p>Check storm-control thresholds to prevent broadcast storms.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. IPv4 Routing Configuration</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Routing</span><h3>61. <code>ip routing</code></h3><p>Enable IP routing on a Layer 3 switch.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>62. <code>ip route 0.0.0.0 0.0.0.0</code></h3><p>Configure default route for upstream connectivity.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>63. <code>ip route A.B.C.D mask next-hop</code></h3><p>Configure static routes for specific networks.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>64. <code>ip route A.B.C.D mask exit-interface</code></h3><p>Specify outgoing interface for static routes.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>65. <code>ip route A.B.C.D mask name</code></h3><p>Add tag to static route for route-maps.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>66. <code>router rip</code></h3><p>Enter RIP routing process configuration.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>67. <code>version 2</code></h3><p>Set RIP to version 2 (within RIP process).</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>68. <code>network</code></h3><p>Activate RIP on matching interfaces. Example: <code>network 10.0.0.0</code>.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>69. <code>no auto-summary</code></h3><p>Disable RIP classful summarization.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>70. <code>passive-interface</code></h3><p>Stop advertising on specific interface while still receiving updates.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>71. <code>router eigrp 100</code></h3><p>Initialize EIGRP process with AS 100.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>72. <code>network A.B.C.D wildcard</code></h3><p>Select interfaces for EIGRP participation.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>73. <code>eigrp router-id</code></h3><p>Manually set EIGRP router ID.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>74. <code>variance</code></h3><p>Enable unequal-cost load balancing in EIGRP.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>75. <code>maximum-paths</code></h3><p>Set number of parallel routes for load balancing.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>76. <code>router ospf 1</code></h3><p>Enter OSPF process 1 configuration.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>77. <code>router-id</code></h3><p>Set explicit OSPF router ID, e.g., <code>1.1.1.1</code>.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>78. <code>network A.B.C.D wildcard area</code></h3><p>Assign interfaces to OSPF areas.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>79. <code>area x stub</code></h3><p>Create stub area to suppress external LSAs.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>80. <code>router bgp ASN</code></h3><p>Define BGP process with local AS number.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. IPv4 Routing Verification &amp; Troubleshooting</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Routing</span><h3>81. <code>show ip route</code></h3><p>View IPv4 routing table and route sources.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>82. <code>show ip route ospf</code></h3><p>Filter routing table for OSPF-learned routes.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>83. <code>show ip protocols</code></h3><p>Display active routing protocols and timers.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>84. <code>show ip rip database</code></h3><p>Review RIP routes advertised and received.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>85. <code>debug ip rip</code></h3><p>Monitor RIP updates in real time; stop with <code>undebug all</code>.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>86. <code>show ip eigrp neighbors</code></h3><p>List current EIGRP adjacencies.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>87. <code>show ip eigrp topology</code></h3><p>View feasible successors and successor routes.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>88. <code>debug eigrp packets</code></h3><p>Inspect EIGRP hello and update packets for adjacency issues.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>89. <code>show ip ospf neighbor</code></h3><p>Check OSPF adjacency state and timers.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>90. <code>show ip ospf interface</code></h3><p>Inspect OSPF interface cost, state, and neighbors.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>91. <code>debug ip ospf adj</code></h3><p>Trace OSPF adjacency formation events.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>92. <code>show ip ospf database</code></h3><p>Review LSAs stored in the link-state database.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>93. <code>show ip bgp summary</code></h3><p>Check BGP neighbor status and prefixes received.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>94. <code>show ip bgp</code></h3><p>Display BGP table; filter with <code>community</code> or <code>neighbor</code> keywords.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>95. <code>show ip bgp neighbors</code></h3><p>Detailed neighbor session info and timers.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>96. <code>debug ip bgp updates</code></h3><p>Monitor BGP route announcements. Use limited scope in labs.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>97. <code>traceroute</code></h3><p>Trace path to destination for troubleshooting routing loops.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>98. <code>ping</code></h3><p>Test reachability; use <code>source</code> option to check specific interfaces.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>99. <code>show ip cef</code></h3><p>Inspect CEF forwarding table for fast switching entries.</p></div>
+        <div class="command-card"><span class="tag">Routing</span><h3>100. <code>show adjacency detail</code></h3><p>Check adjacency resolution details for CEF troubleshooting.</p></div>
+      </div>
+    </section>
+    
+    <section>
+      <h2>6. IPv6 Configuration &amp; Verification</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">IPv6</span><h3>101. <code>ipv6 unicast-routing</code></h3><p>Enable IPv6 forwarding on routers and Layer 3 switches.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>102. <code>interface GigabitEthernet0/0</code></h3><p>Enter interface configuration to add IPv6.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>103. <code>ipv6 address 2001:db8:1::1/64</code></h3><p>Assign IPv6 address to interface.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>104. <code>ipv6 nd prefix default</code></h3><p>Advertise default prefix for SLAAC networks.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>105. <code>ipv6 nd other-config-flag</code></h3><p>Indicate hosts should use DHCPv6 for additional info.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>106. <code>router ospfv3 1</code></h3><p>Start OSPFv3 process for IPv6.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>107. <code>router-id 2.2.2.2</code></h3><p>Set OSPFv3 router ID separate from IPv6 addresses.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>108. <code>interface GigabitEthernet0/1</code></h3><p>Enter interface to activate OSPFv3.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>109. <code>ipv6 ospf 1 area 0</code></h3><p>Enable OSPFv3 on interface in area 0.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>110. <code>ipv6 route ::/0 next-hop</code></h3><p>Configure default IPv6 static route.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>111. <code>show ipv6 interface brief</code></h3><p>Summarize IPv6 interfaces and statuses.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>112. <code>show ipv6 neighbors</code></h3><p>List IPv6 neighbor discovery cache entries.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>113. <code>show ipv6 route</code></h3><p>Display IPv6 routing table.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>114. <code>show ipv6 ospf neighbor</code></h3><p>Verify OSPFv3 adjacencies.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>115. <code>show ipv6 ospf interface</code></h3><p>Inspect OSPFv3 interface states and metrics.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>116. <code>debug ipv6 ospf adj</code></h3><p>Analyze OSPFv3 adjacency formation.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>117. <code>ping ipv6</code></h3><p>Ping IPv6 destinations; use <code>source</code> to specify interface.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>118. <code>traceroute ipv6</code></h3><p>Trace IPv6 path across network.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>119. <code>show ipv6 traffic</code></h3><p>Monitor IPv6 protocol counters for troubleshooting.</p></div>
+        <div class="command-card"><span class="tag">IPv6</span><h3>120. <code>show ipv6 dhcp binding</code></h3><p>Check DHCPv6 server assignments if configured.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. Security &amp; Management Commands</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Security</span><h3>121. <code>enable secret</code></h3><p>Set encrypted privileged EXEC password.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>122. <code>username lab privilege 15 secret</code></h3><p>Create local account with privilege level 15.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>123. <code>line vty 0 4</code></h3><p>Enter VTY line configuration for remote access.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>124. <code>login local</code></h3><p>Use local user database for VTY authentication.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>125. <code>transport input ssh</code></h3><p>Limit VTY access to SSH only.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>126. <code>ip domain-name lab.local</code></h3><p>Set domain name required for RSA crypto keys.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>127. <code>crypto key generate rsa</code></h3><p>Create RSA keys for SSH. Example: 2048-bit for secure access.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>128. <code>aaa new-model</code></h3><p>Enable AAA framework for centralized authentication.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>129. <code>aaa authentication login default local</code></h3><p>Set default login authentication via local users.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>130. <code>line console 0</code></h3><p>Configure console line security settings.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>131. <code>password</code></h3><p>Set console password for fallback access.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>132. <code>login</code></h3><p>Enable password prompt on console line.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>133. <code>service password-encryption</code></h3><p>Encrypt passwords in running-config (type 7).</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>134. <code>access-list 10 permit</code></h3><p>Create numbered ACL for IP filtering.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>135. <code>ip access-list standard</code></h3><p>Define named standard ACL.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>136. <code>ip access-list extended</code></h3><p>Build named extended ACL with protocol and port matching.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>137. <code>access-class 10 in</code></h3><p>Apply ACL to VTY lines for remote access control.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>138. <code>parser view</code></h3><p>Create CLI views to limit command access.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>139. <code>banner motd</code></h3><p>Set login banner for legal notification.</p></div>
+        <div class="command-card"><span class="tag">Security</span><h3>140. <code>login block-for</code></h3><p>Rate-limit failed login attempts to mitigate brute force.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>8. NAT, QoS, and Services</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">NAT</span><h3>141. <code>ip nat inside</code></h3><p>Mark inside interface for NAT translation.</p></div>
+        <div class="command-card"><span class="tag">NAT</span><h3>142. <code>ip nat outside</code></h3><p>Mark outside interface for NAT translations.</p></div>
+        <div class="command-card"><span class="tag">NAT</span><h3>143. <code>ip nat inside source static</code></h3><p>Create static NAT mapping from inside to outside IP.</p></div>
+        <div class="command-card"><span class="tag">NAT</span><h3>144. <code>ip nat inside source list overload</code></h3><p>Configure PAT for inside networks using ACL.</p></div>
+        <div class="command-card"><span class="tag">NAT</span><h3>145. <code>show ip nat translations</code></h3><p>Verify active NAT entries and translations.</p></div>
+        <div class="command-card"><span class="tag">NAT</span><h3>146. <code>clear ip nat translation *</code></h3><p>Flush NAT table to troubleshoot stale translations.</p></div>
+        <div class="command-card"><span class="tag">QoS</span><h3>147. <code>class-map match-any</code></h3><p>Identify traffic classes for QoS policies.</p></div>
+        <div class="command-card"><span class="tag">QoS</span><h3>148. <code>policy-map</code></h3><p>Define QoS actions (e.g., policing, shaping).</p></div>
+        <div class="command-card"><span class="tag">QoS</span><h3>149. <code>service-policy output</code></h3><p>Apply QoS policy to interface outbound.</p></div>
+        <div class="command-card"><span class="tag">QoS</span><h3>150. <code>show policy-map interface</code></h3><p>Check QoS statistics and match counters.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>151. <code>ip dhcp pool</code></h3><p>Create DHCP pool for dynamic IP allocation.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>152. <code>network</code></h3><p>Define network scope within DHCP pool.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>153. <code>default-router</code></h3><p>Set default gateway delivered via DHCP.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>154. <code>dns-server</code></h3><p>Specify DNS servers offered by DHCP pool.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>155. <code>ip dhcp excluded-address</code></h3><p>Reserve addresses outside DHCP scope.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>156. <code>show ip dhcp binding</code></h3><p>View current DHCP client leases.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>157. <code>ip domain lookup</code></h3><p>Enable DNS lookups for unrecognized commands (default enabled).</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>158. <code>ip name-server</code></h3><p>Configure DNS servers for router queries.</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>159. <code>clock set</code></h3><p>Manually set device clock (useful without NTP).</p></div>
+        <div class="command-card"><span class="tag">Services</span><h3>160. <code>ntp server</code></h3><p>Configure NTP server for time synchronization.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>9. Monitoring &amp; Logging</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Monitoring</span><h3>161. <code>show logging</code></h3><p>View syslog buffer and logging statistics.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>162. <code>logging host</code></h3><p>Specify remote syslog server.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>163. <code>logging trap</code></h3><p>Set syslog severity level to send to remote host.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>164. <code>snmp-server community</code></h3><p>Create SNMP community for monitoring tools.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>165. <code>snmp-server host</code></h3><p>Define SNMP trap receiver.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>166. <code>show processes cpu</code></h3><p>Check CPU utilization by process.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>167. <code>show processes memory</code></h3><p>Monitor memory usage per process.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>168. <code>show platform hardware capacity</code></h3><p>Review hardware resource utilization on modern platforms.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>169. <code>debug condition</code></h3><p>Limit debug output to specific interfaces or ACLs.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>170. <code>scheduler allocate</code></h3><p>Adjust CPU time slices for fairness during heavy debugging.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>171. <code>event manager applet</code></h3><p>Create EEM scripts to automate reactions to events.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>172. <code>show event manager policy registered</code></h3><p>Verify EEM policies active on device.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>173. <code>archive</code></h3><p>Configure configuration archive for automatic backups.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>174. <code>archive config incremental</code></h3><p>Enable incremental configuration archive snapshots.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>175. <code>archive config rollback last</code></h3><p>Roll back to previous archived configuration quickly.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>176. <code>show archive</code></h3><p>List saved configuration snapshots from archive.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>177. <code>dir</code></h3><p>List files in flash memory. Example: confirm IOS image presence.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>178. <code>delete</code></h3><p>Remove files from flash (ensure confirm prompts in labs).</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>179. <code>copy running-config tftp</code></h3><p>Backup configuration to TFTP server.</p></div>
+        <div class="command-card"><span class="tag">Monitoring</span><h3>180. <code>copy running-config scp</code></h3><p>Securely copy configs using SCP to remote host.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>10. Troubleshooting Utilities &amp; Maintenance</h2>
+      <div class="command-grid">
+        <div class="command-card"><span class="tag">Tshoot</span><h3>181. <code>show controllers</code></h3><p>Check hardware-level interface counters and physical status.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>182. <code>show interfaces</code></h3><p>Detailed interface statistics, errors, packet counts.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>183. <code>show interface counters errors</code></h3><p>Focus on error counters like CRC and frame errors.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>184. <code>clear counters</code></h3><p>Reset interface counters to observe new errors during tests.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>185. <code>show ip arp</code></h3><p>Display ARP table; confirm MAC/IP bindings.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>186. <code>clear arp-cache</code></h3><p>Flush ARP table for troubleshooting stale entries.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>187. <code>show ip interface</code></h3><p>Detailed IPv4 interface information including ACLs, helper addresses.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>188. <code>show interface trunk</code></h3><p>Verify trunking details during VLAN issues.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>189. <code>debug ip packet detail</code></h3><p>Trace IP packets; use ACL to filter to avoid CPU stress.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>190. <code>show platform tcam utilization</code></h3><p>Monitor TCAM resources on Catalyst switches to ensure enough capacity for features.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>191. <code>show crypto isakmp sa</code></h3><p>Check IPsec VPN Phase 1 status.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>192. <code>show crypto ipsec sa</code></h3><p>Verify Phase 2 IPsec tunnels.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>193. <code>debug crypto isakmp</code></h3><p>Debug IPsec ISAKMP negotiations. Restrict in lab.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>194. <code>show mpls ldp neighbor</code></h3><p>Verify MPLS LDP adjacencies in service provider labs.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>195. <code>show mpls forwarding-table</code></h3><p>Inspect MPLS label forwarding entries.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>196. <code>show vtp status</code></h3><p>Check VTP domain, mode, and revision to troubleshoot VLAN distribution.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>197. <code>vtp mode transparent</code></h3><p>Disable VTP participation to avoid unexpected VLAN changes.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>198. <code>show ip sla statistics</code></h3><p>Check IP SLA operation results for latency and jitter tests.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>199. <code>ip sla 1</code></h3><p>Create IP SLA probe, e.g., ICMP echo to monitor remote reachability.</p></div>
+        <div class="command-card"><span class="tag">Tshoot</span><h3>200. <code>track</code></h3><p>Link IP SLA or interface state to triggers for HSRP/route failover to automate recovery.</p></div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Keep this command library open during GNS3 labs to accelerate configuration, validation, and troubleshooting for Cisco routers and switches.
+  </footer>
+</body>
+</html>

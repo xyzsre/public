@@ -1,0 +1,17 @@
+---
+- name: Collect LLDP neighbors from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve LLDP neighbor detail
+      cisco.ios.ios_command:
+        commands:
+          - show lldp neighbors detail
+      register: lldp_detail
+
+    - name: Display LLDP neighbor information
+      ansible.builtin.debug:
+        msg: "show lldp neighbors detail:\n{{ lldp_detail.stdout[0] }}"

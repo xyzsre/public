@@ -1,0 +1,24 @@
+---
+- name: Verify VLAN 3 reachability between switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    vlan3_peers:
+      sw1: 192.168.3.2
+      sw2: 192.168.3.1
+
+  tasks:
+    - name: Ping VLAN 3 peer IP
+      cisco.ios.ios_command:
+        commands:
+          - "ping {{ vlan3_peers[inventory_hostname] }}"
+      register: ping_result
+
+    - name: Display VLAN 3 ping outcome
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          Ping output:\n{{ ping_result.stdout[0] | default('No output') }}

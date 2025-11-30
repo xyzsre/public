@@ -1,0 +1,54 @@
+---
+- name: Configure VLAN 2 and access ports for Accounting
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    vlan_id: 2
+    vlan_name: Accounting
+    access_port: GigabitEthernet0/1
+    vlan2_ips:
+      sw1: 192.168.2.1
+      sw2: 192.168.2.2
+
+  tasks:
+    - name: Ensure VLAN {{ vlan_id }} exists with correct name
+      cisco.ios.ios_config:
+        parents: "vlan {{ vlan_id }}"
+        lines:
+          - "name {{ vlan_name }}"
+
+    - name: Configure {{ access_port }} as access port in VLAN {{ vlan_id }}
+      cisco.ios.ios_config:
+        parents: "interface {{ access_port }}"
+        lines:
+          - switchport mode access
+          - "switchport access vlan {{ vlan_id }}"
+          - spanning-tree portfast
+          - no shutdown
+
+    - name: Configure SVI for VLAN {{ vlan_id }}
+      cisco.ios.ios_config:
+        parents: "interface Vlan{{ vlan_id }}"
+        lines:
+          - "description {{ vlan_name }} VLAN"
+          - "ip address {{ vlan2_ips[inventory_hostname] }} 255.255.255.0"
+          - no shutdown
+
+    - name: Verify VLAN and interface status
+      cisco.ios.ios_command:
+        commands:
+          - show vlan brief | include {{ vlan_id }}
+          - show running-config interface {{ access_port }}
+          - show ip interface brief | include Vlan{{ vlan_id }}
+      register: vlan_verify
+
+    - name: Display verification output
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          VLAN summary: {{ vlan_verify.stdout[0] | default('N/A') }}
+          Access port config:\n{{ vlan_verify.stdout[1] | default('N/A') }}
+          SVI status: {{ vlan_verify.stdout[2] | default('N/A') }}

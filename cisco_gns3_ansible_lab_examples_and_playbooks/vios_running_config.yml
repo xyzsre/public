@@ -1,0 +1,27 @@
+---
+- name: Collect key running-config sections from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve running-config for interfaces, VLANs, lines
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | section interface
+          - show running-config | section vlan
+          - show running-config | section line vty
+      register: run_cfg
+
+    - name: Display interface config
+      ansible.builtin.debug:
+        msg: "show running-config | section interface:\n{{ run_cfg.stdout[0] }}"
+
+    - name: Display VLAN config
+      ansible.builtin.debug:
+        msg: "show running-config | section vlan:\n{{ run_cfg.stdout[1] }}"
+
+    - name: Display line vty config
+      ansible.builtin.debug:
+        msg: "show running-config | section line vty:\n{{ run_cfg.stdout[2] }}"

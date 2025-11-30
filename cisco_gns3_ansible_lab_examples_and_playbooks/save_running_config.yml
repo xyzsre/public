@@ -1,0 +1,31 @@
+---
+- name: Save running configuration on Cisco switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Save running configuration to startup
+      cisco.ios.ios_command:
+        commands:
+          - write memory
+      register: write_output
+
+    - name: Confirm configuration saved
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          {{ write_output.stdout_lines[0] | default('No response returned') }}
+
+    - name: Confirm configuration register
+      cisco.ios.ios_command:
+        commands:
+          - show startup-config | include Current configuration
+      register: save_verify
+
+    - name: Display save confirmation
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ save_verify.stdout[0] | default('No confirmation output') }}

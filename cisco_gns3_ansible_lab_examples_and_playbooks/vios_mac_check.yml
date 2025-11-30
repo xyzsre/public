@@ -1,0 +1,18 @@
+---
+- name: Collect MAC address table from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve MAC address table
+      cisco.ios.ios_command:
+        commands:
+          - show mac address-table
+      register: mac_table
+
+    - name: Display MAC address table
+      ansible.builtin.debug:
+        msg: "show mac address-table:\n{{ mac_table.stdout[0] }}"
+

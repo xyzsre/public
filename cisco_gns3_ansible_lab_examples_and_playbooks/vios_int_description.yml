@@ -1,0 +1,17 @@
+---
+- name: Collect interface descriptions from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve interface descriptions
+      cisco.ios.ios_command:
+        commands:
+          - show interfaces description
+      register: int_descriptions
+
+    - name: Display interface descriptions
+      ansible.builtin.debug:
+        msg: "show interfaces description:\n{{ int_descriptions.stdout[0] }}"

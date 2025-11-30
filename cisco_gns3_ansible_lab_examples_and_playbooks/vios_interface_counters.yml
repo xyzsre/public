@@ -1,0 +1,17 @@
+---
+- name: Collect interface error counters from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve interface error counters
+      cisco.ios.ios_command:
+        commands:
+          - show interfaces counters errors
+      register: interface_errors
+
+    - name: Display interface error counters
+      ansible.builtin.debug:
+        msg: "show interfaces counters errors:\n{{ interface_errors.stdout[0] }}"

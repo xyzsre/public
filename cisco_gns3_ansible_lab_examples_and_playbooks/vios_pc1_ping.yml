@@ -1,0 +1,33 @@
+---
+- name: PC1 ping check from VLAN 12 and 34
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    pc1_ip: 192.168.12.1
+    sources:
+      - interface: Vlan12
+        label: "VLAN 12"
+      - interface: Vlan34
+        label: "VLAN 34"
+
+  tasks:
+    - name: Ping PC1 from {{ item.label }}
+      cisco.ios.ios_command:
+        commands:
+          - "ping {{ pc1_ip }} source {{ item.interface }}"
+      loop: "{{ sources }}"
+      loop_control:
+        label: "{{ item.label }}"
+      register: ping_results
+
+    - name: Display PC1 ping results
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }} source {{ sources[idx].label }}
+          {{ ping_results.results[idx].stdout[0] | default('No output') }}
+      loop: "{{ range(sources | length) | list }}"
+      loop_control:
+        index_var: idx

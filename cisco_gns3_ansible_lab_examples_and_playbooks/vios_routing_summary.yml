@@ -1,0 +1,19 @@
+---
+- name: Display routing table on switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Show IP routing table
+      cisco.ios.ios_command:
+        commands:
+          - show ip route
+      register: ip_route
+
+    - name: Display routing table output
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ ip_route.stdout[0] | default('No routing information') }}

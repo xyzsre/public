@@ -1,0 +1,41 @@
+---
+- name: Export sw1 security-related configuration
+  hosts: sw1
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Collect targeted configuration snippets
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include ^enable secret
+          - show running-config | include ^username
+          - show running-config | section interface Vlan1
+          - show running-config | section line vty
+          - show running-config | include ^ip ssh
+      register: targeted_cfg
+
+    - name: Assemble configuration snippet
+      ansible.builtin.set_fact:
+        sw1_ssh_config: |
+          ! enable secret
+          {{ targeted_cfg.stdout[0] | default('') }}
+
+          ! usernames
+          {{ targeted_cfg.stdout[1] | default('') }}
+
+          ! interface Vlan1
+          {{ targeted_cfg.stdout[2] | default('') }}
+
+          ! line vty
+          {{ targeted_cfg.stdout[3] | default('') }}
+
+          ! SSH settings
+          {{ targeted_cfg.stdout[4] | default('') }}
+
+    - name: Save security configuration to file
+      ansible.builtin.copy:
+        content: "{{ sw1_ssh_config | trim }}\n"
+        dest: sw1sshconfig.txt
+      delegate_to: localhost

@@ -1,0 +1,19 @@
+---
+- name: Export running configuration per switch
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Capture running configuration
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+      register: running_cfg
+
+    - name: Save running configuration to host-specific file
+      ansible.builtin.copy:
+        content: "{{ running_cfg.stdout[0] }}\n"
+        dest: "{{ inventory_hostname }}.config.txt"
+      delegate_to: localhost

@@ -1,0 +1,26 @@
+---
+- name: Clear MAC address table on switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Clear dynamic MAC address entries
+      cisco.ios.ios_command:
+        commands:
+          - command: clear mac address-table dynamic
+            prompt: "[confirm]"
+            answer: ""
+
+    - name: Show MAC address table summary after clear
+      cisco.ios.ios_command:
+        commands:
+          - show mac address-table count
+      register: mac_summary
+
+    - name: Display MAC table summary
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ mac_summary.stdout[0] | default('No summary output') }}

@@ -1,0 +1,53 @@
+---
+- name: Configure VRRP for VLANs 12 and 34
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    vrrp_instances:
+      - vlan_id: 12
+        interface: Vlan12
+        group: 12
+        virtual_ip: 192.168.12.254
+        priority:
+          sw1: 120
+          sw2: 110
+      - vlan_id: 34
+        interface: Vlan34
+        group: 34
+        virtual_ip: 192.168.34.254
+        priority:
+          sw1: 120
+          sw2: 110
+
+  tasks:
+    - name: Configure VRRP on VLAN interfaces
+      cisco.ios.ios_config:
+        parents: "interface {{ item.interface }}"
+        lines:
+          - "vrrp {{ item.group }} ip {{ item.virtual_ip }}"
+          - "vrrp {{ item.group }} priority {{ item.priority[inventory_hostname] | default(100) }}"
+          - "vrrp {{ item.group }} preempt"
+      loop: "{{ vrrp_instances }}"
+
+    - name: Verify VRRP configuration
+      cisco.ios.ios_command:
+        commands:
+          - show run interface {{ item.interface }} | include vrrp
+          - show vrrp brief | include {{ item.group }}
+      loop: "{{ vrrp_instances }}"
+      register: vrrp_verify
+
+    - name: Display VRRP verification
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }} interface {{ vrrp_instances[idx].interface }}
+          Config:
+          {{ vrrp_verify.results[idx].stdout[0] | default('No VRRP config found') }}
+          Status:
+          {{ vrrp_verify.results[idx].stdout[1] | default('No VRRP status found') }}
+      loop: "{{ range(vrrp_instances | length) | list }}"
+      loop_control:
+        index_var: idx

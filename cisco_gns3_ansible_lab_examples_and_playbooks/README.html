@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cisco Ansible IaC Overview</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      color: #1f2933;
+      background-color: #f8fafc;
+    }
+    header {
+      background: #0b3d91;
+      color: #f8fafc;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    main {
+      padding: 2rem 1.5rem 3rem;
+      max-width: 960px;
+      margin: auto;
+      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1);
+    }
+    h1, h2, h3 {
+      color: #0b3d91;
+    }
+    section {
+      margin-bottom: 2.5rem;
+    }
+    ul {
+      margin: 0.5rem 0 0.5rem 1.5rem;
+    }
+    code {
+      background: #e2e8f0;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+    figure {
+      margin: 0;
+      text-align: center;
+    }
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border: 4px solid #0b3d91;
+      border-radius: 8px;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15);
+    }
+    figcaption {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: #475569;
+    }
+    .callout {
+      background: #e0f2f1;
+      border-left: 4px solid #00796b;
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cisco Infrastructure as Code with Ansible</h1>
+    <p>Guiding principles, tooling, and topology for automated configuration and verification.</p>
+  </header>
+  <main>
+    <section id="iac-overview">
+      <h2>What Is Infrastructure as Code?</h2>
+      <p>Infrastructure as Code (IaC) is the practice of defining infrastructure configuration, desired state, and operational workflows in machine-readable files instead of performing ad-hoc changes on devices. IaC enables repeatable builds, rapid recovery, and automated compliance by allowing version control, code reviews, and testing to be applied to network engineering artifacts.</p>
+      <div class="callout">
+        <strong>Key IaC Benefits for Networks</strong>
+        <ul>
+          <li>Consistent configuration rollouts across fabrics and sites.</li>
+          <li>Automated drift detection and configuration verification.</li>
+          <li>Integration with CI/CD pipelines, change management, and auditing.</li>
+          <li>Reusable, shareable templates and roles that accelerate deployment.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="ansible-for-cisco">
+      <h2>Why Use Ansible for Cisco IaC Automation?</h2>
+      <p>Ansible provides an agentless automation engine that communicates with Cisco devices over SSH or API transports. In the lab environment, Ansible enables both day-zero provisioning and continuous configuration verification. Playbooks can push intended state, capture operational outputs, and compare results against expectations to detect misconfigurations early.</p>
+      <ul>
+        <li><strong>Declarative intent:</strong> YAML playbooks describe the desired configuration; Ansible handles idempotent execution.</li>
+        <li><strong>Extensive Cisco module coverage:</strong> Network modules support IOS, IOS XE, NX-OS, IOS XR, ASA, Meraki, and more.</li>
+        <li><strong>Scalable verification:</strong> `show_*` playbooks collect facts, run compliance checks, and feed reports into pipelines.</li>
+        <li><strong>Tight ecosystem integration:</strong> Works with Git, CI pipelines, ServiceNow, and alerting systems.</li>
+      </ul>
+    </section>
+
+    <section id="supported-platforms">
+      <h2>Supported Cisco Platforms</h2>
+      <p>The following Cisco platforms have well-maintained collections and modules in Ansible and are validated for this lab:</p>
+      <ul>
+        <li><strong>Catalyst IOS / IOS XE:</strong> Campus switches and routers commonly emulated in VIRL and GNS3.</li>
+        <li><strong>NX-OS:</strong> Data center switches with dedicated collections (`cisco.nxos`).</li>
+        <li><strong>IOS XR:</strong> Service provider routers via the `cisco.iosxr` collection.</li>
+        <li><strong>ASA &amp; Firepower:</strong> Security appliances through REST and SSH modules.</li>
+        <li><strong>Meraki &amp; SD-WAN:</strong> Cloud-managed platforms via API-centric collections.</li>
+      </ul>
+      <p>Always confirm the targeted device OS version is listed in the relevant Ansible collection release notes before deploying to production.</p>
+    </section>
+
+    <section id="ansible-galaxy">
+      <h2>What Is Ansible Galaxy?</h2>
+      <p>Ansible Galaxy is the official community hub for discovering, downloading, and sharing Ansible collections, roles, and plugins. Cisco publishes collections such as <code>cisco.ios</code>, <code>cisco.nxos</code>, and <code>cisco.iosxr</code> on Galaxy. Include them in your automation environment with:</p>
+      <pre><code>ansible-galaxy collection install cisco.ios</code></pre>
+      <p>Collections package modules, documentation, and sample playbooks to accelerate automation projects and ensure consistent dependency management.</p>
+    </section>
+
+    <section id="transport-dependencies">
+      <h2>Connection Libraries Used by Ansible</h2>
+      <p>Ansible relies on Python libraries to provide network connectivity over SSH or APIs:</p>
+      <ul>
+        <li><strong>sshpass:</strong> Optional helper that allows SSH password injection when key-based auth is unavailable. Use cautiously and prefer vault-encrypted credentials.</li>
+        <li><strong>Paramiko:</strong> Pure Python SSH client leveraged by the <code>network_cli</code> connection plugin for Cisco devices.</li>
+        <li><strong>Netmiko:</strong> High-level SSH abstraction tailored for network devices. Some custom modules or callback scripts may use Netmiko when direct Ansible modules are insufficient.</li>
+      </ul>
+      <p>Package requirements are typically managed in a virtual environment defined in project documentation or CI pipelines.</p>
+    </section>
+
+    <section id="inventory-config-playbooks">
+      <h2>Ansible Building Blocks</h2>
+      <h3>Inventory</h3>
+      <p>The inventory (e.g., <code>inventory.ini</code>) defines hosts, groups, and connection variables for Cisco devices. For example, group-level variables can set <code>ansible_network_os=cisco.ios.ios</code> and transport options for all Catalyst switches.</p>
+
+      <h3>Configuration File</h3>
+      <p>The Ansible configuration file (<code>ansible.cfg</code>) centralizes execution parameters such as default inventory path, privilege escalation, retry files, and callback plugins. Commit the project-specific <code>ansible.cfg</code> to ensure consistent behavior across operators and CI runners.</p>
+
+      <h3>Playbooks</h3>
+      <p>Playbooks (like <code>configure_sw_vlan12.yml</code> or <code>show_acls.yml</code>) orchestrate tasks against device groups. Each play lists hosts, connection parameters, and tasks using Cisco modules to configure interfaces, VLANs, ACLs, or to verify operational state. Playbooks can be chained in CI pipelines to perform full configuration and validation workflows.</p>
+    </section>
+
+    <section id="topology">
+      <h2>Layer 2/Layer 3 GNS3 Topology</h2>
+      <figure>
+        <img src="ztop.png" alt="Layer 2 and Layer 3 Topology used in GNS3 with VIRL L2 image">
+        <figcaption>GNS3 topology leveraging VIRL L2 images for validating switching and routing automation with Ansible.</figcaption>
+      </figure>
+    </section>
+
+    <section id="next-steps">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Install dependencies:</strong> Use <code>pip</code> or requirements files to deploy <code>ansible</code>, <code>paramiko</code>, <code>netmiko</code>, and optional <code>sshpass</code>.</li>
+        <li><strong>Clone collections:</strong> Pull Cisco collections from Galaxy and pin versions in <code>collections/requirements.yml</code>.</li>
+        <li><strong>Emulate lab:</strong> Deploy the topology in GNS3/VIRL, populate <code>inventory.ini</code>, and test playbooks against the virtual devices.</li>
+        <li><strong>Automate verification:</strong> Schedule job templates or CI pipelines to execute verification playbooks after each change.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

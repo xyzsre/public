@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GNS3 Problems &amp; Solutions Handbook</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      color: #0f172a;
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 65%);
+      line-height: 1.65;
+    }
+    header {
+      padding: 64px 6vw 48px;
+      background: conic-gradient(from 120deg at 30% 20%, #2563eb, #0f172a 70%);
+      color: #f8fafc;
+      text-align: center;
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.45);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    header p {
+      max-width: 860px;
+      margin: 20px auto 0;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 56px 6vw 100px;
+    }
+    section {
+      margin-bottom: 42px;
+    }
+    section h2 {
+      font-size: 1.9rem;
+      color: #1d4ed8;
+      margin-bottom: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 22px 24px;
+      border: 1px solid rgba(29, 78, 216, 0.18);
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      color: #0f172a;
+    }
+    .card p {
+      margin: 8px 0;
+      font-size: 0.98rem;
+    }
+    .label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.12);
+      color: #1e3a8a;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    code {
+      font-family: "Fira Code", Consolas, monospace;
+      background: rgba(37, 99, 235, 0.12);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 48px 0 60px;
+      color: rgba(15, 23, 42, 0.6);
+      font-size: 0.95rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { color: #e2e8f0; background: linear-gradient(180deg, #0f172a 0%, #020617 65%); }
+      .card { background: rgba(15, 23, 42, 0.88); border-color: rgba(147, 197, 253, 0.3); box-shadow: 0 18px 44px rgba(2, 6, 23, 0.66); }
+      .card h3 { color: #bfdbfe; }
+      .card p { color: #e2e8f0; }
+      footer { color: rgba(226, 232, 240, 0.55); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GNS3 Problems &amp; Solutions</h1>
+    <p>Fifty real-world troubleshooting scenarios covering installation, virtualization, Cisco IOS images, multi-vendor devices, and cross-platform labs. Each entry provides quick solutions and practical examples.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Installation &amp; Setup</h2>
+      <div class="grid">
+        <div class="card"><span class="label">Windows</span><h3>1. Installer blocked by antivirus</h3><p><strong>Problem:</strong> GNS3 setup flagged as suspicious.</p><p><strong>Solution:</strong> Temporarily disable antivirus or whitelist the installer, then re-enable protection.</p><p><strong>Example:</strong> Add <code>gns3-setup.exe</code> to Windows Defender exclusions before running the setup wizard.</p></div>
+        <div class="card"><span class="label">macOS</span><h3>2. GNS3.app can’t open due to unidentified developer</h3><p><strong>Problem:</strong> macOS Gatekeeper blocks launch.</p><p><strong>Solution:</strong> Right-click the app, choose “Open,” and accept the prompt.</p><p><strong>Example:</strong> On Ventura, run <code>sudo spctl --master-disable</code> temporarily if the contextual menu option is missing.</p></div>
+        <div class="card"><span class="label">Linux</span><h3>3. Missing dependencies on Ubuntu</h3><p><strong>Problem:</strong> Package install fails with Python/Qt errors.</p><p><strong>Solution:</strong> Install required packages: <code>sudo apt install gns3-gui gns3-server</code>.</p><p><strong>Example:</strong> On Ubuntu 22.04, ensure <code>python3-pyqt5</code> is present to launch the GUI.</p></div>
+        <div class="card"><span class="label">Windows</span><h3>4. WinPcap/Npcap not found</h3><p><strong>Problem:</strong> Packet capture utilities missing.</p><p><strong>Solution:</strong> Install Npcap in WinPcap compatibility mode.</p><p><strong>Example:</strong> Re-run the GNS3 setup and check the box to install Npcap for Wireshark integration.</p></div>
+        <div class="card"><span class="label">Cross-OS</span><h3>5. GNS3 GUI can’t connect to server</h3><p><strong>Problem:</strong> “Server unreachable” error.</p><p><strong>Solution:</strong> Verify the local server is running and firewall allows port 3080.</p><p><strong>Example:</strong> Start <code>gns3server --local</code> on Linux and open the GUI to connect at <code>http://127.0.0.1:3080</code>.</p></div>
+        <div class="card"><span class="label">Linux</span><h3>6. Permission denied on project directory</h3><p><strong>Problem:</strong> Projects stored in root-owned folder.</p><p><strong>Solution:</strong> Change ownership: <code>sudo chown -R user:user ~/GNS3</code>.</p><p><strong>Example:</strong> Projects created via sudo need ownership reset to edit topologies.</p></div>
+        <div class="card"><span class="label">Windows</span><h3>7. VMware Workstation missing</h3><p><strong>Problem:</strong> GNS3 VM import fails.</p><p><strong>Solution:</strong> Install VMware Workstation Player or use VirtualBox with the OVA.</p><p><strong>Example:</strong> Use VirtualBox 7 to run the GNS3 VM if VMware licensing isn’t available.</p></div>
+        <div class="card"><span class="label">macOS</span><h3>8. Hypervisor not detected</h3><p><strong>Problem:</strong> GNS3 VM fails to start.</p><p><strong>Solution:</strong> Enable virtualization in macOS (Apple Silicon) or ensure Intel VT-x is available.</p><p><strong>Example:</strong> On M1/M2 Macs, use UTM to emulate x86 for the GNS3 VM.</p></div>
+        <div class="card"><span class="label">Cross-OS</span><h3>9. Projects stored on network drive</h3><p><strong>Problem:</strong> Latency causes project corruption.</p><p><strong>Solution:</strong> Keep projects on local SSD and sync after closing GNS3.</p><p><strong>Example:</strong> Use OneDrive syncing after lab sessions instead of live editing from a shared folder.</p></div>
+        <div class="card"><span class="label">Windows</span><h3>10. UAC prompts during device launch</h3><p><strong>Problem:</strong> Dynamips requests admin privileges repeatedly.</p><p><strong>Solution:</strong> Install GNS3 in a user-writable directory (e.g., <code>C:\GNS3</code>).</p><p><strong>Example:</strong> Move the GNS3 folder out of <code>Program Files</code> to avoid UAC triggers.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>GNS3 VM &amp; Virtualization</h2>
+      <div class="grid">
+        <div class="card"><span class="label">Cross-OS</span><h3>11. GNS3 VM stuck booting</h3><p><strong>Problem:</strong> VM console shows black screen.</p><p><strong>Solution:</strong> Increase RAM to 4 GB and enable nested virtualization.</p><p><strong>Example:</strong> In VMware, edit VM settings to allocate 2 vCPUs and check “Virtualize Intel VT-x/EPT.”</p></div>
+        <div class="card"><span class="label">Linux</span><h3>12. KVM acceleration not active</h3><p><strong>Problem:</strong> QEMU processes run without hardware acceleration.</p><p><strong>Solution:</strong> Install <code>qemu-kvm</code>, add user to <code>kvm</code> group, reboot.</p><p><strong>Example:</strong> <code>sudo adduser user kvm</code> on Ubuntu to unlock KVM support.</p></div>
+        <div class="card"><span class="label">Windows</span><h3>13. Hyper-V conflicting with VMware</h3><p><strong>Problem:</strong> GNS3 VM fails with VT-x unavailable.</p><p><strong>Solution:</strong> Disable Hyper-V: <code>bcdedit /set hypervisorlaunchtype off</code>.</p><p><strong>Example:</strong> Reboot after running the command, then start VMware Workstation.</p></div>
+        <div class="card"><span class="label">macOS</span><h3>14. GNS3 VM can’t access host network</h3><p><strong>Problem:</strong> Bridged networking not working.</p><p><strong>Solution:</strong> Configure VMware Fusion to use “Auto-detect” adapter and allow macOS firewall access.</p><p><strong>Example:</strong> Add a second adapter in Fusion set to “Share with my Mac” for easier host connectivity.</p></div>
+        <div class="card"><span class="label">Cross-OS</span><h3>15. GNS3 VM IP changes each boot</h3><p><strong>Problem:</strong> DHCP assignments vary.</p><p><strong>Solution:</strong> Configure static IP via VM console or DHCP reservation.</p><p><strong>Example:</strong> On the GNS3 VM shell, edit <code>/etc/netplan</code> with static addressing.</p></div>
+        <div class="card"><span class="label">Linux</span><h3>16. No QEMU menu visible</h3><p><strong>Problem:</strong> QEMU binary not found.</p><p><strong>Solution:</strong> Install <code>qemu-system-x86</code> and set path in GNS3 preferences.</p><p><strong>Example:</strong> Point GNS3 to <code>/usr/bin/qemu-system-x86_64</code> after install.</p></div>
+        <div class="card"><span class="label">Windows</span><h3>17. VMware network adapters missing</h3><p><strong>Problem:</strong> GNS3 VM lacks network connectivity.</p><p><strong>Solution:</strong> Reinstall VMware Workstation and select “Repair” to recreate network adapters.</p><p><strong>Example:</strong> After repair, confirm “VMnet0/1/8” interfaces exist in Windows Network Connections.</p></div>
+        <div class="card"><span class="label">Cross-OS</span><h3>18. GNS3 VM consumes excessive CPU</h3><p><strong>Problem:</strong> Idle projects still use high CPU.</p><p><strong>Solution:</strong> Shut down idle devices, configure idle-PC for Dynamips nodes.</p><p><strong>Example:</strong> Right-click a running router → “Set Idle-PC” to reduce CPU load.</p></div>
+        <div class="card"><span class="label">Linux</span><h3>19. Nested virtualization on Proxmox</h3><p><strong>Problem:</strong> GNS3 VM slow on Proxmox host.</p><p><strong>Solution:</strong> Enable nested virtualization: <code>echo "options kvm_intel nested=1" &gt; /etc/modprobe.d/kvm.conf</code>.</p><p><strong>Example:</strong> Restart host or modules to apply nested virtualization for GNS3 VM.</p></div>
+        <div class="card"><span class="label">Cross-OS</span><h3>20. VM console not responding</h3><p><strong>Problem:</strong> Console output frozen.</p><p><strong>Solution:</strong> Reboot GNS3 VM from hypervisor, check for pending updates.</p><p><strong>Example:</strong> In VMware, choose “Restart Guest” and monitor boot logs for filesystem checks.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>IOS Images &amp; Appliances</h2>
+      <div class="grid">
+        <div class="card"><span class="label">Dynamips</span><h3>21. IOS image fails CRC check</h3><p><strong>Problem:</strong> Import aborts with CRC mismatch.</p><p><strong>Solution:</strong> Re-download image and verify MD5 hash matches vendor checksum.</p><p><strong>Example:</strong> Use <code>certutil -hashfile c7200.bin MD5</code> on Windows to confirm integrity.</p></div>
+        <div class="card"><span class="label">Dynamips</span><h3>22. Router stuck in ROMMON</h3><p><strong>Problem:</strong> Device boots to ROMMON prompt.</p><p><strong>Solution:</strong> Ensure sufficient RAM configured; set <code>0x2102</code> register if config missing.</p><p><strong>Example:</strong> Allocate 256 MB RAM for a 7200 image to avoid ROMMON boot loops.</p></div>
+        <div class="card"><span class="label">QEMU</span><h3>23. vIOS-L2 image won’t boot</h3><p><strong>Problem:</strong> QEMU window closes immediately.</p><p><strong>Solution:</strong> Increase RAM to 768 MB, set virtio NICs, and enable KVM.</p><p><strong>Example:</strong> In template settings, choose “virtio-net-pci” adapters before launching.</p></div>
+        <div class="card"><span class="label">QEMU</span><h3>24. CSR1000v license expired</h3><p><strong>Problem:</strong> Throughput limited after 30 days.</p><p><strong>Solution:</strong> Apply evaluation or permanent license via Cisco Smart Licensing.</p><p><strong>Example:</strong> Use <code>license smart register idtoken</code> with a valid account.</p></div>
+        <div class="card"><span class="label">Appliance</span><h3>25. ASA image freezes at boot</h3><p><strong>Problem:</strong> Boot process hangs at “Reading ROMMON.”</p><p><strong>Solution:</strong> Use QEMU 2.4 or later and set <code>-icount auto</code> in advanced settings.</p><p><strong>Example:</strong> In GNS3 appliance wizard, ensure “Use recommended QEMU settings” is selected.</p></div>
+        <div class="card"><span class="label">Appliance</span><h3>26. NX-OSv memory errors</h3><p><strong>Problem:</strong> NX-OSv fails due to insufficient memory.</p><p><strong>Solution:</strong> Allocate at least 8 GB RAM and 4 vCPUs.</p><p><strong>Example:</strong> On ESXi, reserve memory to avoid ballooning with NX-OSv 7.x images.</p></div>
+        <div class="card"><span class="label">Dynamips</span><h3>27. Idle-PC value missing</h3><p><strong>Problem:</strong> High CPU usage on routers.</p><p><strong>Solution:</strong> Right-click router → “Idle-PC” and select the best value indicated with an asterisk.</p><p><strong>Example:</strong> After applying idle-PC, CPU usage drops from 100% to under 10%.</p></div>
+        <div class="card"><span class="label">Appliance</span><h3>28. Appliance template not found</h3><p><strong>Problem:</strong> Marketplace template download fails.</p><p><strong>Solution:</strong> Manually import the <code>.gns3a</code> file from the vendor or community repository.</p><p><strong>Example:</strong> Download CSR1000v template from GNS3 Marketplace, then “Import Appliance” from file.</p></div>
+        <div class="card"><span class="label">QEMU</span><h3>29. Disk image locked</h3><p><strong>Problem:</strong> QEMU reports “image is in use.”</p><p><strong>Solution:</strong> Power off all instances using that <code>.qcow2</code>, clone per project if needed.</p><p><strong>Example:</strong> Create separate copies of <code>vios_l2.qcow2</code> for different labs to avoid locks.</p></div>
+        <div class="card"><span class="label">Cross-OS</span><h3>30. IOS upgrade fails mid-transfer</h3><p><strong>Problem:</strong> TFTP upload interrupted.</p><p><strong>Solution:</strong> Use built-in image replacement or copy via local file mapping.</p><p><strong>Example:</strong> Drag new IOS image into GNS3 project directory and select “Change IOS image” in device config.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Connectivity &amp; Performance</h2>
+      <div class="grid">
+        <div class="card"><span class="label">Network</span><h3>31. No console connection</h3><p><strong>Problem:</strong> Telnet/console window fails to open.</p><p><strong>Solution:</strong> Configure external terminal such as PuTTY or SecureCRT in preferences.</p><p><strong>Example:</strong> Set terminal command to <code>"C:\Program Files\PuTTY\putty.exe" -telnet %h %p</code> on Windows.</p></div>
+        <div class="card"><span class="label">Network</span><h3>32. Devices can’t ping each other</h3><p><strong>Problem:</strong> Wrong interface shutdown or addressing.</p><p><strong>Solution:</strong> Check <code>show ip interface brief</code>, ensure interfaces are up and subnets match.</p><p><strong>Example:</strong> On vIOS-L3, run <code>no shutdown</code> on <code>Gig0/1</code> enabling connectivity.</p></div>
+        <div class="card"><span class="label">Performance</span><h3>33. High latency in topology</h3><p><strong>Problem:</strong> Overloaded host CPU or memory.</p><p><strong>Solution:</strong> Reduce running nodes, increase host resources, enable idle-PC.</p><p><strong>Example:</strong> Pause unused routers before testing critical links.</p></div>
+        <div class="card"><span class="label">Network</span><h3>34. Packet capture empty</h3><p><strong>Problem:</strong> Capture started on wrong interface.</p><p><strong>Solution:</strong> Start capture on active links and ensure traffic flows.</p><p><strong>Example:</strong> Use a ping while capture is running; verify result in Wireshark.</p></div>
+        <div class="card"><span class="label">Performance</span><h3>35. Project takes long to open</h3><p><strong>Problem:</strong> Many nodes set to auto-start.</p><p><strong>Solution:</strong> Disable auto-start for large labs, start nodes manually.</p><p><strong>Example:</strong> Right-click node → “Startup configuration” → uncheck auto-start.</p></div>
+        <div class="card"><span class="label">Network</span><h3>36. Cloud node doesn’t pass traffic</h3><p><strong>Problem:</strong> Host firewall or adapter selection.</p><p><strong>Solution:</strong> Allow GNS3 through firewall, choose correct NIC (Ethernet/Wi-Fi).</p><p><strong>Example:</strong> On Windows, enable “Allow app through firewall” for GNS3 and select “Ethernet0” in cloud node.</p></div>
+        <div class="card"><span class="label">Performance</span><h3>37. QEMU node CPU spikes</h3><p><strong>Problem:</strong> Lack of CPU throttling.</p><p><strong>Solution:</strong> Use QEMU options <code>-icount auto</code> and limit vCPUs.</p><p><strong>Example:</strong> Edit appliance “Additional settings” to include <code>-icount auto</code> for CSR1000v.</p></div>
+        <div class="card"><span class="label">Network</span><h3>38. External device can’t reach GNS3 subnet</h3><p><strong>Problem:</strong> Missing NAT or routing.</p><p><strong>Solution:</strong> Add static routes or use NAT cloud node.</p><p><strong>Example:</strong> Configure Windows host route: <code>route add 192.168.50.0 mask 255.255.255.0 10.0.0.2</code>.</p></div>
+        <div class="card"><span class="label">Performance</span><h3>39. Saving project is slow</h3><p><strong>Problem:</strong> Large log files or captures.</p><p><strong>Solution:</strong> Clean up PCAP files, disable persistent logging if not needed.</p><p><strong>Example:</strong> Delete old captures in project folder before saving snapshots.</p></div>
+        <div class="card"><span class="label">Network</span><h3>40. DHCP fails on virtual PCs</h3><p><strong>Problem:</strong> Broadcasts blocked on switch or VLAN mismatch.</p><p><strong>Solution:</strong> Ensure switchport VLANs correct and no ACL blocking DHCP.</p><p><strong>Example:</strong> On vIOS-L2, verify <code>switchport access vlan 20</code> for all client ports.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Project Management &amp; Miscellaneous</h2>
+      <div class="grid">
+        <div class="card"><span class="label">Projects</span><h3>41. Project won’t open (JSON error)</h3><p><strong>Problem:</strong> Corrupted <code>.gns3</code> file.</p><p><strong>Solution:</strong> Restore from backup or open <code>project.gns3</code> and fix malformed JSON manually.</p><p><strong>Example:</strong> Use VS Code to remove trailing commas and reopen in GNS3.</p></div>
+        <div class="card"><span class="label">Projects</span><h3>42. Project size exceeds limits</h3><p><strong>Problem:</strong> Large PCAP and disk images.</p><p><strong>Solution:</strong> Archive older labs, use compression, exclude large captures from version control.</p><p><strong>Example:</strong> Zip finishing labs before backing up to cloud storage.</p></div>
+        <div class="card"><span class="label">Automation</span><h3>43. Ansible can’t reach devices</h3><p><strong>Problem:</strong> SSH disabled or wrong credentials.</p><p><strong>Solution:</strong> Enable SSH on routers, create user accounts, update inventory with proper IPs.</p><p><strong>Example:</strong> Configure <code>ip ssh version 2</code> and <code>username ansible secret Lab123</code>.</p></div>
+        <div class="card"><span class="label">Integration</span><h3>44. Wireshark not launching</h3><p><strong>Problem:</strong> Path not set in preferences.</p><p><strong>Solution:</strong> Under “Packet capture,” specify Wireshark executable path.</p><p><strong>Example:</strong> Set to <code>/Applications/Wireshark.app/Contents/MacOS/Wireshark</code> on macOS.</p></div>
+        <div class="card"><span class="label">Collaboration</span><h3>45. Peer can’t open shared project</h3><p><strong>Problem:</strong> Relative paths differ.</p><p><strong>Solution:</strong> Enable “Export portable project” to include images and relative paths.</p><p><strong>Example:</strong> File → “Export project” before sharing with teammates.</p></div>
+        <div class="card"><span class="label">Backup</span><h3>46. Lost configs after reboot</h3><p><strong>Problem:</strong> Didn’t save running-config.</p><p><strong>Solution:</strong> Always issue <code>write memory</code> prior to closing lab.</p><p><strong>Example:</strong> Automate saves with script: <code>gns3fy</code> to send <code>copy run start</code> to each router.</p></div>
+        <div class="card"><span class="label">Licensing</span><h3>47. Cisco image licensing compliance</h3><p><strong>Problem:</strong> Unsure about legal usage.</p><p><strong>Solution:</strong> Use images covered by your service contracts or evaluation licenses.</p><p><strong>Example:</strong> Download IOS images from Cisco Software Center tied to your Smart Account.</p></div>
+        <div class="card"><span class="label">Updates</span><h3>48. GNS3 update breaks project</h3><p><strong>Problem:</strong> After upgrade, devices fail to load.</p><p><strong>Solution:</strong> Maintain versioned backups; downgrade to previous release if necessary.</p><p><strong>Example:</strong> Keep installers for versions 2.2.x to revert quickly.</p></div>
+        <div class="card"><span class="label">Integration</span><h3>49. API requests failing</h3><p><strong>Problem:</strong> GNS3 server API returns 401 Unauthorized.</p><p><strong>Solution:</strong> Enable authentication and use correct credentials or tokens in API client.</p><p><strong>Example:</strong> Set environment variables for <code>GNS3_URL</code> and <code>GNS3_API_KEY</code> when using <code>gns3fy</code>.</p></div>
+        <div class="card"><span class="label">Backup</span><h3>50. Project backups inconsistent</h3><p><strong>Problem:</strong> Manual copying misses dependencies.</p><p><strong>Solution:</strong> Use “File → Save as appliance” or export with linked base images.</p><p><strong>Example:</strong> Create a portable project package before migrating to another workstation.</p></div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Bookmark this handbook to triage GNS3 issues across Windows, macOS, and Linux environments quickly and confidently.
+  </footer>
+</body>
+</html>

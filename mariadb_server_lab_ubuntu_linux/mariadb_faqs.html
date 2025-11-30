@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MariaDB FAQs</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; margin: 20px; }
+        h1 { color: #007bff; text-align: center; }
+        h2 { color: #28a745; }
+        .faq { margin-bottom: 10px; background-color: #ffffff; padding: 10px; border-radius: 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .question { font-weight: bold; color: #dc3545; }
+        .answer { margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>MariaDB FAQs</h1>
+    <p>200 short questions and answers about MariaDB.</p>
+
+    <h2>General (1-20)</h2>
+    <div class="faq"><div class="question">1. What is MariaDB?</div><div class="answer">An open-source RDBMS, fork of MySQL.</div></div>
+    <div class="faq"><div class="question">2. Is MariaDB free?</div><div class="answer">Yes, open-source license.</div></div>
+    <div class="faq"><div class="question">3. Who maintains MariaDB?</div><div class="answer">MariaDB Foundation.</div></div>
+    <div class="faq"><div class="question">4. What is the latest version?</div><div class="answer">Check mariadb.org.</div></div>
+    <div class="faq"><div class="question">5. Is MariaDB compatible with MySQL?</div><div class="answer">Yes, drop-in replacement.</div></div>
+    <div class="faq"><div class="question">6. What is a database?</div><div class="answer">Structured data collection.</div></div>
+    <div class="faq"><div class="question">7. What is SQL?</div><div class="answer">Query language for databases.</div></div>
+    <div class="faq"><div class="question">8. What is a table?</div><div class="answer">Rows and columns of data.</div></div>
+    <div class="faq"><div class="question">9. What is a row?</div><div class="answer">Single record in a table.</div></div>
+    <div class="faq"><div class="question">10. What is a column?</div><div class="answer">Field in a table.</div></div>
+    <div class="faq"><div class="question">11. What is a primary key?</div><div class="answer">Unique row identifier.</div></div>
+    <div class="faq"><div class="question">12. What is a foreign key?</div><div class="answer">Links tables via keys.</div></div>
+    <div class="faq"><div class="question">13. What is indexing?</div><div class="answer">Speeds up queries.</div></div>
+    <div class="faq"><div class="question">14. What is a view?</div><div class="answer">Virtual table from query.</div></div>
+    <div class="faq"><div class="question">15. What is a stored procedure?</div><div class="answer">Precompiled SQL code.</div></div>
+    <div class="faq"><div class="question">16. What is a trigger?</div><div class="answer">Auto action on changes.</div></div>
+    <div class="faq"><div class="question">17. What is ACID?</div><div class="answer">Transaction properties.</div></div>
+    <div class="faq"><div class="question">18. What is normalization?</div><div class="answer">Reduces data redundancy.</div></div>
+    <div class="faq"><div class="question">19. What is denormalization?</div><div class="answer">Adds redundancy for speed.</div></div>
+    <div class="faq"><div class="question">20. What is a schema?</div><div class="answer">Database structure.</div></div>
+
+    <h2>Installation (21-40)</h2>
+    <div class="faq"><div class="question">21. How to install on Ubuntu?</div><div class="answer">sudo apt install mariadb-server.</div></div>
+    <div class="faq"><div class="question">22. How to install on CentOS?</div><div class="answer">sudo yum install mariadb-server.</div></div>
+    <div class="faq"><div class="question">23. How to start MariaDB?</div><div class="answer">sudo systemctl start mariadb.</div></div>
+    <div class="faq"><div class="question">24. How to stop MariaDB?</div><div class="answer">sudo systemctl stop mariadb.</div></div>
+    <div class="faq"><div class="question">25. How to enable auto-start?</div><div class="answer">sudo systemctl enable mariadb.</div></div>
+    <div class="faq"><div class="question">26. How to check status?</div><div class="answer">sudo systemctl status mariadb.</div></div>
+    <div class="faq"><div class="question">27. Where is config file?</div><div class="answer">/etc/mysql/my.cnf.</div></div>
+    <div class="faq"><div class="question">28. How to secure installation?</div><div class="answer">mysql_secure_installation.</div></div>
+    <div class="faq"><div class="question">29. How to create a user?</div><div class="answer">CREATE USER 'u'@'h' IDENTIFIED BY 'p'.</div></div>
+    <div class="faq"><div class="question">30. How to grant privileges?</div><div class="answer">GRANT ALL ON db.* TO 'u'@'h'.</div></div>
+    <div class="faq"><div class="question">31. How to connect remotely?</div><div class="answer">Edit bind-address in my.cnf.</div></div>
+    <div class="faq"><div class="question">32. What is default port?</div><div class="answer">3306.</div></div>
+    <div class="faq"><div class="question">33. How to backup?</div><div class="answer">mysqldump db > file.sql.</div></div>
+    <div class="faq"><div class="question">34. How to restore?</div><div class="answer">mysql db < file.sql.</div></div>
+    <div class="faq"><div class="question">35. How to update MariaDB?</div><div class="answer">sudo apt upgrade mariadb-server.</div></div>
+    <div class="faq"><div class="question">36. Can it run in Docker?</div><div class="answer">Yes, docker run mariadb.</div></div>
+    <div class="faq"><div class="question">37. How to uninstall?</div><div class="answer">sudo apt remove mariadb-server.</div></div>
+    <div class="faq"><div class="question">38. What dependencies?</div><div class="answer">Minimal, usually included.</div></div>
+    <div class="faq"><div class="question">39. How to check version?</div><div class="answer">mysql -V.</div></div>
+    <div class="faq"><div class="question">40. How to install client?</div><div class="answer">sudo apt install mariadb-client.</div></div>
+
+    <h2>Configuration (41-60)</h2>
+    <div class="faq"><div class="question">41. How to change port?</div><div class="answer">Edit port in my.cnf.</div></div>
+    <div class="faq"><div class="question">42. How to set max connections?</div><div class="answer">max_connections in my.cnf.</div></div>
+    <div class="faq"><div class="question">43. How to enable logging?</div><div class="answer">Set log options in my.cnf.</div></div>
+    <div class="faq"><div class="question">44. How to configure InnoDB?</div><div class="answer">innodb settings in my.cnf.</div></div>
+    <div class="faq"><div class="question">45. How to set buffer pool?</div><div class="answer">innodb_buffer_pool_size.</div></div>
+    <div class="faq"><div class="question">46. How to enable SSL?</div><div class="answer">ssl-ca, ssl-cert in my.cnf.</div></div>
+    <div class="faq"><div class="question">47. How to change data dir?</div><div class="answer">datadir in my.cnf.</div></div>
+    <div class="faq"><div class="question">48. How to set timezone?</div><div class="answer">default_time_zone.</div></div>
+    <div class="faq"><div class="question">49. How to configure replication?</div><div class="answer">server-id, log-bin in my.cnf.</div></div>
+    <div class="faq"><div class="question">50. How to set query cache?</div><div class="answer">query_cache_size.</div></div>
+    <div class="faq"><div class="question">51. How to limit query time?</div><div class="answer">max_statement_time.</div></div>
+    <div class="faq"><div class="question">52. How to enable slow query log?</div><div class="answer">slow_query_log=1.</div></div>
+    <div class="faq"><div class="question">53. How to set character set?</div><div class="answer">character-set-server.</div></div>
+    <div class="faq"><div class="question">54. How to configure temp tables?</div><div class="answer">tmp_table_size.</div></div>
+    <div class="faq"><div class="question">55. How to set max packet size?</div><div class="answer">max_allowed_packet.</div></div>
+    <div class="faq"><div class="question">56. How to enable performance schema?</div><div class="answer">performance_schema=1.</div></div>
+    <div class="faq"><div class="question">57. How to set table cache?</div><div class="answer">table_open_cache.</div></div>
+    <div class="faq"><div class="question">58. How to configure myisam?</div><div class="answer">myisam settings.</div></div>
+    <div class="faq"><div class="question">59. How to set auto increment?</div><div class="answer">auto_increment_increment.</div></div>
+    <div class="faq"><div class="question">60. How to reload config?</div><div class="answer">sudo systemctl restart mariadb.</div></div>
+
+    <h2>Usage (61-80)</h2>
+    <div class="faq"><div class="question">61. How to connect?</div><div class="answer">mysql -u user -p.</div></div>
+    <div class="faq"><div class="question">62. How to show databases?</div><div class="answer">SHOW DATABASES;</div></div>
+    <div class="faq"><div class="question">63. How to use a database?</div><div class="answer">USE db;</div></div>
+    <div class="faq"><div class="question">64. How to show tables?</div><div class="answer">SHOW TABLES;</div></div>
+    <div class="faq"><div class="question">65. How to create table?</div><div class="answer">CREATE TABLE name (cols);</div></div>
+    <div class="faq"><div class="question">66. How to insert data?</div><div class="answer">INSERT INTO table VALUES (vals);</div></div>
+    <div class="faq"><div class="question">67. How to select data?</div><div class="answer">SELECT * FROM table;</div></div>
+    <div class="faq"><div class="question">68. How to update data?</div><div class="answer">UPDATE table SET col=val WHERE cond;</div></div>
+    <div class="faq"><div class="question">69. How to delete data?</div><div class="answer">DELETE FROM table WHERE cond;</div></div>
+    <div class="faq"><div class="question">70. How to join tables?</div><div class="answer">SELECT * FROM a JOIN b ON a.id=b.id;</div></div>
+    <div class="faq"><div class="question">71. How to use WHERE?</div><div class="answer">SELECT * FROM table WHERE col=val;</div></div>
+    <div class="faq"><div class="question">72. How to use ORDER BY?</div><div class="answer">SELECT * FROM table ORDER BY col;</div></div>
+    <div class="faq"><div class="question">73. How to use GROUP BY?</div><div class="answer">SELECT col, COUNT(*) FROM table GROUP BY col;</div></div>
+    <div class="faq"><div class="question">74. How to use LIMIT?</div><div class="answer">SELECT * FROM table LIMIT 10;</div></div>
+    <div class="faq"><div class="question">75. How to use LIKE?</div><div class="answer">SELECT * FROM table WHERE col LIKE 'pat%';</div></div>
+    <div class="faq"><div class="question">76. How to use DISTINCT?</div><div class="answer">SELECT DISTINCT col FROM table;</div></div>
+    <div class="faq"><div class="question">77. How to use COUNT?</div><div class="answer">SELECT COUNT(*) FROM table;</div></div>
+    <div class="faq"><div class="question">78. How to use SUM?</div><div class="answer">SELECT SUM(col) FROM table;</div></div>
+    <div class="faq"><div class="question">79. How to use AVG?</div><div class="answer">SELECT AVG(col) FROM table;</div></div>
+    <div class="faq"><div class="question">80. How to use MAX/MIN?</div><div class="answer">SELECT MAX(col) FROM table;</div></div>
+
+    <h2>Performance (81-100)</h2>
+    <div class="faq"><div class="question">81. How to optimize queries?</div><div class="answer">Use EXPLAIN and indexes.</div></div>
+    <div class="faq"><div class="question">82. How to add index?</div><div class="answer">CREATE INDEX idx ON table(col);</div></div>
+    <div class="faq"><div class="question">83. How to show indexes?</div><div class="answer">SHOW INDEX FROM table;</div></div>
+    <div class="faq"><div class="question">84. How to analyze query?</div><div class="answer">EXPLAIN SELECT ...;</div></div>
+    <div class="faq"><div class="question">85. How to use query cache?</div><div class="answer">Enable in my.cnf.</div></div>
+    <div class="faq"><div class="question">86. How to tune buffer pool?</div><div class="answer">Set innodb_buffer_pool_size.</div></div>
+    <div class="faq"><div class="question">87. How to check slow queries?</div><div class="answer">Enable slow_query_log.</div></div>
+    <div class="faq"><div class="question">88. How to use profiling?</div><div class="answer">SET profiling=1; SHOW PROFILES;</div></div>
+    <div class="faq"><div class="question">89. How to optimize tables?</div><div class="answer">OPTIMIZE TABLE table;</div></div>
+    <div class="faq"><div class="question">90. How to check table status?</div><div class="answer">SHOW TABLE STATUS;</div></div>
+    <div class="faq"><div class="question">91. How to use partitioning?</div><div class="answer">PARTITION BY in CREATE TABLE.</div></div>
+    <div class="faq"><div class="question">92. How to monitor performance?</div><div class="answer">Use SHOW PROCESSLIST;</div></div>
+    <div class="faq"><div class="question">93. How to set thread cache?</div><div class="answer">thread_cache_size.</div></div>
+    <div class="faq"><div class="question">94. How to reduce lock waits?</div><div class="answer">Use InnoDB, shorter transactions.</div></div>
+    <div class="faq"><div class="question">95. How to use connection pooling?</div><div class="answer">Via application or proxy.</div></div>
+    <div class="faq"><div class="question">96. How to benchmark?</div><div class="answer">Use sysbench or mysqlslap.</div></div>
+    <div class="faq"><div class="question">97. How to check disk I/O?</div><div class="answer">Monitor with iostat.</div></div>
+    <div class="faq"><div class="question">98. How to optimize joins?</div><div class="answer">Ensure indexes on join keys.</div></div>
+    <div class="faq"><div class="question">99. How to use subqueries?</div><div class="answer">SELECT * FROM (SELECT ...) AS sub;</div></div>
+    <div class="faq"><div class="question">100. How to use UNION?</div><div class="answer">SELECT ... UNION SELECT ...;</div></div>
+
+    <h2>Security (101-120)</h2>
+    <div class="faq"><div class="question">101. How to secure MariaDB?</div><div class="answer">Run mysql_secure_installation.</div></div>
+    <div class="faq"><div class="question">102. How to encrypt data?</div><div class="answer">Use InnoDB encryption.</div></div>
+    <div class="faq"><div class="question">103. How to enable SSL?</div><div class="answer">Configure ssl options.</div></div>
+    <div class="faq"><div class="question">104. How to manage users?</div><div class="answer">CREATE, DROP, ALTER USER.</div></div>
+    <div class="faq"><div class="question">105. How to revoke privileges?</div><div class="answer">REVOKE priv ON obj FROM user.</div></div>
+    <div class="faq"><div class="question">106. How to change password?</div><div class="answer">ALTER USER user IDENTIFIED BY 'pass'.</div></div>
+    <div class="faq"><div class="question">107. How to lock accounts?</div><div class="answer">ALTER USER user ACCOUNT LOCK.</div></div>
+    <div class="faq"><div class="question">108. How to audit logs?</div><div class="answer">Enable general log or audit plugin.</div></div>
+    <div class="faq"><div class="question">109. How to prevent SQL injection?</div><div class="answer">Use prepared statements.</div></div>
+    <div class="faq"><div class="question">110. How to set password policy?</div><div class="answer">simple_password_check plugin.</div></div>
+    <div class="faq"><div class="question">111. How to encrypt connections?</div><div class="answer">Require SSL for users.</div></div>
+    <div class="faq"><div class="question">112. How to backup securely?</div><div class="answer">Encrypt backups.</div></div>
+    <div class="faq"><div class="question">113. How to monitor access?</div><div class="answer">Check general log.</div></div>
+    <div class="faq"><div class="question">114. How to use roles?</div><div class="answer">CREATE ROLE, GRANT TO user.</div></div>
+    <div class="faq"><div class="question">115. How to hide data?</div><div class="answer">Use views or encryption.</div></div>
+    <div class="faq"><div class="question">116. How to set session timeout?</div><div class="answer">wait_timeout in my.cnf.</div></div>
+    <div class="faq"><div class="question">117. How to disable remote root?</div><div class="answer">Remove root remote access.</div></div>
+    <div class="faq"><div class="question">118. How to use firewalls?</div><div class="answer">Restrict port 3306.</div></div>
+    <div class="faq"><div class="question">119. How to validate inputs?</div><div class="answer">Sanitize in application.</div></div>
+    <div class="faq"><div class="question">120. How to update security?</div><div class="answer">Keep MariaDB updated.</div></div>
+
+    <h2>Replication (121-140)</h2>
+    <div class="faq"><div class="question">121. What is replication?</div><div class="answer">Copying data to multiple servers.</div></div>
+    <div class="faq"><div class="question">122. How to set master?</div><div class="answer">Enable binlog, set server-id.</div></div>
+    <div class="faq"><div class="question">123. How to set slave?</div><div class="answer">CHANGE MASTER TO, START SLAVE.</div></div>
+    <div class="faq"><div class="question">124. How to check slave status?</div><div class="answer">SHOW SLAVE STATUS;</div></div>
+    <div class="faq"><div class="question">125. How to stop replication?</div><div class="answer">STOP SLAVE;</div></div>
+    <div class="faq"><div class="question">126. What is semi-sync?</div><div class="answer">Master waits for slave ack.</div></div>
+    <div class="faq"><div class="question">127. How to use Galera?</div><div class="answer">Install wsrep, configure cluster.</div></div>
+    <div class="faq"><div class="question">128. What is master-master?</div><div class="answer">Bidirectional replication.</div></div>
+    <div class="faq"><div class="question">129. How to failover?</div><div class="answer">Promote slave to master.</div></div>
+    <div class="faq"><div class="question">130. How to monitor replication?</div><div class="answer">Check Seconds_Behind_Master.</div></div>
+    <div class="faq"><div class="question">131. How to skip errors?</div><div class="answer">SET GLOBAL sql_slave_skip_counter=1;</div></div>
+    <div class="faq"><div class="question">132. How to reset slave?</div><div class="answer">RESET SLAVE;</div></div>
+    <div class="faq"><div class="question">133. How to backup replication?</div><div class="answer">Backup master position.</div></div>
+    <div class="faq"><div class="question">134. What is GTID?</div><div class="answer">Global transaction ID.</div></div>
+    <div class="faq"><div class="question">135. How to enable GTID?</div><div class="answer">gtid_mode=ON.</div></div>
+    <div class="faq"><div class="question">136. How to repair replication?</div><div class="answer">Re-sync from master.</div></div>
+    <div class="faq"><div class="question">137. How to add slave?</div><div class="answer">Clone master data.</div></div>
+    <div class="faq"><div class="question">138. How to remove slave?</div><div class="answer">STOP SLAVE, reset.</div></div>
+    <div class="faq"><div class="question">139. How to use multi-source?</div><div class="answer">Multiple masters.</div></div>
+    <div class="faq"><div class="question">140. How to troubleshoot replication?</div><div class="answer">Check error logs.</div></div>
+
+    <h2>Troubleshooting (141-160)</h2>
+    <div class="faq"><div class="question">141. Why can't connect?</div><div class="answer">Check user, host, password.</div></div>
+    <div class="faq"><div class="question">142. Why slow queries?</div><div class="answer">Check EXPLAIN, add indexes.</div></div>
+    <div class="faq"><div class="question">143. Why out of memory?</div><div class="answer">Increase buffer pool.</div></div>
+    <div class="faq"><div class="question">144. Why disk full?</div><div class="answer">Check data dir size.</div></div>
+    <div class="faq"><div class="question">145. Why replication lag?</div><div class="answer">Optimize slave, network.</div></div>
+    <div class="faq"><div class="question">146. Why locks?</div><div class="answer">Use SHOW ENGINE INNODB STATUS;</div></div>
+    <div class="faq"><div class="question">147. Why can't start?</div><div class="answer">Check error log.</div></div>
+    <div class="faq"><div class="question">148. Why high CPU?</div><div class="answer">Profile queries.</div></div>
+    <div class="faq"><div class="question">149. Why connection refused?</div><div class="answer">Check bind-address.</div></div>
+    <div class="faq"><div class="question">150. Why data corruption?</div><div class="answer">Check disk, run repair.</div></div>
+    <div class="faq"><div class="question">151. How to recover?</div><div class="answer">Use backup, binlogs.</div></div>
+    <div class="faq"><div class="question">152. How to check logs?</div><div class="answer">tail /var/log/mysql/error.log.</div></div>
+    <div class="faq"><div class="question">153. How to reset root password?</div><div class="answer">Stop service, start with --skip-grant.</div></div>
+    <div class="faq"><div class="question">154. How to repair table?</div><div class="answer">REPAIR TABLE table;</div></div>
+    <div class="faq"><div class="question">155. How to check variables?</div><div class="answer">SHOW VARIABLES;</div></div>
+    <div class="faq"><div class="question">156. How to kill process?</div><div class="answer">KILL process_id;</div></div>
+    <div class="faq"><div class="question">157. How to flush privileges?</div><div class="answer">FLUSH PRIVILEGES;</div></div>
+    <div class="faq"><div class="question">158. How to restart safely?</div><div class="answer">Use systemctl restart.</div></div>
+    <div class="faq"><div class="question">159. How to check disk usage?</div><div class="answer">du -h /var/lib/mysql.</div></div>
+    <div class="faq"><div class="question">160. How to get help?</div><div class="answer">MariaDB forums, docs.</div></div>
+
+    <h2>Advanced (161-180)</h2>
+    <div class="faq"><div class="question">161. What is InnoDB?</div><div class="answer">Transactional storage engine.</div></div>
+    <div class="faq"><div class="question">162. What is MyISAM?</div><div class="answer">Non-transactional engine.</div></div>
+    <div class="faq"><div class="question">163. How to change engine?</div><div class="answer">ALTER TABLE table ENGINE=engine;</div></div>
+    <div class="faq"><div class="question">164. What is partitioning?</div><div class="answer">Split table into parts.</div></div>
+    <div class="faq"><div class="question">165. How to create partition?</div><div class="answer">PARTITION BY RANGE(col).</div></div>
+    <div class="faq"><div class="question">166. What is full-text search?</div><div class="answer">Search text with MATCH.</div></div>
+    <div class="faq"><div class="question">167. How to add full-text index?</div><div class="answer">FULLTEXT(col).</div></div>
+    <div class="faq"><div class="question">168. What is JSON support?</div><div class="answer">Use JSON columns.</div></div>
+    <div class="faq"><div class="question">169. How to query JSON?</div><div class="answer">JSON_EXTRACT, etc.</div></div>
+    <div class="faq"><div class="question">170. What is window functions?</div><div class="answer">ROW_NUMBER, RANK, etc.</div></div>
+    <div class="faq"><div class="question">171. How to use CTE?</div><div class="answer">WITH cte AS (SELECT...).</div></div>
+    <div class="faq"><div class="question">172. What is stored routines?</div><div class="answer">Procedures and functions.</div></div>
+    <div class="faq"><div class="question">173. How to create procedure?</div><div class="answer">CREATE PROCEDURE name() BEGIN...END.</div></div>
+    <div class="faq"><div class="question">174. What is events?</div><div class="answer">Scheduled tasks.</div></div>
+    <div class="faq"><div class="question">175. How to create event?</div><div class="answer">CREATE EVENT name ON SCHEDULE...</div></div>
+    <div class="faq"><div class="question">176. What is views?</div><div class="answer">Virtual tables.</div></div>
+    <div class="faq"><div class="question">177. How to create view?</div><div class="answer">CREATE VIEW name AS SELECT...</div></div>
+    <div class="faq"><div class="question">178. What is triggers?</div><div class="answer">Auto actions.</div></div>
+    <div class="faq"><div class="question">179. How to create trigger?</div><div class="answer">CREATE TRIGGER name BEFORE/AFTER...</div></div>
+    <div class="faq"><div class="question">180. What is sequences?</div><div class="answer">Auto-increment alternatives.</div></div>
+
+    <h2>Miscellaneous (181-200)</h2>
+    <div class="faq"><div class="question">181. What is MariaDB vs MySQL?</div><div class="answer">MariaDB has more features.</div></div>
+    <div class="faq"><div class="question">182. Can MariaDB use MySQL tools?</div><div class="answer">Yes, compatible.</div></div>
+    <div class="faq"><div class="question">183. What is MariaDB ColumnStore?</div><div class="answer">Analytical storage engine.</div></div>
+    <div class="faq"><div class="question">184. What is Aria?</div><div class="answer">Crash-safe MyISAM replacement.</div></div>
+    <div class="faq"><div class="question">185. What is TokuDB?</div><div class="answer">High compression engine.</div></div>
+    <div class="faq"><div class="question">186. How to use connectors?</div><div class="answer">mysql-connector-python, etc.</div></div>
+    <div class="faq"><div class="question">187. What is MaxScale?</div><div class="answer">Database proxy.</div></div>
+    <div class="faq"><div class="question">188. How to monitor?</div><div class="answer">Use mytop or SHOW PROCESSLIST.</div></div>
+    <div class="faq"><div class="question">189. What is MariaDB Audit Plugin?</div><div class="answer">Logs database activity.</div></div>
+    <div class="faq"><div class="question">190. How to encrypt backups?</div><div class="answer">Use openssl with mysqldump.</div></div>
+    <div class="faq"><div class="question">191. What is MariaDB Galera Cluster?</div><div class="answer">Synchronous multi-master.</div></div>
+    <div class="faq"><div class="question">192. How to migrate from MySQL?</div><div class="answer">Dump and import.</div></div>
+    <div class="faq"><div class="question">193. What is pluggable authentication?</div><div class="answer">Custom auth methods.</div></div>
+    <div class="faq"><div class="question">194. How to use dynamic columns?</div><div class="answer">COLUMN_CREATE, etc.</div></div>
+    <div class="faq"><div class="question">195. What is virtual columns?</div><div class="answer">Computed columns.</div></div>
+    <div class="faq"><div class="question">196. How to use sequences?</div><div class="answer">CREATE SEQUENCE.</div></div>
+    <div class="faq"><div class="question">197. What is flashback?</div><div class="answer">Undo changes.</div></div>
+    <div class="faq"><div class="question">198. How to use binlogs?</div><div class="answer">For point-in-time recovery.</div></div>
+    <div class="faq"><div class="question">199. What is MariaDB TX?</div><div class="answer">Transactional engine.</div></div>
+    <div class="faq"><div class="question">200. Where to find docs?</div><div class="answer">mariadb.com/kb.</div></div>
+</body>
+</html>

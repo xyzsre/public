@@ -1,0 +1,17 @@
+---
+- name: Collect hardware inventory from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve device inventory
+      cisco.ios.ios_command:
+        commands:
+          - show inventory
+      register: inventory_output
+
+    - name: Display inventory information
+      ansible.builtin.debug:
+        msg: "show inventory:\n{{ inventory_output.stdout[0] }}"

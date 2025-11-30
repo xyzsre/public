@@ -1,0 +1,29 @@
+---
+- name: Check VRRP status on switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Show VRRP brief
+      cisco.ios.ios_command:
+        commands:
+          - show vrrp brief
+      register: vrrp_brief
+
+    - name: Show VRRP detailed information
+      cisco.ios.ios_command:
+        commands:
+          - show vrrp
+      register: vrrp_detail
+
+    - name: Display VRRP status output
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          VRRP Brief:
+          {{ vrrp_brief.stdout[0] | default('No brief data') }}
+
+          VRRP Detail:
+          {{ vrrp_detail.stdout[0] | default('No detail data') }}

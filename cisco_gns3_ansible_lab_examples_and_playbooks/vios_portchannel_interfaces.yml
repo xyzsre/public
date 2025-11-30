@@ -1,0 +1,41 @@
+---
+- name: Collect port-channel interface details from Cisco switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    portchannel_id: 1
+    member_interfaces:
+      - GigabitEthernet0/3
+      - GigabitEthernet1/0
+
+  tasks:
+    - name: Show Port-Channel interface status
+      cisco.ios.ios_command:
+        commands:
+          - show interfaces Port-channel{{ portchannel_id }}
+      register: po_interface
+
+    - name: Show member interface channel status
+      cisco.ios.ios_command:
+        commands:
+          - show interfaces {{ item }}
+      loop: "{{ member_interfaces }}"
+      register: member_details
+
+    - name: Display Port-Channel interface information
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          Port-channel detail:\n{{ po_interface.stdout[0] | default('No Port-channel data returned') }}
+
+    - name: Display member interface information
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }} member {{ member_interfaces[idx] }}
+          {{ member_details.results[idx].stdout[0] | default('No interface data') }}
+      loop: "{{ range(member_interfaces|length) | list }}"
+      loop_control:
+        index_var: idx

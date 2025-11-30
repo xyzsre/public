@@ -1,0 +1,29 @@
+---
+- name: Collect ARP entries for VLANs 12 and 34
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve ARP entries for VLAN 12
+      cisco.ios.ios_command:
+        commands:
+          - show ip arp vlan 12
+      register: arp_vlan12
+
+    - name: Retrieve ARP entries for VLAN 34
+      cisco.ios.ios_command:
+        commands:
+          - show ip arp vlan 34
+      register: arp_vlan34
+
+    - name: Display ARP results
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          VLAN 12 ARP table:
+          {{ arp_vlan12.stdout[0] | default('No entries') }}
+
+          VLAN 34 ARP table:
+          {{ arp_vlan34.stdout[0] | default('No entries') }}

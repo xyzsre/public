@@ -1,0 +1,33 @@
+---
+- name: Ping multiple targets from switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    ping_targets:
+      - 192.168.12.1
+      - 192.168.12.2
+      - 192.168.34.3
+      - 192.168.34.4
+
+  tasks:
+    - name: Ping targets sequentially
+      cisco.ios.ios_command:
+        commands:
+          - "ping {{ item }}"
+      loop: "{{ ping_targets }}"
+      loop_control:
+        label: "{{ item }}"
+      register: ping_results
+
+    - name: Display ping results
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          Target {{ ping_targets[idx] }}:
+          {{ ping_results.results[idx].stdout[0] | default('No output') }}
+      loop: "{{ range(ping_targets | length) | list }}"
+      loop_control:
+        index_var: idx

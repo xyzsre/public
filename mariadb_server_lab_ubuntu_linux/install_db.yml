@@ -1,0 +1,57 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: Update package list
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Check if MariaDB server is installed
+      command: dpkg -l mariadb-server
+      register: mariadb_check
+      ignore_errors: yes
+
+    - name: Remove MariaDB server if installed
+      apt:
+        name: mariadb-server
+        state: absent
+      when: mariadb_check.rc == 0
+
+    - name: Check if MariaDB client is installed
+      command: dpkg -l mariadb-client
+      register: mysql_client_check
+      ignore_errors: yes
+
+    - name: Remove MariaDB client if installed
+      apt:
+        name: mariadb-client
+        state: absent
+      when: mysql_client_check.rc == 0
+
+    - name: Installing MariaDB server and client
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - mariadb-server
+        - mariadb-client
+
+    - name: Enable MariaDB service to start on boot
+      systemd:
+        name: mariadb
+        enabled: yes
+
+    - name: Start MariaDB service
+      systemd:
+        name: mariadb
+        state: started
+
+    - name: Verify MariaDB service is running
+      command: systemctl is-active mariadb
+      register: active_check
+
+    - name: Display active status
+      debug:
+        msg: "MariaDB service is {{ active_check.stdout }}"
+

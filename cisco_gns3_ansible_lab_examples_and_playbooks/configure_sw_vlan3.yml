@@ -1,0 +1,55 @@
+---
+- name: Configure VLAN 3 and trunk links for Marketing
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    vlan_id: 3
+    vlan_name: Marketing
+    trunk_port: GigabitEthernet0/2
+    vlan3_ips:
+      sw1: 192.168.3.1
+      sw2: 192.168.3.2
+
+  tasks:
+    - name: Ensure VLAN {{ vlan_id }} exists with correct name
+      cisco.ios.ios_config:
+        parents: "vlan {{ vlan_id }}"
+        lines:
+          - "name {{ vlan_name }}"
+
+    - name: Configure {{ trunk_port }} as 802.1Q trunk carrying VLAN {{ vlan_id }}
+      cisco.ios.ios_config:
+        parents: "interface {{ trunk_port }}"
+        lines:
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - "switchport trunk allowed vlan add {{ vlan_id }}"
+          - spanning-tree portfast trunk
+          - no shutdown
+
+    - name: Configure SVI for VLAN {{ vlan_id }}
+      cisco.ios.ios_config:
+        parents: "interface Vlan{{ vlan_id }}"
+        lines:
+          - "description {{ vlan_name }} VLAN"
+          - "ip address {{ vlan3_ips[inventory_hostname] }} 255.255.255.0"
+          - no shutdown
+
+    - name: Verify VLAN and trunk status
+      cisco.ios.ios_command:
+        commands:
+          - show vlan brief | include {{ vlan_id }}
+          - show interfaces {{ trunk_port }} switchport
+          - show ip interface brief | include Vlan{{ vlan_id }}
+      register: verify_output
+
+    - name: Display verification output
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          VLAN summary: {{ verify_output.stdout[0] | default('N/A') }}
+          Trunk detail:\n{{ verify_output.stdout[1] | default('N/A') }}
+          SVI status: {{ verify_output.stdout[2] | default('N/A') }}

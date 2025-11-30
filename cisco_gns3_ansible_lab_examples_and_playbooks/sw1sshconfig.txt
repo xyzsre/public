@@ -1,0 +1,23 @@
+! enable secret
+enable secret 5 $1$Kejo$aJRgtNyjY7dJ/qp5Y2lSW/
+
+! usernames
+username cisco privilege 15 secret 5 $1$xxpU$WhNixyd4kjhpNXFyR78ph0
+
+! interface Vlan1
+interface Vlan1
+ description MGMT
+ ip address 192.168.122.11 255.255.255.0
+
+! line vty
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+line vty 5 15
+ logging synchronous
+ login local
+ transport input ssh
+
+! SSH settings
+ip ssh version 2

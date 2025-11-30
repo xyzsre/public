@@ -1,0 +1,17 @@
+---
+- name: Collect detailed IP interface data from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve detailed IP interface information
+      cisco.ios.ios_command:
+        commands:
+          - show ip interface
+      register: ip_interface_detail
+
+    - name: Display detailed IP interface information
+      ansible.builtin.debug:
+        msg: "show ip interface:\n{{ ip_interface_detail.stdout[0] }}"

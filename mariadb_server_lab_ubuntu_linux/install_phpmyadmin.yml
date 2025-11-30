@@ -1,0 +1,75 @@
+---
+- hosts: server1
+  become: yes
+  tasks:
+    - name: Update package list
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Install PHP and modules
+      apt:
+        name:
+          - php
+          - libapache2-mod-php
+          - php-mysql
+        state: present
+
+    - name: Check if phpMyAdmin is installed
+      command: dpkg -l phpmyadmin
+      register: phpmyadmin_check
+      ignore_errors: yes
+
+    - name: Remove phpMyAdmin if installed
+      apt:
+        name: phpmyadmin
+        state: absent
+      when: phpmyadmin_check.rc == 0
+
+    - name: Set debconf selection to not configure database for phpMyAdmin
+      debconf:
+        name: phpmyadmin
+        question: phpmyadmin/dbconfig-install
+        value: 'false'
+        vtype: boolean
+
+    - name: Install phpMyAdmin
+      apt:
+        name: phpmyadmin
+        state: present
+
+    - name: Create symlink for phpMyAdmin
+      file:
+        src: /usr/share/phpmyadmin
+        dest: /var/www/html/phpmyadmin
+        state: link
+
+    - name: Enable Apache2 service
+      systemd:
+        name: apache2
+        enabled: yes
+        state: started
+
+    - name: Verify Apache2 is running
+      command: systemctl is-active apache2
+      register: apache_status
+
+    - name: Display Apache status
+      debug:
+        msg: "Apache2 service is {{ apache_status.stdout }}"
+
+    - name: Test phpMyAdmin access
+      uri:
+        url: http://localhost/phpmyadmin
+        method: GET
+      register: phpmyadmin_response
+      ignore_errors: yes
+
+    - name: Display phpMyAdmin test result
+      debug:
+        msg: "phpMyAdmin response status: {{ phpmyadmin_response.status if phpmyadmin_response.status is defined else 'Not accessible' }}"

@@ -1,0 +1,17 @@
+---
+- name: Collect logging buffer from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve logging buffer
+      cisco.ios.ios_command:
+        commands:
+          - show logging | include %
+      register: logging_output
+
+    - name: Display logging info
+      ansible.builtin.debug:
+        msg: "show logging | include %:\n{{ logging_output.stdout[0] }}"

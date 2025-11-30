@@ -1,0 +1,30 @@
+---
+- name: Collect MAC address table entries for VLANs 12 and 34
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  vars:
+    vlans:
+      - 12
+      - 34
+
+  tasks:
+    - name: Show MAC address table for VLAN {{ item }}
+      cisco.ios.ios_command:
+        commands:
+          - "show mac address-table vlan {{ item }}"
+      loop: "{{ vlans }}"
+      loop_control:
+        label: "VLAN {{ item }}"
+      register: mac_tables
+
+    - name: Display MAC table results
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }} VLAN {{ vlans[idx] }} MAC table:
+          {{ mac_tables.results[idx].stdout[0] | default('No entries') }}
+      loop: "{{ range(vlans | length) | list }}"
+      loop_control:
+        index_var: idx

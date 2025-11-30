@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MariaDB Interview Prep</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        .question { background-color: #ffffff; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .options { margin: 10px 0; }
+        .option { display: block; margin: 5px 0; padding: 10px; background-color: #ecf0f1; border-radius: 4px; cursor: pointer; }
+        .option:hover { background-color: #d5dbdb; }
+        .selected { background-color: #a8e6cf; }
+        button { padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+        #results { display: none; }
+        .result-item { margin: 10px 0; padding: 10px; background-color: #e8f4fd; border-radius: 4px; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+</head>
+<body>
+    <h1>MariaDB Interview Prep Quiz</h1>
+    <p>Answer 200 multiple-choice questions. Your score will be shown at the end with explanations.</p>
+    <div id="progress-container">
+        <progress id="progress" value="1" max="200"></progress>
+        <span id="progress-text">Question 1 of 200</span>
+    </div>
+    <div id="quiz">
+        <div class="question">
+            <h3 id="question-text"></h3>
+            <div class="options" id="options"></div>
+        </div>
+        <button id="next-btn">Next</button>
+        <button id="finish-btn">Finish and See Results</button>
+    </div>
+    <div id="results">
+        <h2>Results</h2>
+        <p id="score"></p>
+        <div id="answers"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is MariaDB?", options: ["A web server", "A database", "An OS", "A programming language"], answer: 1, explanation: "MariaDB is an open-source relational database management system." },
+            { question: "Which is not a storage engine in MariaDB?", options: ["InnoDB", "MyISAM", "Aria", "PostgreSQL"], answer: 3, explanation: "PostgreSQL is a separate database, not an engine in MariaDB." },
+            { question: "How to connect to MariaDB?", options: ["mysql -u user -p", "connect db", "db login", "sql connect"], answer: 0, explanation: "Use the mysql command with user and password flags." },
+            { question: "What does SQL stand for?", options: ["Simple Query Language", "Structured Query Language", "System Query Logic", "Server Query Language"], answer: 1, explanation: "SQL is Structured Query Language for managing databases." },
+            { question: "Which command shows databases?", options: ["SHOW TABLES", "LIST DB", "SHOW DATABASES", "DISPLAY DB"], answer: 2, explanation: "SHOW DATABASES lists all available databases." },
+            { question: "How to create a database?", options: ["MAKE DB name", "CREATE DATABASE name", "NEW DB name", "ADD DB name"], answer: 1, explanation: "CREATE DATABASE name creates a new database." },
+            { question: "What is a primary key?", options: ["First column", "Unique identifier", "Text field", "Number only"], answer: 1, explanation: "A primary key uniquely identifies each row." },
+            { question: "Which is a DDL command?", options: ["INSERT", "UPDATE", "CREATE TABLE", "SELECT"], answer: 2, explanation: "DDL includes CREATE, ALTER, DROP." },
+            { question: "How to select all from a table?", options: ["GET * table", "SELECT ALL table", "SELECT * FROM table", "FETCH table"], answer: 2, explanation: "SELECT * FROM table retrieves all rows." },
+            { question: "What is a foreign key?", options: ["External link", "Links tables", "Index type", "Data type"], answer: 1, explanation: "Foreign keys link tables via primary keys." },
+            { question: "How to add a column?", options: ["ADD COLUMN", "ALTER TABLE table ADD col", "INSERT COLUMN", "UPDATE COLUMN"], answer: 1, explanation: "ALTER TABLE with ADD adds columns." },
+            { question: "What is InnoDB?", options: ["File system", "Transactional engine", "Query tool", "Backup utility"], answer: 1, explanation: "InnoDB is the default transactional storage engine." },
+            { question: "How to delete a row?", options: ["REMOVE row", "DELETE FROM table WHERE", "DROP row", "ERASE row"], answer: 1, explanation: "DELETE FROM table WHERE condition removes rows." },
+            { question: "What is a view?", options: ["Physical table", "Virtual table", "Index", "Trigger"], answer: 1, explanation: "Views are virtual tables from queries." },
+            { question: "How to backup a database?", options: ["mysqldump db > file", "backup db file", "export db file", "save db file"], answer: 0, explanation: "mysqldump exports database to SQL file." },
+            { question: "What is normalization?", options: ["Data duplication", "Reducing redundancy", "Adding indexes", "Sorting data"], answer: 1, explanation: "Normalization minimizes data redundancy." },
+            { question: "Which is not a join type?", options: ["INNER", "OUTER", "LEFT", "CROSS"], answer: 3, explanation: "CROSS is not a standard join; it's Cartesian." },
+            { question: "How to use ORDER BY?", options: ["SORT BY col", "ORDER col", "SELECT ... ORDER BY col", "ARRANGE col"], answer: 2, explanation: "ORDER BY sorts query results." },
+            { question: "What is a trigger?", options: ["Query shortcut", "Auto action on events", "User account", "Backup script"], answer: 1, explanation: "Triggers execute automatically on table changes." },
+            { question: "How to grant permissions?", options: ["ALLOW user", "GRANT priv ON obj TO user", "PERMIT user", "ACCESS user"], answer: 1, explanation: "GRANT assigns privileges to users." },
+            { question: "What is replication?", options: ["Data copy", "User sync", "Query logging", "Table merge"], answer: 0, explanation: "Replication copies data across servers." },
+            { question: "Which is a DML command?", options: ["CREATE", "INSERT", "ALTER", "DROP"], answer: 1, explanation: "DML includes INSERT, UPDATE, DELETE, SELECT." },
+            { question: "How to update data?", options: ["CHANGE table", "UPDATE table SET col=val", "MODIFY table", "EDIT table"], answer: 1, explanation: "UPDATE modifies existing rows." },
+            { question: "What is a stored procedure?", options: ["SQL file", "Precompiled code", "User role", "Index"], answer: 1, explanation: "Procedures are reusable SQL code blocks." },
+            { question: "How to use LIMIT?", options: ["SELECT ... MAX 10", "SELECT ... LIMIT 10", "SELECT ... TOP 10", "SELECT ... FIRST 10"], answer: 1, explanation: "LIMIT restricts rows returned." },
+            { question: "What is ACID?", options: ["Query types", "Transaction properties", "Engine names", "Command set"], answer: 1, explanation: "ACID ensures reliable transactions." },
+            { question: "How to check table structure?", options: ["DESCRIBE table", "SHOW table", "EXPLAIN table", "LIST table"], answer: 0, explanation: "DESCRIBE shows columns and types." },
+            { question: "What is a transaction?", options: ["Single query", "Grouped operations", "User session", "Backup"], answer: 1, explanation: "Transactions group operations as one unit." },
+            { question: "How to start a transaction?", options: ["BEGIN WORK", "START TRANS", "BEGIN TRANSACTION", "INIT TRANS"], answer: 2, explanation: "BEGIN TRANSACTION starts a transaction." },
+            { question: "What is rollback?", options: ["Save changes", "Undo changes", "Commit data", "Lock table"], answer: 1, explanation: "ROLLBACK undoes uncommitted changes." },
+            { question: "How to commit?", options: ["SAVE", "COMMIT", "END", "FINISH"], answer: 1, explanation: "COMMIT saves transaction changes." },
+            { question: "What is a deadlock?", options: ["Query error", "Circular wait", "Memory issue", "Disk full"], answer: 1, explanation: "Deadlock occurs when processes wait for each other." },
+            { question: "How to add an index?", options: ["INDEX table col", "CREATE INDEX idx ON table(col)", "ADD INDEX table", "SET INDEX col"], answer: 1, explanation: "CREATE INDEX adds an index to a column." },
+            { question: "What is full-text search?", options: ["Exact match", "Text search with MATCH", "Regex", "Wildcard"], answer: 1, explanation: "MATCH AGAINST searches text fields." },
+            { question: "How to use LIKE?", options: ["SELECT * LIKE 'pat'", "SELECT * WHERE col LIKE 'pat%'", "SELECT LIKE col", "MATCH col 'pat'"], answer: 1, explanation: "LIKE uses wildcards for pattern matching." },
+            { question: "What is a subquery?", options: ["Outer query", "Query in query", "Index query", "View query"], answer: 1, explanation: "Subqueries are nested SELECT statements." },
+            { question: "How to use GROUP BY?", options: ["GROUP col", "SELECT ... GROUP BY col", "SORT GROUP col", "AGGREGATE col"], answer: 1, explanation: "GROUP BY groups rows for aggregation." },
+            { question: "What is COUNT?", options: ["Sum values", "Count rows", "Average", "Max value"], answer: 1, explanation: "COUNT(*) counts rows in a result." },
+            { question: "How to use UNION?", options: ["JOIN tables", "SELECT ... UNION SELECT", "MERGE tables", "LINK queries"], answer: 1, explanation: "UNION combines results from multiple SELECTs." },
+            { question: "What is a constraint?", options: ["Query limit", "Data rule", "User permission", "Table size"], answer: 1, explanation: "Constraints enforce data integrity." },
+            { question: "How to set NOT NULL?", options: ["col NOT NULL", "col REQUIRED", "col MANDATORY", "col ESSENTIAL"], answer: 0, explanation: "NOT NULL prevents null values." },
+            { question: "What is AUTO_INCREMENT?", options: ["Manual ID", "Auto-generated ID", "Random ID", "Fixed ID"], answer: 1, explanation: "AUTO_INCREMENT generates unique IDs." },
+            { question: "How to rename a table?", options: ["RENAME table TO new", "ALTER TABLE table RENAME TO new", "CHANGE table new", "UPDATE table new"], answer: 1, explanation: "ALTER TABLE with RENAME changes table name." },
+            { question: "What is mysqld?", options: ["Client tool", "Server daemon", "Backup utility", "Config file"], answer: 1, explanation: "mysqld is the MariaDB server process." },
+            { question: "How to check server status?", options: ["mysql status", "systemctl status mariadb", "db status", "server check"], answer: 1, explanation: "systemctl checks service status." },
+            { question: "What is my.cnf?", options: ["Log file", "Config file", "Data file", "User file"], answer: 1, explanation: "my.cnf contains MariaDB configuration." },
+            { question: "How to change port?", options: ["port=3307 in my.cnf", "SET PORT 3307", "CHANGE PORT 3307", "ALTER PORT 3307"], answer: 0, explanation: "Edit port in configuration file." },
+            { question: "What is the default user?", options: ["admin", "root", "user", "guest"], answer: 1, explanation: "Root is the default administrative user." },
+            { question: "How to change root password?", options: ["mysqladmin password", "ALTER USER root IDENTIFIED BY 'pass'", "SET PASSWORD", "UPDATE password"], answer: 1, explanation: "ALTER USER changes passwords." }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let selectedOption = null;
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResults();
+                return;
+            }
+            const q = questions[currentQuestion];
+            document.getElementById('question-text').textContent = `${currentQuestion + 1}. ${q.question}`;
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = opt;
+                div.onclick = () => selectOption(idx, div);
+                optionsDiv.appendChild(div);
+            });
+            selectedOption = null;
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('finish-btn').style.display = 'block';
+            updateProgress();
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').value = currentQuestion + 1;
+            document.getElementById('progress-text').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function selectOption(idx, elem) {
+            selectedOption = idx;
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            elem.classList.add('selected');
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            userAnswers.push(selectedOption);
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            if (selectedOption !== null) userAnswers.push(selectedOption);
+            showResults();
+        }
+
+        function showResults() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            let correct = 0;
+            const answersDiv = document.getElementById('answers');
+            questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.answer;
+                if (isCorrect) correct++;
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.innerHTML = `<strong>${idx + 1}. ${q.question}</strong><br>
+                    Your answer: ${q.options[userAns] || 'Not answered'} <span class="${isCorrect ? 'correct' : 'incorrect'}">(${isCorrect ? 'Correct' : 'Incorrect'})</span><br>
+                    Correct: ${q.options[q.answer]}<br>
+                    Explanation: ${q.explanation}`;
+                answersDiv.appendChild(div);
+            });
+            const percentage = (correct / questions.length * 100).toFixed(2);
+            const status = percentage >= 70 ? 'Success' : 'Failure';
+            document.getElementById('score').textContent = `You scored ${correct}/${questions.length} (${percentage}%) - ${status}`;
+        }
+
+        document.getElementById('next-btn').onclick = nextQuestion;
+        document.getElementById('finish-btn').onclick = finishQuiz;
+        loadQuestion();
+    </script>
+</body>
+</html>

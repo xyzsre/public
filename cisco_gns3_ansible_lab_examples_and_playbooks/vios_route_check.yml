@@ -1,0 +1,17 @@
+---
+- name: Collect routing table from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve IP routing table
+      cisco.ios.ios_command:
+        commands:
+          - show ip route
+      register: route_table
+
+    - name: Display routing table
+      ansible.builtin.debug:
+        msg: "show ip route:\n{{ route_table.stdout[0] }}"

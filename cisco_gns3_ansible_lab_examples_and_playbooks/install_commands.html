@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Reference for install_commands.txt</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #f8fafc;
+      color: #1f2933;
+      margin: 0;
+      padding: 0;
+      line-height: 1.65;
+    }
+    header {
+      background: #0b3d91;
+      color: #ffffff;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+      padding: 2rem 1.75rem 3rem;
+    }
+    h1, h2 {
+      color: #0b3d91;
+    }
+    section + section {
+      margin-top: 2rem;
+    }
+    .command-block {
+      margin-bottom: 1.75rem;
+      border-left: 4px solid #1e88e5;
+      background: #f1f5f9;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+    }
+    .command-block h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #0b3d91;
+    }
+    .command-block code {
+      display: block;
+      background: #e2e8f0;
+      padding: 0.5rem 0.75rem;
+      margin: 0.75rem 0;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .command-block p {
+      margin: 0.3rem 0 0.6rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>install_commands.txt Reference Guide</h1>
+    <p>Line-by-line explanations of every command contained in `install_commands.txt` for setting up and operating Cisco Ansible automation labs.</p>
+  </header>
+  <main>
+    <section id="system-prep">
+      <h2>1. System Preparation and Visual Studio Code Installation</h2>
+      <article class="command-block">
+        <h3>Update and upgrade system packages</h3>
+        <code>sudo apt update && sudo apt upgrade -y</code>
+        <p>Refreshes package indexes and installs all available upgrades. Running `-y` auto-confirms prompts. Listed twice in the file to ensure the system is current before each major install step.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Visual Studio Code via Snap</h3>
+        <code>sudo snap install code --classic</code>
+        <p>Installs VS Code using Snap with classic confinement, which allows full access to the user&#39;s environment.</p>
+      </article>
+      <article class="command-block">
+        <h3>Launch Visual Studio Code</h3>
+        <code>code</code>
+        <p>Opens VS Code. Appears twice to encourage launching after each installation method.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install prerequisites for Microsoft repository</h3>
+        <code>sudo apt install wget gpg apt-transport-https -y</code>
+        <p>Ensures tools required to download keys and access HTTPS repositories are present.</p>
+      </article>
+      <article class="command-block">
+        <h3>Import Microsoft GPG key</h3>
+        <code>wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg</code>
+        <p>Downloads the Microsoft signing key and stores it in a keyring to validate VS Code packages.</p>
+      </article>
+      <article class="command-block">
+        <h3>Add VS Code APT repository</h3>
+        <code>echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list</code>
+        <p>Registers the official VS Code repository so the package manager can install and update VS Code.</p>
+      </article>
+      <article class="command-block">
+        <h3>Update package index</h3>
+        <code>sudo apt update</code>
+        <p>Reloads package lists to include newly added repositories.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Visual Studio Code via APT</h3>
+        <code>sudo apt install code -y</code>
+        <p>Installs VS Code through the Microsoft repository, providing an alternative to the Snap package.</p>
+      </article>
+    </section>
+
+    <section id="ansible-install">
+      <h2>2. Ansible Installation and Verification</h2>
+      <article class="command-block">
+        <h3>Check current Ansible version</h3>
+        <code>ansible --version</code>
+        <p>Verifies whether Ansible is installed and shows version details.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Ansible Core</h3>
+        <code>sudo apt update && sudo apt install -y ansible-core</code>
+        <p>Installs the Ansible engine from Ubuntu repositories. Combines update and installation for efficiency.</p>
+      </article>
+      <article class="command-block">
+        <h3>Re-check Ansible version</h3>
+        <code>ansible --version</code>
+        <p>Confirms the newly installed version and Python bindings.</p>
+      </article>
+    </section>
+
+    <section id="collection-management">
+      <h2>3. Ansible Collection Management</h2>
+      <article class="command-block">
+        <h3>List installed collections (human-readable)</h3>
+        <code>ansible-galaxy collection list</code>
+        <p>Shows all installed Ansible collections along with their versions.</p>
+      </article>
+      <article class="command-block">
+        <h3>List installed collections (JSON)</h3>
+        <code>ansible-galaxy collection list --format=json</code>
+        <p>Outputs the same list in JSON for scripting and automation.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Cisco network collections</h3>
+        <code>ansible-galaxy collection install cisco.ios cisco.iosxr cisco.nxos --upgrade</code>
+        <p>Downloads or updates Cisco IOS, IOS XR, and NX-OS collections to the latest available versions.</p>
+      </article>
+      <article class="command-block">
+        <h3>List specific Cisco collections (JSON)</h3>
+        <code>ansible-galaxy collection list cisco.ios cisco.iosxr cisco.nxos --format=json</code>
+        <p>Validates the exact versions of the newly installed Cisco collections.</p>
+      </article>
+      <article class="command-block">
+        <h3>Show all collections in JSON</h3>
+        <code>ansible-galaxy collection list --format=json</code>
+        <p>Repeat listing to ensure the final state is captured programmatically.</p>
+      </article>
+      <article class="command-block">
+        <h3>Filter Cisco collections using grep</h3>
+        <code>ansible-galaxy collection list | grep -E "cisco\.(ios|iosxr|nxos)"</code>
+        <p>Displays only Cisco network collections from the list for quick visual confirmation.</p>
+      </article>
+      <article class="command-block">
+        <h3>Verify Ansible version again</h3>
+        <code>ansible --version</code>
+        <p>Ensures Ansible still functions after adding collections.</p>
+      </article>
+    </section>
+
+    <section id="connectivity-prep">
+      <h2>4. Connectivity Preparation</h2>
+      <article class="command-block">
+        <h3>Run validation playbook</h3>
+        <code>ansible-playbook -i inventory.ini vios_check.yml</code>
+        <p>Tests basic connectivity and gathers initial facts from vIOS devices defined in `inventory.ini`.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Paramiko via pip (user scope)</h3>
+        <code>pip install --user paramiko</code>
+        <p>Installs the Paramiko SSH library for the current user, enabling secure connections.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install system pip3</h3>
+        <code>sudo apt install -y python3-pip</code>
+        <p>Ensures the system-wide Python package manager is present.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Paramiko via pip3 (user scope)</h3>
+        <code>pip3 install --user paramiko</code>
+        <p>Alternative installation of Paramiko using pip3 for Python 3 environments.</p>
+      </article>
+      <article class="command-block">
+        <h3>Install Paramiko via APT</h3>
+        <code>sudo apt install -y python3-paramiko</code>
+        <p>Installs Ubuntu&#39;s packaged version of Paramiko to cover system-wide dependencies.</p>
+      </article>
+      <article class="command-block">
+        <h3>Re-run validation playbook</h3>
+        <code>ansible-playbook -i inventory.ini vios_check.yml</code>
+        <p>Confirms connectivity after installing SSH libraries.</p>
+      </article>
+      <article class="command-block">
+        <h3>Scan host key</h3>
+        <code>ssh-keyscan -H 192.168.122.11</code>
+        <p>Retrieves the SSH host key for device `192.168.122.11`, hashing the hostname for secure storage.</p>
+      </article>
+      <article class="command-block">
+        <h3>Remove host key entry</h3>
+        <code>ssh-keygen -R 192.168.122.11</code>
+        <p>Deletes existing known_hosts entries to avoid key mismatch errors.</p>
+      </article>
+      <article class="command-block">
+        <h3>Verify host key removal</h3>
+        <code>grep -n "192.168.122.11" ~/.ssh/known_hosts</code>
+        <p>Checks if the host key was successfully removed from `known_hosts`.</p>
+      </article>
+      <article class="command-block">
+        <h3>Disable host key checking (one-off)</h3>
+        <code>ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.ini vios_check.yml</code>
+        <p>Runs the playbook without host key verification, useful when testing new lab devices.</p>
+      </article>
+    </section>
+
+    <section id="connectivity-tests">
+      <h2>5. Ansible Connectivity Tests</h2>
+      <article class="command-block">
+        <h3>Ping all vIOS devices with explicit inventory</h3>
+        <code>ansible -i inventory.ini -m ping vios</code>
+        <p>Uses the `ping` module to test connectivity to the `vios` group defined in `inventory.ini`.</p>
+      </article>
+      <article class="command-block">
+        <h3>Ping using default inventory</h3>
+        <code>ansible -m ping vios</code>
+        <p>Runs the same test relying on the default inventory configured in `ansible.cfg`.</p>
+      </article>
+      <article class="command-block">
+        <h3>Ping individual switch `sw1`</h3>
+        <code>ansible -m ping sw1</code>
+        <p>Targets a specific host to confirm access.</p>
+      </article>
+      <article class="command-block">
+        <h3>Ping individual switch `sw2`</h3>
+        <code>ansible -m ping sw2</code>
+        <p>Verifies connectivity to a second switch independently.</p>
+      </article>
+    </section>
+
+    <section id="show-commands">
+      <h2>6. Show Command Execution</h2>
+      <article class="command-block">
+        <h3>Run show command with explicit inventory</h3>
+        <code>ansible -i inventory.ini vios -m cisco.ios.ios_command -a "commands='show ip interface brief'"</code>
+        <p>Executes `show ip interface brief` on the `vios` group using the Cisco IOS command module.</p>
+      </article>
+      <article class="command-block">
+        <h3>Run show command using default inventory</h3>
+        <code>ansible vios -m cisco.ios.ios_command -a "commands='show ip interface brief'"</code>
+        <p>Repeats the command using the default inventory configuration.</p>
+      </article>
+    </section>
+
+    <section id="playbook-suite">
+      <h2>7. Playbook Execution Suite</h2>
+      <article class="command-block">
+        <h3>Validation and discovery playbooks</h3>
+        <code>ansible-playbook vios_check.yml
+ansible-playbook vios_ip_check.yml
+ansible-playbook vios_cdp_check.yml
+ansible-playbook vios_arp_check.yml
+ansible-playbook vios_mac_check.yml
+ansible-playbook vios_version_check.yml
+ansible-playbook vios_interfaces_status.yml
+ansible-playbook vios_vlan_check.yml
+ansible-playbook vios_stp_check.yml
+ansible-playbook vios_interface_counters.yml
+ansible-playbook vios_route_check.yml
+ansible-playbook vios_inventory_check.yml
+ansible-playbook vios_logging_check.yml
+ansible-playbook vios_int_description.yml
+ansible-playbook vios_lldp_check.yml
+ansible-playbook vios_etherchannel_check.yml
+ansible-playbook vios_running_config.yml
+ansible-playbook vios_ip_interface_detail.yml</code>
+        <p>Runs a series of operational playbooks to audit vIOS devices, gather interface data, and check protocols and logging.</p>
+      </article>
+      <article class="command-block">
+        <h3>Export configuration playbooks</h3>
+        <code>ansible-playbook export_sw1_config.yml
+ansible-playbook export_sw1_ssh_config.yml</code>
+        <p>Exports running configuration and SSH settings for archival or comparison.</p>
+      </article>
+      <article class="command-block">
+        <h3>Configuration deployment playbooks</h3>
+        <code>ansible-playbook configure_sw_hostname_domain.yml
+ansible-playbook configure_sw_security.yml
+ansible-playbook configure_sw_vlan2.yml
+ansible-playbook configure_sw_vlan3.yml
+ansible-playbook configure_sw_portchannel.yml
+ansible-playbook configure_sw_stp_root.yml
+ansible-playbook configure_sw_vlan12.yml
+ansible-playbook configure_sw_vlan34.yml
+ansible-playbook configure_ip_routing.yml
+ansible-playbook configure_vrrp.yml
+ansible-playbook configure_vlan12_acl.yml</code>
+        <p>Applies device configurations such as hostnames, security baselines, VLANs, STP roles, routing, VRRP, and ACLs.</p>
+      </article>
+      <article class="command-block">
+        <h3>Service verification and reporting playbooks</h3>
+        <code>ansible-playbook vios_cdp_summary.yml
+ansible-playbook vios_vlan_summary.yml
+ansible-playbook vios_trunk_summary.yml
+ansible-playbook vios_portchannel_summary.yml
+ansible-playbook vios_portchannel_interfaces.yml
+ansible-playbook vios_portchannel_loadbalance.yml
+ansible-playbook vios_vrrp_status.yml
+ansible-playbook vios_mac_vlan12_34.yml
+ansible-playbook vios_arp_vlan12_34.yml
+ansible-playbook vios_ip_summary.yml
+ansible-playbook vios_ip_summary_assigned.yml
+ansible-playbook vios_routing_summary.yml
+ansible-playbook vios_stp_vlan1.yml
+ansible-playbook vios_stp_vlan2.yml
+ansible-playbook vios_stp_vlan3.yml
+ansible-playbook vios_stp_vlan12.yml
+ansible-playbook vios_logging_check.yml</code>
+        <p>Collects service status and summaries across VLANs, trunks, port channels, routing, VRRP, and STP domains.</p>
+      </article>
+      <article class="command-block">
+        <h3>Testing and troubleshooting playbooks</h3>
+        <code>ansible-playbook vios_vlan2_ping.yml
+ansible-playbook vios_vlan3_ping.yml
+ansible-playbook vios_custom_ping.yml
+ansible-playbook vios_pc1_ping.yml</code>
+        <p>Validates end-to-end connectivity across VLANs and specific hosts.</p>
+      </article>
+      <article class="command-block">
+        <h3>Maintenance and cleanup playbooks</h3>
+        <code>ansible-playbook save_running_config.yml
+ansible-playbook export_switch_configs.yml
+ansible-playbook disable_portchannel.yml
+ansible-playbook clear_mac_table.yml
+ansible-playbook clear_arp_cache.yml</code>
+        <p>Handles configuration backup, port-channel disablement, and cache clearing tasks.</p>
+      </article>
+      <article class="command-block">
+        <h3>ACL visibility playbook</h3>
+        <code>ansible-playbook show_acls.yml</code>
+        <p>Displays access control lists deployed on target devices, useful for auditing security policies.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

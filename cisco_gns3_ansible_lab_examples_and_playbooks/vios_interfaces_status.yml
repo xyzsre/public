@@ -1,0 +1,17 @@
+---
+- name: Collect detailed interface status from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve interface status
+      cisco.ios.ios_command:
+        commands:
+          - show interfaces status
+      register: interfaces_status
+
+    - name: Display interface status output
+      ansible.builtin.debug:
+        msg: "show interfaces status:\n{{ interfaces_status.stdout[0] }}"

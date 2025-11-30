@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GNS3 Cisco Command Reference</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      line-height: 1.65;
+      color: #1b1f3b;
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 60%);
+    }
+    header {
+      padding: 52px 6vw 44px;
+      background: linear-gradient(135deg, #5b7cfa, #172554 70%);
+      color: #f8fafc;
+      text-align: center;
+      box-shadow: 0 18px 38px rgba(23, 37, 84, 0.35);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.6rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    header p {
+      max-width: 860px;
+      margin: 18px auto 0;
+      opacity: 0.88;
+      font-size: 1.12rem;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 6vw 80px;
+    }
+    section {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      padding: 32px 34px;
+      margin-bottom: 32px;
+      box-shadow: 0 14px 32px rgba(24, 31, 55, 0.1);
+      border: 1px solid rgba(27, 31, 59, 0.09);
+    }
+    section h2 {
+      margin-top: 0;
+      font-size: 1.9rem;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    section h3 {
+      margin-top: 22px;
+      font-size: 1.35rem;
+      color: #1d4ed8;
+    }
+    p { margin: 12px 0; }
+    ul { margin: 12px 0 0 20px; padding-left: 4px; }
+    li { margin-bottom: 8px; }
+    code {
+      font-family: "Fira Code", Consolas, "Courier New", monospace;
+      background: rgba(76, 106, 255, 0.12);
+      padding: 3px 6px;
+      border-radius: 6px;
+    }
+    pre {
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.92);
+      color: #f8fafc;
+      padding: 18px 22px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.25);
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(24, 31, 55, 0.08);
+    }
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      text-align: left;
+      vertical-align: top;
+      background: rgba(255, 255, 255, 0.95);
+    }
+    th {
+      background: #1d4ed8;
+      color: #f8fafc;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.85rem;
+    }
+    tr:last-child td { border-bottom: none; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .card {
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(29, 78, 216, 0.12);
+      background: rgba(248, 250, 252, 0.85);
+      box-shadow: 0 12px 22px rgba(15, 23, 42, 0.08);
+    }
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #1e3a8a;
+      font-weight: 600;
+      font-size: 0.76rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .note {
+      border-left: 4px solid #2563eb;
+      padding: 16px 20px;
+      background: rgba(37, 99, 235, 0.08);
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 0 48px;
+      color: rgba(15, 23, 42, 0.65);
+      font-size: 0.95rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { color: #e2e8f0; background: linear-gradient(180deg, #0f172a 0%, #020617 60%); }
+      section { background: rgba(12, 21, 38, 0.88); border-color: rgba(37, 99, 235, 0.28); box-shadow: 0 18px 36px rgba(2, 6, 23, 0.6); }
+      section h2 { color: #93c5fd; }
+      section h3 { color: #bfdbfe; }
+      table { box-shadow: 0 10px 20px rgba(2, 6, 23, 0.6); }
+      th, td { background: rgba(15, 23, 42, 0.92); border-color: rgba(37, 99, 235, 0.18); }
+      th { background: rgba(37, 99, 235, 0.3); color: #e0f2fe; }
+      .card { background: rgba(15, 23, 42, 0.75); border-color: rgba(37, 99, 235, 0.25); }
+      .note { background: rgba(37, 99, 235, 0.2); border-color: rgba(147, 197, 253, 0.5); }
+      footer { color: rgba(226, 232, 240, 0.6); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GNS3 Cisco IOS Command Reference</h1>
+    <p>Quick-start configuration and verification commands for Cisco vIOS-L2, vIOS-L3, 7200, 3725, and 1700 platforms running inside GNS3. Use this as an all-in-one lab aide for building and validating foundational routing and switching scenarios.</p>
+  </header>
+  <main>
+    <section>
+      <h2>1. Platform Snapshots</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">vIOS-L2</span>
+          <p>Modern Layer 2 Catalyst-like switching. Full VLAN/STP suite, EtherChannel, and security features. Ideal for switching-focused labs.</p>
+        </div>
+        <div class="card">
+          <span class="tag">vIOS-L3</span>
+          <p>Feature-rich Layer 3 routing with MPLS, VRFs, and advanced security. Use for up-to-date routing labs and control-plane automation.</p>
+        </div>
+        <div class="card">
+          <span class="tag">7200</span>
+          <p>High-performance core router via Dynamips. Supports large routing tables, MPLS, QoS, and multi-interface WAN testing.</p>
+        </div>
+        <div class="card">
+          <span class="tag">3725</span>
+          <p>Versatile enterprise edge router with NM-16ESW support for basic switching. Great for mixed routing/switching topologies.</p>
+        </div>
+        <div class="card">
+          <span class="tag">1700</span>
+          <p>Branch-class router for CCNA-level labs. Limited resources but perfect for practicing fundamental routing protocols.</p>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Best Practice:</strong> Use vIOS-L2 for switching labs instead of NM-16ESW when you need Rapid-PVST+, MST, or port-security features. Use vIOS-L3 or 7200 for routing-heavy scenarios requiring advanced protocols.
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Base Device Initialization</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Command Sequence</th>
+            <th>Verification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Erase old config</td>
+            <td>
+              <pre><code>erase startup-config
+reload</code></pre>
+            </td>
+            <td>
+              <pre><code>show running-config</code></pre>
+            </td>
+          </tr>
+          <tr>
+            <td>Set hostname</td>
+            <td>
+              <pre><code>configure terminal
+hostname GNS3-R1
+end
+write memory</code></pre>
+            </td>
+            <td><code>show running-config | include hostname</code></td>
+          </tr>
+          <tr>
+            <td>Secure EXEC access</td>
+            <td>
+              <pre><code>conf t
+enable secret Cisco123
+line vty 0 4
+ password VTYpass
+ login
+ transport input ssh
+username netlab privilege 15 secret LabPass
+ip domain-name lab.local
+crypto key generate rsa modulus 2048
+end</code></pre>
+            </td>
+            <td>
+              <pre><code>show ip ssh
+show running-config | section line vty</code></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>3. Interface IP Addressing</h2>
+      <h3>Router Interfaces (vIOS-L3, 7200, 3725, 1700)</h3>
+      <pre><code>conf t
+interface GigabitEthernet0/0
+ description Link to vIOS-L2
+ ip address 192.0.2.1 255.255.255.0
+ no shutdown
+exit
+interface Serial0/0
+ ip address 10.0.0.1 255.255.255.252
+ clock rate 64000
+ no shutdown
+end</code></pre>
+      <h3>SVI on vIOS-L2 (Switch Virtual Interface)</h3>
+      <pre><code>conf t
+interface vlan 10
+ ip address 192.0.2.10 255.255.255.0
+ no shutdown
+exit
+ip default-gateway 192.0.2.1
+end</code></pre>
+      <h3>Verification</h3>
+      <ul>
+        <li><code>show ip interface brief</code></li>
+        <li><code>show interfaces description</code></li>
+        <li><code>ping 192.0.2.10 source 192.0.2.1</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. VLANs, Access Ports &amp; Trunks (Switching)</h2>
+      <h3>Create VLANs (vIOS-L2 / 3725 with NM-16ESW)</h3>
+      <pre><code>conf t
+vlan 10
+ name USERS
+vlan 20
+ name SERVERS
+exit</code></pre>
+      <h3>Assign Access Ports</h3>
+      <pre><code>conf t
+interface range GigabitEthernet0/1 - 0/10
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+exit</code></pre>
+      <h3>Configure 802.1Q Trunks</h3>
+      <pre><code>conf t
+interface GigabitEthernet0/24
+ description Uplink to vIOS-L3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,99
+ spanning-tree portfast trunk
+end</code></pre>
+      <h3>Verification</h3>
+      <ul>
+        <li><code>show vlan brief</code></li>
+        <li><code>show interfaces trunk</code></li>
+        <li><code>show spanning-tree vlan 10</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. EtherChannel (Port-Channel)</h2>
+      <pre><code>conf t
+interface range GigabitEthernet0/11 - 0/12
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+ channel-group 1 mode active
+exit
+interface Port-channel1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+end</code></pre>
+      <h3>Verification</h3>
+      <ul>
+        <li><code>show etherchannel summary</code></li>
+        <li><code>show interfaces port-channel 1 trunk</code></li>
+        <li><code>show spanning-tree interface port-channel 1</code></li>
+      </ul>
+      <div class="note">
+        <strong>Platform Note:</strong> For legacy NM-16ESW modules on 3725/3745, use <code>interface FastEthernetx/y</code> and ensure the IOS image supports PAgP/LACP. vIOS-L2 supports both <code>mode active</code> (LACP) and <code>mode desirable</code> (PAgP).</div>
+    </section>
+
+    <section>
+      <h2>6. Routing Protocol Configuration</h2>
+      <h3>RIPv2 (Best for 1700 &amp; 3725 labs)</h3>
+      <pre><code>conf t
+router rip
+ version 2
+ no auto-summary
+ network 192.0.2.0
+ network 10.0.0.0
+ passive-interface GigabitEthernet0/0
+end</code></pre>
+      <p><strong>Verification:</strong> <code>show ip protocols</code>, <code>show ip rip database</code>, <code>show ip route rip</code></p>
+
+      <h3>EIGRP (Classic Mode for 1700/3725, Named for vIOS-L3)</h3>
+      <pre><code>conf t
+router eigrp 100
+ network 10.0.0.0 0.0.0.3
+ network 192.0.2.0 0.0.0.255
+ passive-interface GigabitEthernet0/0
+ no auto-summary
+end</code></pre>
+      <p><strong>Verification:</strong> <code>show ip eigrp neighbors</code>, <code>show ip eigrp topology</code>, <code>show ip route eigrp</code></p>
+
+      <h3>OSPF (Process 1)</h3>
+      <pre><code>conf t
+router ospf 1
+ router-id 1.1.1.1
+ network 192.0.2.0 0.0.0.255 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+passive-interface GigabitEthernet0/0
+end</code></pre>
+      <p><strong>Verification:</strong> <code>show ip ospf neighbor</code>, <code>show ip ospf interface</code>, <code>show ip route ospf</code></p>
+
+      <h3>BGP (Edge/7200/vIOS-L3)</h3>
+      <pre><code>conf t
+router bgp 65001
+ bgp log-neighbor-changes
+ neighbor 203.0.113.2 remote-as 65002
+ neighbor 203.0.113.2 update-source Loopback0
+ network 198.51.100.0 mask 255.255.255.0
+!
+interface Loopback0
+ ip address 198.51.100.1 255.255.255.0
+end</code></pre>
+      <p><strong>Verification:</strong> <code>show ip bgp summary</code>, <code>show ip bgp</code>, <code>show ip bgp neighbors</code></p>
+      <div class="note">
+        <strong>vIOS-L3 Enhancements:</strong> Enable address-family configuration for IPv6 or VPNv4 with <code>router bgp</code> → <code>address-family</code> modes. 7200 supports route-reflectors and MPLS when using advanced feature packs.</div>
+    </section>
+
+    <section>
+      <h2>7. Device Role Quick Guides</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Initial Interfaces</th>
+            <th>Typical Use in Lab</th>
+            <th>Key Show Commands</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>vIOS-L2</td>
+            <td>Gig0/0–0/3 (10GE), VLAN interfaces</td>
+            <td>Access/core switching, security edge</td>
+            <td><code>show vlan brief</code><br /><code>show mac address-table</code><br /><code>show spanning-tree</code></td>
+          </tr>
+          <tr>
+            <td>vIOS-L3</td>
+            <td>Gig0/0–0/2, Loopbacks</td>
+            <td>Routing core, MPLS PE, SD-WAN labs</td>
+            <td><code>show ip route</code><br /><code>show platform</code><br /><code>show controllers</code></td>
+          </tr>
+          <tr>
+            <td>7200</td>
+            <td>FastEthernet/Gigabit with PA adapters</td>
+            <td>Service provider edge, BGP/MPLS</td>
+            <td><code>show diag</code><br /><code>show controllers</code><br /><code>show ip cef</code></td>
+          </tr>
+          <tr>
+            <td>3725</td>
+            <td>FastEthernet, Serial, NM-16ESW</td>
+            <td>WAN aggregation, small campus</td>
+            <td><code>show module</code><br /><code>show interface status</code><br /><code>show cdp neighbors</code></td>
+          </tr>
+          <tr>
+            <td>1700</td>
+            <td>FastEthernet0/0, WIC Serial</td>
+            <td>Access routing, RIP/EIGRP practice</td>
+            <td><code>show controllers serial</code><br /><code>show version</code><br /><code>show ip interface brief</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>8. Troubleshooting &amp; Verification Toolkit</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">Connectivity</span>
+          <ul>
+            <li><code>ping</code> / <code>ping ipv6</code></li>
+            <li><code>traceroute</code></li>
+            <li><code>show ip arp</code>, <code>show mac address-table</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">Routing</span>
+          <ul>
+            <li><code>show ip route</code>, <code>show ip cef</code></li>
+            <li><code>debug ip routing</code> (lab only)</li>
+            <li><code>show ip protocols</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">Layer 2</span>
+          <ul>
+            <li><code>show spanning-tree detail</code></li>
+            <li><code>show etherchannel port</code></li>
+            <li><code>show interface trunk</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">Performance</span>
+          <ul>
+            <li><code>show processes cpu sorted</code></li>
+            <li><code>show platform hardware capacity</code></li>
+            <li><code>show logging</code> for Syslog events</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Automation Tip:</strong> Capture device states with <code>show running-config</code> and <code>show tech-support</code>, then export through GNS3 console logging or use <code>gns3fy</code>/<code>pyATS</code> to snapshot lab results programmatically.</div>
+    </section>
+  </main>
+  <footer>
+    Designed for accelerated practice in GNS3 labs. Adapt configurations per topology, save snapshots, and iterate quickly.
+  </footer>
+</body>
+</html>

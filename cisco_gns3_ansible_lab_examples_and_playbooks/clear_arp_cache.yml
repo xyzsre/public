@@ -1,0 +1,26 @@
+---
+- name: Clear ARP cache on switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Clear ARP entries
+      cisco.ios.ios_command:
+        commands:
+          - command: clear arp-cache
+            prompt: "[confirm]"
+            answer: ""
+
+    - name: Show ARP summary after clear
+      cisco.ios.ios_command:
+        commands:
+          - show ip arp summary
+      register: arp_summary
+
+    - name: Display ARP summary
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ arp_summary.stdout[0] | default('No ARP summary output') }}

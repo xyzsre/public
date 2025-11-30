@@ -1,0 +1,17 @@
+---
+- name: Collect VLAN information from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve VLAN brief
+      cisco.ios.ios_command:
+        commands:
+          - show vlan brief
+      register: vlan_brief
+
+    - name: Display VLAN summary
+      ansible.builtin.debug:
+        msg: "show vlan brief:\n{{ vlan_brief.stdout[0] }}"

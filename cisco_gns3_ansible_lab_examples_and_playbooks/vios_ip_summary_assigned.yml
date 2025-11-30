@@ -1,0 +1,19 @@
+---
+- name: Show interface IP summary excluding unassigned
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Display interfaces with assigned IPs only
+      cisco.ios.ios_command:
+        commands:
+          - show ip interface brief | exclude unassigned
+      register: ip_summary_assigned
+
+    - name: Show filtered summary output
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ ip_summary_assigned.stdout[0] | default('No assigned interfaces') }}

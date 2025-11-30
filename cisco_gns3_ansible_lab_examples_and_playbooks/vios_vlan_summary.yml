@@ -1,0 +1,19 @@
+---
+- name: Collect VLAN summary from Cisco switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve VLAN summary
+      cisco.ios.ios_command:
+        commands:
+          - show vlan brief
+      register: vlan_output
+
+    - name: Display VLAN summary
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ vlan_output.stdout[0] | default('No data returned') }}

@@ -1,0 +1,19 @@
+---
+- name: Display access-list configurations
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Show all access-lists
+      cisco.ios.ios_command:
+        commands:
+          - show access-lists
+      register: acl_output
+
+    - name: Display ACLs
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ acl_output.stdout[0] | default('No ACLs configured') }}

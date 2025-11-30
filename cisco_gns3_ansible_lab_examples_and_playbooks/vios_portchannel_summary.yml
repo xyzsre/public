@@ -1,0 +1,19 @@
+---
+- name: Collect port-channel summary from Cisco switches
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve EtherChannel summary
+      cisco.ios.ios_command:
+        commands:
+          - show etherchannel summary
+      register: pc_summary
+
+    - name: Display EtherChannel summary
+      ansible.builtin.debug:
+        msg: |-
+          Host: {{ inventory_hostname }}
+          {{ pc_summary.stdout[0] | default('No EtherChannel data returned') }}

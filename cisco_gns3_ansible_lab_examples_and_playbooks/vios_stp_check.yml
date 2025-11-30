@@ -1,0 +1,17 @@
+---
+- name: Collect spanning-tree summary from Cisco vIOS
+  hosts: vios
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Retrieve STP summary
+      cisco.ios.ios_command:
+        commands:
+          - show spanning-tree summary
+      register: stp_summary
+
+    - name: Display STP summary
+      ansible.builtin.debug:
+        msg: "show spanning-tree summary:\n{{ stp_summary.stdout[0] }}"
