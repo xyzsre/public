@@ -1,0 +1,22 @@
+# LimitRange Example
+# Sets default resource requests/limits for containers in a namespace
+# Ensures all containers have reasonable resource constraints
+
+apiVersion: v1                    # API version for LimitRange resources
+kind: LimitRange                 # Resource type: LimitRange
+
+metadata:                        # Metadata about the LimitRange
+  name: demo-limits              # Unique name for the limit range
+
+spec:                           # LimitRange specification
+  limits:                       # List of limit ranges
+  - default:                    # Default limits applied when not specified
+      cpu: 500m                 # Default CPU limit: 500 milliCPUs (0.5 cores)
+      memory: 512Mi             # Default memory limit: 512 MiB
+
+    defaultRequest:             # Default requests applied when not specified
+      cpu: 100m                 # Default CPU request: 100 milliCPUs (0.1 cores)
+      memory: 128Mi             # Default memory request: 128 MiB
+
+    type: Container             # Applies to Container resources
+                               # Other types: Pod, PersistentVolumeClaim

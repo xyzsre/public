@@ -1,0 +1,10 @@
+---
+- name: Update system packages
+  hosts: all
+  become: false
+  tasks:
+    - name: Update apt cache (requires sudo privileges)
+      command: apt update
+      register: apt_update_result
+      failed_when: false  # Don't fail the play if apt update fails due to permissions
+      changed_when: false  # apt update doesn't change the system state in a detectable way

@@ -1,0 +1,26 @@
+# Resource Limits Pod Example
+# Demonstrates CPU and memory resource management in Kubernetes
+# Shows requests (minimum guaranteed) vs limits (maximum allowed)
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: resource-limits-pod      # Unique name for the pod
+
+spec:                           # Pod specification
+  containers:                   # List of containers
+  - name: app                   # Container name
+    image: busybox              # Container image
+    command: ['sh', '-c', 'echo "Running with resource limits" && sleep 300']
+                                # Container command
+
+    resources:                  # Resource requirements and limits
+      requests:                 # Minimum resources guaranteed to container
+        cpu: 100m               # 100 milliCPUs (0.1 CPU cores guaranteed)
+        memory: 128Mi           # 128 MiB of memory guaranteed
+
+      limits:                   # Maximum resources container can use
+        cpu: 200m               # 200 milliCPUs (0.2 CPU cores maximum)
+        memory: 256Mi           # 256 MiB of memory maximum
+                                # Container will be terminated if exceeded

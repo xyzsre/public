@@ -1,0 +1,17 @@
+# Basic Pod Example
+# This YAML defines a simple Kubernetes Pod with a single container
+# Demonstrates the minimum required fields for a functional pod
+
+apiVersion: v1                    # API version for Pod resources (v1 is stable)
+kind: Pod                        # Resource type: Pod (smallest deployable unit)
+
+metadata:                        # Metadata about the Pod
+  name: basic-pod                # Unique name for the pod within the namespace
+
+spec:                           # Pod specification - defines desired state
+  containers:                   # List of containers to run in the pod
+  - name: test                  # Unique name for this container within the pod
+    image: busybox              # Container image to use (lightweight Linux utilities)
+    command: ['sh', '-c', 'echo "Pod is running successfully" && sleep 300']
+                                # Override default command with custom shell command
+                                # Prints success message and sleeps for 5 minutes

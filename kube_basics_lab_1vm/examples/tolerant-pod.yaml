@@ -1,0 +1,23 @@
+# Tolerant Pod Example
+# Demonstrates pod tolerations for scheduling on tainted nodes
+# Tolerations allow pods to be scheduled on nodes with matching taints
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: tolerant-pod             # Unique name for the pod
+
+spec:                           # Pod specification
+  tolerations:                  # Tolerations for node taints
+  - key: "demo-taint"           # Taint key this toleration matches
+    operator: "Equal"           # Match operator: Equal or Exists
+    value: "demo"               # Taint value (required when operator is Equal)
+    effect: "NoSchedule"        # Taint effect: NoSchedule, PreferNoSchedule, NoExecute
+                               # NoSchedule = prevents scheduling but doesn't evict existing pods
+
+  containers:                   # List of containers
+  - name: app                   # Container name
+    image: busybox              # Container image
+    command: ['sh', '-c', 'echo "Running with toleration" && sleep 3600']
+                                # Container command demonstrating toleration works

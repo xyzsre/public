@@ -1,0 +1,34 @@
+# StatefulSet Example
+# Manages stateful applications with stable pod identities and storage
+# Pods have ordered creation, stable hostnames, and persistent storage
+
+apiVersion: apps/v1               # API version for StatefulSet resources
+kind: StatefulSet                # Resource type: StatefulSet
+
+metadata:                        # Metadata about the StatefulSet
+  name: demo-statefulset         # Unique name for the StatefulSet
+
+spec:                           # StatefulSet specification
+  serviceName: demo-stateful     # Headless service name for stable DNS
+                               # Required for StatefulSet DNS resolution
+
+  replicas: 2                   # Number of pod replicas
+                               # StatefulSets maintain exact replica count
+
+  selector:                     # Label selector for pods managed by StatefulSet
+    matchLabels:                # Must match pod template labels
+      app: demo-stateful        # Label selector
+
+  template:                     # Pod template for StatefulSet pods
+    metadata:                   # Metadata for pods created from this template
+      labels:                   # Labels applied to each pod
+        app: demo-stateful      # Must match selector
+
+    spec:                       # Pod specification
+      containers:               # List of containers
+      - name: stateful-container # Container name
+        image: busybox          # Container image
+        command: ['sh', '-c', 'echo "Pod: $(hostname)" && sleep 3600']
+                                # Command: shows pod hostname and sleeps
+                                # Hostname format: <statefulset-name>-<ordinal>
+                                # e.g., demo-statefulset-0, demo-statefulset-1

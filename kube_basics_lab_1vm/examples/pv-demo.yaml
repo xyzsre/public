@@ -1,0 +1,22 @@
+# PersistentVolume Example
+# Defines a storage resource that can be claimed by PersistentVolumeClaims
+# This example uses hostPath for demonstration (not suitable for production)
+
+apiVersion: v1                    # API version for PersistentVolume resources
+kind: PersistentVolume           # Resource type: PersistentVolume
+
+metadata:                        # Metadata about the PV
+  name: demo-pv                  # Unique name for the PV
+
+spec:                           # PV specification
+  capacity:                     # Storage capacity of the volume
+    storage: 1Gi                # 1 GiB of storage
+
+  accessModes:                 # How the volume can be mounted
+    - ReadWriteOnce             # Can be mounted read-write by a single node
+                               # Other options: ReadOnlyMany, ReadWriteMany
+
+  hostPath:                    # HostPath volume type (demo only)
+    path: /tmp/demo-storage     # Path on the host node's filesystem
+                               # WARNING: Not persistent across node reboots
+                               # WARNING: Not suitable for multi-node clusters

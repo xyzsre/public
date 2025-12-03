@@ -1,0 +1,26 @@
+# EmptyDir Volume Pod Example
+# Demonstrates temporary storage that exists for the pod's lifetime
+# Data is lost when pod is deleted, but shared between containers in same pod
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: emptydir-pod             # Unique name for the pod
+
+spec:                           # Pod specification
+  containers:                   # List of containers
+  - name: app                   # Container name
+    image: busybox              # Container image
+    command: ['sh', '-c', 'echo "Writing to emptyDir volume" > /tmp/data/file.txt && ls -la /tmp/data/ && sleep 300']
+                                # Command: writes to shared volume and lists contents
+
+    volumeMounts:               # Volume mounts for containers
+    - name: temp-storage        # Reference to volume name
+      mountPath: /tmp/data      # Path inside container where volume is mounted
+
+  volumes:                      # Volume definitions for the pod
+  - name: temp-storage          # Volume name (matches volumeMount name)
+    emptyDir: {}               # EmptyDir volume type - temporary storage
+                                # Created when pod starts, deleted when pod ends
+                                # Backed by node's local storage (tmpfs or disk)

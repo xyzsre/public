@@ -1,0 +1,14 @@
+# Custom Resource Instance Example
+# Instance of the MyApp custom resource defined by the CRD
+# Demonstrates using custom resources like built-in Kubernetes resources
+
+apiVersion: example.com/v1       # API version matches CRD group/version
+kind: MyApp                      # Kind matches CRD names.kind
+
+metadata:                        # Standard Kubernetes metadata
+  name: sample-app               # Unique name for this custom resource instance
+
+spec:                           # Specification (matches CRD schema)
+  replicas: 3                   # Custom field defined in CRD schema
+                               # Integer value as specified in CRD validation
+                               # This could be used by a custom controller

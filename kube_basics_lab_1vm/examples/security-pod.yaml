@@ -1,0 +1,27 @@
+# Security Context Pod Example
+# Demonstrates pod and container security contexts for enhanced security
+# Controls user permissions, privilege escalation, and filesystem access
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: security-pod             # Unique name for the pod
+
+spec:                           # Pod specification
+  securityContext:              # Pod-level security context
+    runAsUser: 1000             # User ID to run all containers as (non-root)
+    runAsGroup: 1000            # Group ID to run all containers as
+    fsGroup: 1000               # Filesystem group for mounted volumes
+
+  containers:                   # List of containers
+  - name: app                   # Container name
+    image: busybox              # Container image
+    command: ['sh', '-c', 'id && sleep 3600']
+                                # Command: show user ID and sleep
+
+    securityContext:            # Container-level security context
+      allowPrivilegeEscalation: false  # Prevent privilege escalation
+                                     # Container cannot gain more privileges than parent
+      readOnlyRootFilesystem: true    # Mount root filesystem as read-only
+                                     # Prevents writing to container filesystem

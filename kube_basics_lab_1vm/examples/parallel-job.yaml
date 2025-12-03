@@ -1,0 +1,27 @@
+# Parallel Job Example
+# Demonstrates Kubernetes Jobs with parallelism and completion requirements
+# Useful for batch processing, data processing, or parallel task execution
+
+apiVersion: batch/v1             # API version for Job resources
+kind: Job                        # Resource type: Job (runs to completion)
+
+metadata:                        # Metadata about the Job
+  name: parallel-job             # Unique name for the job
+
+spec:                           # Job specification
+  completions: 3                # Total number of successful completions required
+                                # Job succeeds when 3 pods complete successfully
+
+  parallelism: 2                # Maximum number of pods running simultaneously
+                                # Controls how many pods run in parallel
+
+  template:                     # Pod template for job execution
+    spec:                       # Pod specification
+      containers:               # List of containers
+      - name: task              # Container name
+        image: busybox          # Container image
+        command: ['sh', '-c', 'echo "Task $(date) completed" && sleep 5']
+                                # Command to execute in each pod
+
+      restartPolicy: Never      # Pod restart policy (required for jobs)
+                                # Never restart failed pods, OnFailure is also valid

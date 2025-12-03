@@ -1,0 +1,27 @@
+# Persistent Storage Pod Example
+# Demonstrates using PersistentVolumeClaim for persistent storage
+# Data persists across pod restarts and rescheduling
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: storage-pod              # Unique name for the pod
+
+spec:                           # Pod specification
+  containers:                   # List of containers
+  - name: app                   # Container name
+    image: busybox              # Container image
+    command: ['sh', '-c', 'echo "Testing persistent storage" > /data/test.txt && sleep 3600']
+                                # Command: writes to persistent volume and sleeps
+
+    volumeMounts:               # Volume mounts for containers
+    - mountPath: /data          # Path inside container where volume is mounted
+      name: storage             # Reference to volume name
+
+  volumes:                      # Volume definitions for the pod
+  - name: storage               # Volume name (matches volumeMount name)
+    persistentVolumeClaim:      # PVC volume source
+      claimName: demo-pvc       # Name of PVC to bind to
+                               # PVC must exist and be bound to PV
+                               # Provides persistent storage across pod lifecycles

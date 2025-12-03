@@ -1,0 +1,22 @@
+# Multi-Container Pod Example
+# Demonstrates a Pod with multiple containers that share the same network namespace
+# Common pattern: main application container + sidecar for logging, monitoring, or proxy
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: simple-multi-pod         # Unique name for the pod
+
+spec:                           # Pod specification
+  containers:                   # List of containers (can have multiple)
+  - name: main                  # Primary application container
+    image: busybox              # Lightweight container image
+    command: ['sh', '-c', 'echo "Main container starting" && sleep 300']
+                                # Command to run: print message and sleep
+
+  - name: sidecar               # Secondary container (sidecar pattern)
+    image: busybox              # Same image as main container
+    command: ['sh', '-c', 'echo "Sidecar starting" && sleep 300']
+                                # Sidecar container command
+                                # Both containers share network, IPC, and can share volumes

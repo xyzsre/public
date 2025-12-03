@@ -1,0 +1,18 @@
+# PersistentVolumeClaim Example
+# Requests storage from available PersistentVolumes
+# Automatically binds to matching PV based on access modes and capacity
+
+apiVersion: v1                    # API version for PersistentVolumeClaim resources
+kind: PersistentVolumeClaim      # Resource type: PersistentVolumeClaim
+
+metadata:                        # Metadata about the PVC
+  name: demo-pvc                 # Unique name for the PVC
+
+spec:                           # PVC specification
+  accessModes:                 # Required access modes
+    - ReadWriteOnce             # Must match available PV access modes
+
+  resources:                   # Resource requirements
+    requests:                  # Minimum storage required
+      storage: 500Mi            # 500 MiB minimum (can bind to larger PV)
+                               # Kubernetes matches to PV with >= requested capacity

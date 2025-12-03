@@ -1,0 +1,17 @@
+# StorageClass Example
+# Defines storage provisioning parameters for dynamic volume creation
+# This example uses no-provisioner (manual PV creation required)
+
+apiVersion: storage.k8s.io/v1     # API version for StorageClass resources
+kind: StorageClass               # Resource type: StorageClass
+
+metadata:                        # Metadata about the StorageClass
+  name: local-storage            # Unique name for the StorageClass
+
+provisioner: kubernetes.io/no-provisioner  # Provisioner for volume creation
+                                           # no-provisioner = manual PV creation
+                                           # Other provisioners: aws-ebs, gce-pd, etc.
+
+volumeBindingMode: WaitForFirstConsumer   # When to bind PV to PVC
+                                          # WaitForFirstConsumer = bind when pod needs volume
+                                          # Immediate = bind immediately when PVC created

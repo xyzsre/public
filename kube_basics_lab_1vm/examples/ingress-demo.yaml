@@ -1,0 +1,22 @@
+# Ingress Example
+# Manages external access to services within the cluster
+# Provides HTTP/HTTPS routing, SSL termination, and load balancing
+
+apiVersion: networking.k8s.io/v1  # API version for Ingress resources
+kind: Ingress                   # Resource type: Ingress
+
+metadata:                        # Metadata about the Ingress
+  name: demo-ingress            # Unique name for the ingress
+
+spec:                           # Ingress specification
+  rules:                        # Routing rules for incoming traffic
+  - host: demo.example.com      # Hostname this rule applies to
+    http:                       # HTTP routing configuration
+      paths:                    # List of path-based routing rules
+      - path: /                 # URL path to match (root path)
+        pathType: Prefix        # Path matching type: Prefix, Exact, or ImplementationSpecific
+        backend:                # Where to route matching traffic
+          service:              # Route to a Kubernetes service
+            name: nginx-service # Name of the target service
+            port:               # Service port configuration
+              number: 80        # Port number on the service

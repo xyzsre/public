@@ -1,0 +1,24 @@
+# Init Container Pod Example
+# Demonstrates init containers that run before main application containers
+# Init containers: setup tasks, wait for dependencies, database migrations
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: simple-init-pod          # Unique name for the pod
+
+spec:                           # Pod specification
+  initContainers:               # Init containers run sequentially before main containers
+  - name: init-wait             # Name of init container
+    image: busybox              # Container image for init tasks
+    command: ['sh', '-c', 'echo "Init container: Preparing..." && sleep 3 && echo "Init complete"']
+                                # Init command: simulates preparation work
+                                # Must complete successfully before main containers start
+
+  containers:                   # Main application containers (start after all init containers complete)
+  - name: main                  # Main application container
+    image: busybox              # Container image
+    command: ['sh', '-c', 'echo "Main container: Starting after init" && sleep 300']
+                                # Main application command
+                                # Only runs after init container succeeds

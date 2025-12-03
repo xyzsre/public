@@ -1,0 +1,21 @@
+# Priority Class Pod Example
+# Demonstrates pod priority for scheduling precedence during resource constraints
+# Higher priority pods are scheduled first, lower priority may be preempted
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: priority-pod             # Unique name for the pod
+
+spec:                           # Pod specification
+  priorityClassName: high-priority  # Reference to PriorityClass resource
+                                   # Determines scheduling priority
+                                   # Must match existing PriorityClass name
+
+  containers:                   # List of containers
+  - name: app                   # Container name
+    image: busybox              # Container image
+    command: ['sh', '-c', 'echo "Running with high priority" && sleep 300']
+                                # Container command
+                                # Pod will be scheduled with high priority

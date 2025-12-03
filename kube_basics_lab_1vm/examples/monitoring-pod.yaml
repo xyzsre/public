@@ -1,0 +1,50 @@
+# Monitoring Pod Example
+# Comprehensive pod with health checks, resource limits, and sidecar container
+# Demonstrates production-ready pod configuration with monitoring capabilities
+
+apiVersion: v1                    # API version for Pod resources
+kind: Pod                        # Resource type: Pod
+
+metadata:                        # Metadata about the Pod
+  name: monitoring-pod           # Unique name for the pod
+  labels:                        # Labels for pod identification and selection
+    app: monitoring              # Application label for grouping
+
+spec:                           # Pod specification
+  containers:                   # List of containers
+  - name: nginx                 # Main application container (web server)
+    image: nginx                # Nginx web server image
+    ports:                      # Port definitions
+    - containerPort: 80         # Port exposed by container
+
+    resources:                  # Resource requirements and limits
+      requests:                 # Minimum guaranteed resources
+        cpu: 50m                # 50 milliCPUs (0.05 cores)
+        memory: 64Mi            # 64 MiB memory
+      limits:                   # Maximum allowed resources
+        cpu: 100m               # 100 milliCPUs (0.1 cores)
+        memory: 128Mi           # 128 MiB memory
+
+    livenessProbe:              # Health check - restarts container if unhealthy
+      httpGet:                  # HTTP GET request to check health
+        path: /                 # Path to check (root)
+        port: 80                # Port to check
+      initialDelaySeconds: 5    # Wait 5s after start before first check
+      periodSeconds: 10         # Check every 10 seconds
+      timeoutSeconds: 5         # Timeout for each check
+      failureThreshold: 3       # Restart after 3 failures
+
+    readinessProbe:             # Readiness check - removes from service if unhealthy
+      httpGet:                  # HTTP GET request
+        path: /                 # Path to check
+        port: 80                # Port to check
+      initialDelaySeconds: 3    # Wait 3s after start before first check
+      periodSeconds: 5          # Check every 5 seconds
+      timeoutSeconds: 3         # Timeout for each check
+      failureThreshold: 2       # Mark unready after 2 failures
+
+  - name: sidecar               # Monitoring sidecar container
+    image: busybox              # Lightweight monitoring container
+    command: ['sh', '-c', 'while true; do echo "$(date): Monitoring sidecar running"; sleep 30; done']
+                                # Continuous logging every 30 seconds
+                                # Demonstrates sidecar pattern for monitoring

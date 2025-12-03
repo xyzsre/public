@@ -1,0 +1,27 @@
+# DaemonSet Example
+# Ensures one pod runs on every node in the cluster
+# Useful for node-level services: logging, monitoring, networking
+
+apiVersion: apps/v1               # API version for DaemonSet resources
+kind: DaemonSet                  # Resource type: DaemonSet
+
+metadata:                        # Metadata about the DaemonSet
+  name: demo-daemonset           # Unique name for the DaemonSet
+
+spec:                           # DaemonSet specification
+  selector:                     # Label selector for pods managed by this DaemonSet
+    matchLabels:                # Must match pod template labels
+      app: demo-daemon          # Label selector
+
+  template:                     # Pod template for DaemonSet pods
+    metadata:                   # Metadata for pods created from this template
+      labels:                   # Labels applied to each pod
+        app: demo-daemon        # Must match selector
+
+    spec:                       # Pod specification
+      containers:               # List of containers
+      - name: daemon-container  # Container name
+        image: busybox          # Container image
+        command: ['sh', '-c', 'echo "Running on $(hostname)" && sleep 3600']
+                                # Command: shows hostname and sleeps
+                                # $(hostname) shows which node the pod is running on

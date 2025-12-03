@@ -1,0 +1,36 @@
+# Network Policy Example - Web Traffic
+# Advanced network policy with both ingress and egress rules
+# Controls traffic flow between frontend, backend, and web pods
+
+apiVersion: networking.k8s.io/v1  # API version for NetworkPolicy resources
+kind: NetworkPolicy              # Resource type: NetworkPolicy
+
+metadata:                        # Metadata about the NetworkPolicy
+  name: allow-web-traffic        # Unique name for the policy
+
+spec:                           # NetworkPolicy specification
+  podSelector:                  # Pods this policy applies to
+    matchLabels:                # Label selector for target pods
+      app: web                  # Applies to pods with label app=web
+
+  policyTypes:                  # Types of rules defined
+  - Ingress                     # Defines incoming traffic rules
+  - Egress                      # Defines outgoing traffic rules
+
+  ingress:                      # Incoming traffic rules
+  - from:                       # Sources allowed to connect
+    - podSelector:              # Allow traffic from pods matching
+        matchLabels:            # Label selector for source pods
+          app: frontend         # Pods with label app=frontend
+    ports:                     # Ports that can be accessed
+    - protocol: TCP            # Protocol (TCP, UDP, SCTP)
+      port: 80                 # Port number
+
+  egress:                       # Outgoing traffic rules
+  - to:                         # Destinations allowed to connect to
+    - podSelector:              # Allow traffic to pods matching
+        matchLabels:            # Label selector for destination pods
+          app: backend          # Pods with label app=backend
+    ports:                     # Ports that can be accessed
+    - protocol: TCP            # Protocol
+      port: 5432               # Port number (e.g., PostgreSQL default)

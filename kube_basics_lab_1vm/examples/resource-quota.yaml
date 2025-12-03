@@ -1,0 +1,17 @@
+# ResourceQuota Example
+# Limits total resource usage within a namespace
+# Prevents resource exhaustion and ensures fair sharing
+
+apiVersion: v1                    # API version for ResourceQuota resources
+kind: ResourceQuota              # Resource type: ResourceQuota
+
+metadata:                        # Metadata about the ResourceQuota
+  name: demo-quota               # Unique name for the quota
+
+spec:                           # ResourceQuota specification
+  hard:                         # Hard limits (cannot be exceeded)
+    requests.cpu: "1"           # Total CPU requested across all pods: 1 core
+    requests.memory: 1Gi        # Total memory requested: 1 GiB
+    limits.cpu: "2"             # Total CPU limits across all pods: 2 cores
+    limits.memory: 2Gi          # Total memory limits: 2 GiB
+    pods: "10"                  # Maximum number of pods in namespace: 10

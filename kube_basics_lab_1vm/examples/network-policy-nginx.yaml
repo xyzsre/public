@@ -1,0 +1,19 @@
+# Network Policy Example - Nginx Deployment
+# Simple ingress-only network policy for nginx pods
+# Denies all ingress traffic by default (no ingress rules specified)
+
+apiVersion: networking.k8s.io/v1  # API version for NetworkPolicy resources
+kind: NetworkPolicy              # Resource type: NetworkPolicy
+
+metadata:                        # Metadata about the NetworkPolicy
+  name: allow-nginx              # Unique name for the policy
+
+spec:                           # NetworkPolicy specification
+  podSelector:                  # Pods this policy applies to
+    matchLabels:                # Label selector for target pods
+      app: nginx-deploy         # Applies to pods with label app=nginx-deploy
+
+  policyTypes:                  # Types of rules defined
+  - Ingress                     # Only ingress rules (no egress rules)
+                               # By default, denies all ingress traffic
+                               # since no ingress rules are specified
