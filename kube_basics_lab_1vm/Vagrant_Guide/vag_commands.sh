@@ -2,6 +2,7 @@ vagrant --version
 vagrant box list
 vagrant status
 vagrant up
+vagrant ssh host1
 vagrant ssh vm1
 vagrant ssh vm2
 vagrant destroy --force

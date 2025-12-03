@@ -230,6 +230,7 @@ echo "Passwordless sudo configured successfully!"
 chmod +x setup_sudo.sh  # Make script executable
 sudo ./setup_sudo.sh    # Run script with sudo to configure passwordless access
 sudo whoami             # Verify sudo works without password prompt
+whoami
 ```
 
 
@@ -263,7 +264,7 @@ sudo apt install -y containerd
 # Create default configuration
 sudo mkdir -p /etc/containerd
 sudo containerd config default | sudo tee /etc/containerd/config.toml
-cat /etc/containerd/config.toml
+cat /etc/containerd/config.toml | more
 
 # Enable systemd cgroup driver (required for Kubernetes)
 sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
@@ -286,6 +287,7 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --
 
 # Add the Kubernetes repository to apt sources
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+cat /etc/apt/sources.list.d/kubernetes.list
 ```
 
 ### Install Kubernetes Components
@@ -373,6 +375,8 @@ sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 mkdir -p $HOME/.kube  # Create directory for kubeconfig files
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config  # Copy admin kubeconfig
 sudo chown $(id -u):$(id -g) $HOME/.kube/config  # Set ownership to current user
+ls -anp $HOME/.kube
+cat $HOME/.kube/config
 ```
 
 **Verification:**
@@ -395,6 +399,7 @@ kubectl taint nodes <node-name> node-role.kubernetes.io/control-plane:NoSchedule
 ```bash
 hostname
 kubectl taint nodes devops node-role.kubernetes.io/control-plane:NoSchedule-
+kubectl taint nodes server1 node-role.kubernetes.io/control-plane:NoSchedule-
 kubectl taint nodes host1 node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
@@ -430,6 +435,7 @@ kubectl get nodes  # Check if node status changed to Ready
 ```bash
 kubectl cluster-info    # Verify control plane is accessible
 kubectl get nodes       # Check node readiness status
+sudo systemctl status kubelet
 kubectl get pods -A     # Verify all system pods are running
 ```
 
