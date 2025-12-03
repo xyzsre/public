@@ -1,11 +1,12 @@
 
 
-# Kubernetes Installation Guide - Ubuntu 22 and 24
-# Kubernetes Basics
-# KCNA Basics - Practical LAB
-# Fundamentals >> Network / System / DevOps / SRE / Cloud / Platform Engineers
-# Kubernetes >> How to ??! 
-# Test and try it >> VMware / Virtual-Box / Vagrant / AWS / GCP / Azure / Digital-Ocean / Upcloud / Linode / Vultr / ...
+
+### Kubernetes Installation Guide - Ubuntu 22 and 24
+### Kubernetes Basics
+### KCNA Basics - Practical LAB
+### Fundamentals >> Network / System / DevOps / SRE / Cloud / Platform Engineers
+### Kubernetes >> How to ??! 
+### Test and try it >> VMware / Virtual-Box / Vagrant / AWS / GCP / Azure / Digital-Ocean / Upcloud / Linode / Vultr / ...
 
 
 ---
