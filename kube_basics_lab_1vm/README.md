@@ -746,6 +746,9 @@ kubectl logs emptydir-pod
 
 # Verify data persistence during pod lifetime
 kubectl exec emptydir-pod -- cat /tmp/data/file.txt
+kubectl exec emptydir-pod -- ls -anp /tmp/data/
+kubectl exec emptydir-pod -- touch /tmp/data/temp.txt
+
 
 # Clean up pod
 kubectl delete pod emptydir-pod
@@ -761,6 +764,7 @@ kubectl run labeled-pod --image=busybox --restart=Never --labels=app=myapp,env=t
 
 # Show labels on all pods
 kubectl get pods --show-labels
+kubectl get pods --show-labels | grep labeled-pod
 
 # Filter pods by label
 kubectl get pods -l app=myapp
@@ -1087,7 +1091,6 @@ kubectl describe pdb nginx-pdb
 # Clean up resources
 kubectl delete pdb nginx-pdb
 kubectl delete deployment nginx-deploy
-kubectl uncordon devops  # If node was cordoned
 ```
 
 ### Node Operations (Cordon/Uncordon)
@@ -1188,9 +1191,9 @@ kubectl get events --sort-by='.metadata.creationTimestamp' | tail -10
 kubectl get events --field-selector involvedObject.name=my-pod
 
 # View system component logs
-kubectl logs kube-apiserver-devops -n kube-system --tail=5
-kubectl logs kube-controller-manager-devops -n kube-system --tail=5
-kubectl logs kube-scheduler-devops -n kube-system --tail=5
+kubectl logs kube-apiserver-host1 -n kube-system --tail=5
+kubectl logs kube-controller-manager-host1 -n kube-system --tail=5
+kubectl logs kube-scheduler-host1 -n kube-system --tail=5
 
 # View pod logs from all containers
 kubectl logs my-pod --all-containers
@@ -1703,7 +1706,7 @@ kubectl delete networkpolicy allow-nginx
 **Test Commands:**
 ```bash
 # Check node resource capacity and allocation
-kubectl describe node devops | grep -A 10 Allocatable
+kubectl describe node host1 | grep -A 10 Allocatable
 
 # View cluster resource usage summary
 kubectl get nodes -o custom-columns=NAME:.metadata.name,CPU:.status.capacity.cpu,MEMORY:.status.capacity.memory
@@ -1832,10 +1835,10 @@ kubectl delete statefulset demo-statefulset
 **Test Commands:**
 ```bash
 # Add a taint to a node to prevent regular pods from scheduling
-kubectl taint nodes devops demo-taint=demo:NoSchedule
+kubectl taint nodes host1 demo-taint=demo:NoSchedule
 
 # Check node taints
-kubectl describe node devops | grep Taints
+kubectl describe node host1 | grep Taints
 
 # Create a pod with tolerations that can schedule on tainted nodes (tolerant-pod.yaml)
 kubectl apply -f tolerant-pod.yaml
@@ -1844,7 +1847,7 @@ kubectl apply -f tolerant-pod.yaml
 kubectl get pods
 
 # Remove the taint
-kubectl taint nodes devops demo-taint-
+kubectl taint nodes host1 demo-taint-
 
 # Clean up pod
 kubectl delete pod tolerant-pod
