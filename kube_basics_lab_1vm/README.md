@@ -1337,7 +1337,6 @@ kubectl top pods
 
 ## Troubleshooting Guide - Issues Found & Fixed
 
-During testing, we encountered and resolved several common Kubernetes issues. Here's a comprehensive guide to troubleshooting with real examples and solutions.
 
 ### Issue 1: Swap Not Disabled (Cluster Won't Start)
 **Problem:** `kubelet.service` fails with "running with swap on is not supported"
