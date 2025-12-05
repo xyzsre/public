@@ -12,8 +12,9 @@ This guide covers installing Homebrew (brew), VirtualBox, and Vagrant on macOS.
 3. Follow the on-screen instructions to complete the installation.
 4. Ensure Homebrew is in your PATH by running:
    ```
-   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-   eval "$(/opt/homebrew/bin/brew shellenv)"
+   echo >> /Users/devops/.zprofile
+   echo 'eval "$(/usr/local/bin/brew shellenv)"' >> /Users/devops/.zprofile
+   eval "$(/usr/local/bin/brew shellenv)"
    ```
 
 ## Install VirtualBox and Vagrant
@@ -29,3 +30,4 @@ This guide covers installing Homebrew (brew), VirtualBox, and Vagrant on macOS.
 - **Homebrew version**: `brew --version`
 - **VirtualBox version**: `VBoxManage --version`
 - **Vagrant version**: `vagrant --version`
+
