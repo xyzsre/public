@@ -7,7 +7,10 @@ This guide covers installing Chocolatey (choco), VirtualBox, and Vagrant on Wind
 1. Open PowerShell as Administrator.
 2. Run the following command to install Chocolatey:
    ```
-   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.Client.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+   Set-ExecutionPolicy Bypass -Scope Process -Force; `
+   [System.Net.ServicePointManager]::SecurityProtocol = `
+   [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+   iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
    ```
 3. Close and reopen PowerShell to ensure Chocolatey is available.
 
@@ -24,3 +27,4 @@ This guide covers installing Chocolatey (choco), VirtualBox, and Vagrant on Wind
 - **Chocolatey version**: `choco --version`
 - **VirtualBox version**: `VBoxManage --version`
 - **Vagrant version**: `vagrant --version`
+
