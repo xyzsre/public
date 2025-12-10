@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-hello-world
+  labels:
+    app: php-hello-world
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: php-hello-world
+  template:
+    metadata:
+      labels:
+        app: php-hello-world
+    spec:
+      containers:
+      - name: php-hello-world
+        image: php:8.1-apache
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: php-code
+          mountPath: /var/www/html
+      volumes:
+      - name: php-code
+        configMap:
+          name: php-hello-world-code
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-hello-world-code
+data:
+  index.php: |
+    <?php
+    echo "<!DOCTYPE html>\n";
+    echo "<html>\n";
+    echo "<head>\n";
+    echo "    <title>PHP Hello World (VER 2.0 / REV 2.0)</title>\n";
+    echo "    <style>\n";
+    echo "        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 50px; }\n";
+    echo "        .container { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 10px; margin: 0 auto; max-width: 600px; }\n";
+    echo "        h1 { font-size: 3em; margin-bottom: 20px; }\n";
+    echo "        .info { background: rgba(255,255,255,0.2); padding: 15px; border-radius: 5px; margin: 10px 0; }\n";
+    echo "    </style>\n";
+    echo "</head>\n";
+    echo "<body>\n";
+    echo "    <div class='container'>\n";
+    echo "        <h1>🐘 PHP Hello World! 🐘</h1>\n";
+    echo "        <div class='info'>\n";
+    echo "            <h2>Welcome to PHP on Kubernetes! (VER 2.0 / REV 2.0)</h2>\n";
+    echo "            <p><strong>PHP Version:</strong> " . phpversion() . "</p>\n";
+    echo "            <p><strong>Server Time:</strong> " . date('Y-m-d H:i:s') . "</p>\n";
+    echo "            <p><strong>Hostname:</strong> " . gethostname() . "</p>\n";
+    echo "            <p><strong>Server IP:</strong> " . $_SERVER['SERVER_ADDR'] . "</p>\n";
+    echo "            <p><strong>Request URI:</strong> " . $_SERVER['REQUEST_URI'] . "</p>\n";
+    echo "        </div>\n";
+    echo "    </div>\n";
+    echo "</body>\n";
+    echo "</html>\n";
+    ?>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-hello-world-service
+spec:
+  selector:
+    app: php-hello-world
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-hello-world-nodeport
+spec:
+  selector:
+    app: php-hello-world
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort
+
