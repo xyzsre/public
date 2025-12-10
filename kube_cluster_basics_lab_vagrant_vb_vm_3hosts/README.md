@@ -234,3 +234,9 @@ https://www.rancher.com/quick-start
 
 https://rancherdesktop.io/
 
+https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion
+
+https://www.virtualbox.org/
+
+https://developer.hashicorp.com/vagrant
+
