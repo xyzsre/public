@@ -1,7 +1,6 @@
 
 
 #!/bin/bash
-
 # Setup Kubernetes Control Plane with Calico CNI and Metrics
 echo "=== SETTING UP KUBERNETES CONTROL PLANE ==="
 

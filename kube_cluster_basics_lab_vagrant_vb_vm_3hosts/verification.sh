@@ -1,11 +1,9 @@
 
 #!/bin/bash
-
 # Kubernetes Installation Verification Script
 # This script verifies that all Kubernetes components are properly installed and configured
 # Author: Generated from successful Vagrant installation verification
 # Usage: bash verification.sh
-
 set -e  # Exit on any error
 set -u  # Exit on undefined variables
 
@@ -176,3 +174,4 @@ echo "- kubelet: Inactive (dead) - This is normal before cluster init"
 echo "- Swap: 0B (disabled)"
 echo "- Kernel modules: overlay and br_netfilter loaded"
 echo "- Network settings: IP forwarding and bridge filtering enabled"
+

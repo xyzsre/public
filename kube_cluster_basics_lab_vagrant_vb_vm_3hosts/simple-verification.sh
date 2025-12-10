@@ -1,12 +1,10 @@
 
 
 #!/bin/bash
-
 # Simplified Kubernetes Installation Verification Script
 # This script verifies Kubernetes installation with SUCCESS/FAILED output only
 # Author: Generated from successful Vagrant installation verification
 # Usage: bash simple-verification.sh
-
 set -e  # Exit on any error
 set -u  # Exit on undefined variables
 

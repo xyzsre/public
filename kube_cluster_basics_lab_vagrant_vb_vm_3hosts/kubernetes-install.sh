@@ -152,3 +152,5 @@ echo "Kubernetes installation completed successfully!"
 echo "This node is now ready to join a Kubernetes cluster."
 echo "To initialize a cluster as control plane, run: sudo kubeadm init"
 echo "To join an existing cluster, get the join command from the control plane node."
+
+
