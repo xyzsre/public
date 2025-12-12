@@ -52,3 +52,4 @@ echo "10. Generating join command for worker nodes..."
 kubeadm token create --print-join-command
 
 echo "=== CONTROL PLANE SETUP COMPLETE ==="
+

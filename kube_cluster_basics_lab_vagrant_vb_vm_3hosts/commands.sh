@@ -51,6 +51,7 @@ vagrant ssh host3 -c "sudo bash /vagrant/simple-verification.sh"
 echo "11. Setting up Kubernetes control plane on host1..."
 vagrant ssh host1 -c "sudo bash /vagrant/setup-control-plane.sh"
 
+
 # 10. Setup kubectl configuration for vagrant user
 # echo "12. Setting up kubectl configuration for vagrant user..."
 # sudo cp /etc/kubernetes/admin.conf /home/vagrant/.kube/config && sudo chown vagrant:vagrant /home/vagrant/.kube/config
@@ -61,7 +62,12 @@ vagrant ssh host1 -c "sudo bash /vagrant/setup-control-plane.sh"
 
 # 12. Join worker nodes to cluster
 # echo "14. Joining worker nodes to cluster..."
-sudo kubeadm join 192.168.56.10:6443 --token n2fbfo.idwy66xjx6gpcp0p --discovery-token-ca-cert-hash sha256:02e518e50fe51375dc983f314be9c4c593eb4072b6b0b14b79722fd428ac8a86
+kubeadm token create --print-join-command
+
+sudo kubeadm join 192.168.56.10:6443 --token 7e42n0.ax57gjod6spzf70u --discovery-token-ca-cert-hash sha256:f382bd59405013c11b19338d1555073cf3350bc4617b3f488603f9604d9a62f6
+
+
+
 
 # 13. Verify cluster status with kubectl configuration
 # echo "15. Verifying cluster status with kubectl configuration..."
@@ -169,6 +175,13 @@ kubectl get pods
 helm list
 helm status my-simple-app
 kubectl get services
+
+helm list
+helm search hub wordpress
+helm install happy-panda bitnami/wordpress
+helm list
+helm status happy-panda
+helm uninstall happy-panda
 
 
 # 24. Verify and test simple app functionality

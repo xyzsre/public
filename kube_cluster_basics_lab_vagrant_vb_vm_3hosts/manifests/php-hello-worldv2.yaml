@@ -5,7 +5,7 @@ metadata:
   labels:
     app: php-hello-world
 spec:
-  replicas: 3
+  replicas: 6
   selector:
     matchLabels:
       app: php-hello-world
@@ -85,6 +85,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30080
+      nodePort: 30090
   type: NodePort
+
 
