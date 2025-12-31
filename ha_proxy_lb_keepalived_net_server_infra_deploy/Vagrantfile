@@ -1,0 +1,89 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Configuration for vm1 using BusyBox
+  config.vm.define "LB1" do |lb1|
+    lb1.vm.box = "ubuntu/focal64"  # Ubuntu 20.04 LTS
+    lb1.vm.hostname = "LB1"
+    lb1.vm.network "private_network", ip: "192.168.56.10"
+    lb1.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    
+    lb1.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y tzdata
+      ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+      echo "Europe/Paris" > /etc/timezone
+    SHELL
+    
+    lb1.vm.provider "virtualbox" do |vb|
+      vb.name = "LB1"
+      vb.memory = "1024"
+      vb.cpus = 2
+    end
+  end
+
+  # Configuration for vm2 using BusyBox
+  config.vm.define "LB2" do |lb2|
+    lb2.vm.box = "ubuntu/focal64"  # Ubuntu 20.04 LTS
+    lb2.vm.hostname = "LB2"
+    lb2.vm.network "private_network", ip: "192.168.56.11"
+    lb2.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    
+    lb2.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y tzdata
+      ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+      echo "Europe/Paris" > /etc/timezone
+    SHELL
+    
+    lb2.vm.provider "virtualbox" do |vb|
+      vb.name = "LB2"
+      vb.memory = "1024"
+      vb.cpus = 2
+    end
+  end
+
+  # Configuration for vm3 using BusyBox
+  config.vm.define "Web1" do |web1|
+    web1.vm.box = "ubuntu/focal64"  # Ubuntu 20.04 LTS
+    web1.vm.hostname = "Web1"
+    web1.vm.network "private_network", ip: "192.168.56.12"
+    web1.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    
+    web1.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y tzdata
+      ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+      echo "Europe/Paris" > /etc/timezone
+    SHELL
+    
+    web1.vm.provider "virtualbox" do |vb|
+      vb.name = "Web1"
+      vb.memory = "1024"
+      vb.cpus = 2
+    end
+  end
+
+  # Configuration for vm4 using BusyBox
+  config.vm.define "Web2" do |web2|
+    web2.vm.box = "ubuntu/focal64"  # Ubuntu 20.04 LTS
+    web2.vm.hostname = "Web2"
+    web2.vm.network "private_network", ip: "192.168.56.13"
+    web2.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    
+    web2.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y tzdata
+      ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+      echo "Europe/Paris" > /etc/timezone
+    SHELL
+    
+    web2.vm.provider "virtualbox" do |vb|
+      vb.name = "Web2"
+      vb.memory = "1024"
+      vb.cpus = 2
+    end
+  end
+end
+
