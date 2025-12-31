@@ -242,6 +242,8 @@ vagrant ssh LB2 -c "sudo apt-get update && sudo apt-get install -y keepalived"
 vagrant ssh LB1 -c "sudo cp /vagrant/keepalived_master.conf /etc/keepalived/keepalived.conf && sudo systemctl restart keepalived"
 vagrant ssh LB2 -c "sudo cp /vagrant/keepalived_backup.conf /etc/keepalived/keepalived.conf && sudo systemctl restart keepalived"
 
+sudo systemctl status keepalived
+
 # --- Kernel Tuning for VIP (on BOTH LBs) --- #
 # This allows HAProxy to bind to an IP that isn't physically on the machine
 # and fixes ARP issues.
@@ -325,6 +327,8 @@ for i in {1..100}; do curl 192.168.56.200; sleep 1; done
 
 for i in {1..4}; do curl http://test1.domain.local; done
 for i in {1..4}; do curl http://test2.domain.local; done
+
+for i in {1..1000}; do curl http://test2.domain.local; sleep 1; done
 
 
 ```
