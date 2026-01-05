@@ -95,7 +95,7 @@ Enables **horizontal scaling and redundancy** within a region.
 
 ---
 
-## ❤️ Health Check (duplicate section awareness)
+## ❤️ Health Check ()
 
 ### **Create health check (web-hc)**
 
@@ -103,7 +103,6 @@ Enables **horizontal scaling and redundancy** within a region.
 Same reason as earlier:
 Backend service **must reference a health check** to function.
 
-> ⚠️ Note: You only need **one health check**. This is functionally duplicate.
 
 ---
 
