@@ -1,5 +1,7 @@
 
 
+# MANA
+
 # GCP High-Availability Web Server Architecture Guide
 
 ## Subtitle: Understanding Cloud Infrastructure, Load Balancing, and Automation Concepts
