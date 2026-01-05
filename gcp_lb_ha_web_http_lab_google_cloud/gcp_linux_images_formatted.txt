@@ -1,0 +1,118 @@
+GCP Linux Images - Complete List
+
+CENTOS STREAM:
+==============
+centos-stream-10-arm64-v20251111
+centos-stream-10-v20251111
+centos-stream-9-arm64-v20251209
+centos-stream-9-v20251209
+
+CONTAINER OPTIMIZED OS (COS):
+=============================
+cos-113-18244-521-56
+cos-117-18613-439-72
+cos-121-18867-294-68
+cos-125-19216-104-74
+
+DEBIAN:
+=======
+debian-11-bullseye-v20251209
+debian-12-bookworm-arm64-v20251209
+debian-12-bookworm-v20251209
+debian-13-trixie-arm64-v20251209
+debian-13-trixie-v20251209
+
+OPENSUSE:
+=========
+opensuse-leap-15-6-v20251017-arm64
+opensuse-leap-15-6-v20251017-x86-64
+
+UBUNTU - PRO VERSIONS:
+======================
+ubuntu-pro-1604-xenial-v20251217
+ubuntu-pro-1804-bionic-arm64-v20251217
+ubuntu-pro-1804-bionic-v20251217
+ubuntu-pro-2004-focal-arm64-v20251217
+ubuntu-pro-2004-focal-v20251217
+ubuntu-pro-2204-jammy-arm64-v20251218
+ubuntu-pro-2204-jammy-v20251218
+ubuntu-pro-2404-noble-amd64-v20251217
+ubuntu-pro-2404-noble-arm64-v20251217
+ubuntu-pro-fips-1804-bionic-v20251217a
+ubuntu-pro-fips-2004-focal-v20251217a
+ubuntu-pro-fips-updates-2204-jammy-arm64-v20251209
+ubuntu-pro-fips-updates-2204-jammy-v20251209
+
+UBUNTU - MINIMAL PRO VERSIONS:
+===============================
+ubuntu-minimal-pro-2004-focal-arm64-v20251217a
+ubuntu-minimal-pro-2004-focal-v20251217a
+ubuntu-minimal-pro-2204-jammy-arm64-v20251217
+ubuntu-minimal-pro-2204-jammy-v20251217
+ubuntu-minimal-pro-2404-noble-amd64-v20251217
+ubuntu-minimal-pro-2404-noble-arm64-v20251217
+
+UBUNTU - STANDARD VERSIONS:
+===========================
+ubuntu-1604-xenial-v20251217
+ubuntu-1804-bionic-arm64-v20251217
+ubuntu-1804-bionic-v20251217
+ubuntu-2004-focal-arm64-v20251217
+ubuntu-2004-focal-v20251217
+ubuntu-2204-jammy-arm64-v20251218
+ubuntu-2204-jammy-v20251218
+ubuntu-2404-noble-amd64-v20251217
+ubuntu-2404-noble-arm64-v20251217
+ubuntu-2504-plucky-amd64-v20251217
+ubuntu-2504-plucky-arm64-v20251217
+ubuntu-2510-questing-amd64-v20251217
+ubuntu-2510-questing-arm64-v20251217
+
+UBUNTU - MINIMAL VERSIONS:
+==========================
+ubuntu-minimal-1604-xenial-v20251217
+ubuntu-minimal-1804-bionic-arm64-v20251217
+ubuntu-minimal-1804-bionic-v20251217
+ubuntu-minimal-2004-focal-arm64-v20251217
+ubuntu-minimal-2004-focal-v20251217
+ubuntu-minimal-2204-jammy-arm64-v20251217
+ubuntu-minimal-2204-jammy-v20251217
+ubuntu-minimal-2404-noble-amd64-v20251217
+ubuntu-minimal-2404-noble-arm64-v20251217
+ubuntu-minimal-2504-plucky-amd64-v20251217
+ubuntu-minimal-2504-plucky-arm64-v20251217
+ubuntu-minimal-2510-questing-amd64-v20251217
+ubuntu-minimal-2510-questing-arm64-v20251217
+
+UBUNTU - ACCELERATOR VERSIONS (GPU):
+===================================
+accelerator-2204-arm64-with-nvidia-570-v20251217
+accelerator-2204-arm64-with-nvidia-580-v20251218
+accelerator-2404-amd64-with-nvidia-570-v20251217
+accelerator-2404-amd64-with-nvidia-580-v20251217
+accelerator-2404-arm64-with-nvidia-570-v20251217
+accelerator-2404-arm64-with-nvidia-580-v20251217
+
+CUSTOM IMAGES (PROJECT SPECIFIC):
+================================
+docker-swarm-debian-1765042781
+packer-debian-1765038657
+packer-debian-1765039074
+packer-ubuntu-1765036511
+
+SUMMARY:
+========
+Total Linux Images Available: 116+
+- CentOS Stream: 4 versions (9, 10) with ARM64 and x86-64 variants
+- Container Optimized OS: 4 LTS versions (113, 117, 121, 125)
+- Debian: 4 versions (11, 12, 13) with ARM64 and x86-64 variants
+- OpenSUSE: 2 versions (Leap 15.6) with ARM64 and x86-64 variants
+- Ubuntu: 50+ versions including:
+  * Standard releases (16.04, 18.04, 20.04, 22.04, 24.04, 25.04, 25.10)
+  * Pro versions with extended support
+  * Minimal versions for smaller footprints
+  * Accelerator versions with NVIDIA GPU drivers
+  * ARM64 and x86-64 architecture variants
+- Custom project images: 4 specific to this project
+
+All images are READY status and regularly updated with security patches.

@@ -1,0 +1,27 @@
+# Cloud provider credential files
+gcp-key.json
+azure*.json
+aws*.json
+
+# Terraform temporary files and folders
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.lock.hcl
+
+# Terraform backup files
+*.tfbackup
+*.tfstate.backup
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Terraform plugin cache
+.terraform.d/plugin-cache
+
+# Vagrant temporary files and folders
+.vagrant/
+*.box
+

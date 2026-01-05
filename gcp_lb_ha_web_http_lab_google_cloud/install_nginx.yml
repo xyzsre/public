@@ -1,0 +1,31 @@
+---
+- name: Update and Install Nginx on Webservers
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+      when: ansible_os_family == "Debian"
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Check nginx service status
+      service:
+        name: nginx
+      register: nginx_status
+
+    - name: Display nginx status
+      debug:
+        msg: "Nginx service status: {{ nginx_status.status.ActiveState }}"
