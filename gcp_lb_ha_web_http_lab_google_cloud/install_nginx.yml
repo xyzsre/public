@@ -29,3 +29,4 @@
     - name: Display nginx status
       debug:
         msg: "Nginx service status: {{ nginx_status.status.ActiveState }}"
+

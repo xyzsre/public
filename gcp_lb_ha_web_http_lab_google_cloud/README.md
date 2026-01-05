@@ -547,8 +547,9 @@ gcloud compute instances create web2 --zone=europe-west9-c --machine-type=e2-med
 gcloud compute instances list
 ```
 
-34.155.255.159  web1
-34.155.93.89    web2
+## >> /etc/hosts >> update servers + name
+34.155.93.89 web1
+34.163.207.198 web2
 
 
 ## 21. List storage (disks) consumed in GCP
@@ -563,7 +564,7 @@ gcloud compute instances describe web1 --zone=europe-west9-b --format="get(netwo
 
 ## 23. Get detailed IP information for web2
 ```bash
-gcloud compute instances describe web2 --zone=europe-west9-c --format="get(networkInterfaces[0].networkIP,networkInterfaces[0].accessConfigs[0].natIP)"
+gcloud compute instances describe web2 --zone=europe-west9-b --format="get(networkInterfaces[0].networkIP,networkInterfaces[0].accessConfigs[0].natIP)"
 ```
 
 ## 24. Create SSH key pair (4096-bit) for GCP VM access
@@ -583,7 +584,7 @@ gcloud compute instances add-metadata web1 --zone=europe-west9-b --metadata=ssh-
 
 ## 27. Assign SSH key to web2 VM
 ```bash
-gcloud compute instances add-metadata web2 --zone=europe-west9-c --metadata=ssh-keys="$(cat gcp_ssh_key_formatted.pub)"
+gcloud compute instances add-metadata web2 --zone=europe-west9-b --metadata=ssh-keys="$(cat gcp_ssh_key_formatted.pub)"
 ```
 
 ## 28. Verify SSH key files
@@ -852,7 +853,7 @@ gcloud compute instances add-tags web1 --tags http-server --zone europe-west9-b
 
 ## 77. Add http-server tag to web2
 ```bash
-gcloud compute instances add-tags web2 --tags http-server --zone europe-west9-c
+gcloud compute instances add-tags web2 --tags http-server --zone europe-west9-b
 ```
 
 ## 78. List all firewall rules to verify
@@ -1038,7 +1039,7 @@ gcloud compute target-pools create web-servers-pool --region europe-west9
 ## 100. Add web1 and web2 to target pool
 ```bash
 gcloud compute target-pools add-instances web-servers-pool --instances-zone europe-west9-b --instances web1
-gcloud compute target-pools add-instances web-servers-pool --instances-zone europe-west9-c --instances web2
+gcloud compute target-pools add-instances web-servers-pool --instances-zone europe-west9-b --instances web2
 ```
 
 ## 101. Create forwarding rule for load balancer
@@ -1550,7 +1551,7 @@ gcloud compute instances list
 ## 175. Delete all compute instances
 ```bash
 gcloud compute instances delete web1 --zone europe-west9-b --quiet
-gcloud compute instances delete web2 --zone europe-west9-c --quiet
+gcloud compute instances delete web2 --zone europe-west9-b --quiet
 gcloud compute instances delete web3 web4 --zone europe-west1-b --quiet
 ```
 
